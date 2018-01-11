@@ -1,0 +1,27 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		function namespace (oNamespace,sPackage) {
+			sPackage=sPackage.split(".");
+			var that = oNamespace;
+			for (var i in sPackage) {
+				if(that.hasOwnProperty(sPackage[i])){
+					 if ((typeof that[sPackage[i]]) !== 'object') {
+					 	that[sPackage[i]] = {};
+					 }
+				}
+				else{
+					that[sPackage[i]] = {};	
+				}
+				that = that[sPackage[i]];
+			}
+			return oNamespace;
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

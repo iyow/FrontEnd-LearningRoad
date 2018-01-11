@@ -1,0 +1,40 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		function f (a , b) {
+			console.log(this.test + " " + a + " " +b);
+			console.log(this.test + " " + a + " " +b);
+			return this.test + " " + a + " " +b;
+		}
+		//Method 1
+		function bindThis_1 (f , oTarget) {
+			return f.bind(oTarget);    
+			//此处也可以传入参数作为f函数的参数bind(oTarget,a,b)
+			//函数修改为bindThis_1(f,oTarget,a,b),
+		}
+		//Method 2
+		function bindThis_2 (f , oTarget) {
+			return function  (a , b) {
+				return f.call(oTarget , a , b);
+			}
+		}
+		//Method 3
+		function bindThis_3 (f , oTarget) {
+			return function  () {
+				return f.apply(oTarget,arguments);
+				//arguments传入法函数的参数数组因为apply接收数组形式的参数
+			}
+		}
+
+		bindThis_1(f,{test:1.1})(1.2,1.3);
+		bindThis_2(f,{test:2.1})(2.2,2.3);
+		bindThis_3(f,{test:3.1})(3.2,3.3);
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

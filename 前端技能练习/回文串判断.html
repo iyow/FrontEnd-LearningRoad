@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>js回文串判断</title>
+	<meta charset="utf-8">
+	<script type="text/javascript">
+		function toReverse (str) {
+			str = str.split("").reverse().join("");
+			return str;
+		}
+		function palindrome (str) {
+			str = str.replace(/[^a-z|0-9|A-Z]/g, "");
+			if(str.toLowerCase() === toReverse(str).toLowerCase()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>

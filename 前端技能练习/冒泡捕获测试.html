@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>冒泡捕获测试</title>
+</head>
+<body>
+	<div id="one" style="margin: 20px;background-color: red;">
+		<div id="two" style="margin: 20px;background-color: yellow;">
+			<div id="three" style="margin: 20px;background-color: blue;">
+				<div id="four" style="margin: 20px;background-color: green;">
+					Click Me
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript">
+	var one = document.getElementById("one") ;
+	var two = document.getElementById("two") ;
+	var three = document.getElementById("three") ;
+	var four = document.getElementById("four") ;
+	var useCapture = false;
+	//false 为冒泡【获取目标元素】先触发；这个事件从该元素开始一直冒泡到DOM树最上层
+	//true 为捕获【父级元素】先触发；这个事件从DOM树最上层开始触发一直到捕获到事件源
+	one.addEventListener("click", function(event){console.log(event);console.log("one");}, useCapture);
+	two.addEventListener("click", function(event){console.log(event);console.log("two");}, useCapture);
+	three.addEventListener("click", function(event){console.log(event);console.log("three");}, useCapture);
+	four.addEventListener("click", function(event){console.log(event);console.log("four");}, useCapture);
+</script>
+</body>
+</html>
