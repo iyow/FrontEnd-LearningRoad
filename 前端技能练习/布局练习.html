@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>布局练习</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			width: 970px;
+			margin: 0 auto;
+		}
+		.header{
+			height: 103px;
+		}
+		.header	.logo{
+			float: left;
+			width: 277px;
+			height: 103px;
+			background-color: red;
+		}
+		.header .language{
+			float: right;
+			width: 137px;
+			height: 49px;
+			background-color: green;
+			margin-bottom: 8px;
+		}
+		.header .nav{
+			float: right;
+			width: 679px;
+			height: 46px;
+			background-color: green;
+		}
+		.content{
+			height: 435px;
+			margin: 10px 0;
+		}
+		.content .banner{
+			float: left;
+			width: 310px;
+			height: 435px;
+			background-color: yellow;
+		}
+		.content .right-part{
+			float: left;
+			width: 650px;
+			height: 435px;
+			margin-left: 10px;
+		}
+		.content .right-part .info{
+			width: 	650px;
+			height: 400px;
+			margin-bottom: 10px;
+		}
+		.content .right-part .links{
+			width: 650px;
+			height: 25px;
+			background-color: green;
+		}
+		.content .right-part .info .main{
+			float: left;
+			width: 450px;
+			height: 400px;
+			margin-right: 10px;
+		}
+		.content .right-part .info .hotpic{
+			float: right;
+			width: 190px;
+			height: 400px;
+			background-color: purple;
+		}
+		.content .right-part .info .main .news{
+			width: 450px;
+			height: 240px;
+			background-color: skyblue;
+			margin-bottom: 10px;
+		}
+		.content .right-part .info .main .notice{
+			width: 450px;
+			height: 150px;
+			background-color: skyblue;
+		}
+		.footer{
+			width: 970px;
+			height: 35px;
+			background-color: green;
+		}
+	</style>
+</head>
+<body>
+	<!-- 头部 -->
+	<div class="header">
+		<div class="logo">logo</div>
+		<div class="language">language</div>
+		<div class="nav">nav</div>
+	</div>
+	<!-- 主要内容 -->
+	<div class="content">
+		<div class="banner">banner</div>
+		<div class="right-part">
+			<div class="info">
+				<div class="main"> 
+					<div class="news">news</div>
+					<div class="notice">notice</div>
+				</div>
+				<div class="hotpic">hotpic</div>
+			</div>
+			<div class="links">links</div>
+		</div>
+	</div>
+	<!-- 底部 -->
+	<div class="footer">
+		footer
+	</div>
+</body>
+</html>
