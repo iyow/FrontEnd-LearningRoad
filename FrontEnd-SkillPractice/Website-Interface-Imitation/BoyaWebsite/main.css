@@ -1,37 +1,74 @@
-*{
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+hr,
+button,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
     margin: 0;
     padding: 0;
 }
 
-body{
+body {
     font-size: 14px;
-    font-family: 'Microsoft YaHei','SimSun';
+    font-family: 'Microsoft YaHei', 'SimSun';
 }
 
-.header{
+.header {
     height: 58px;
     background-color: #191D3A;
 }
 
-.inner{
+.inner {
     width: 1000px;
     margin: 0 auto;
 }
 
-.header .logo{
+.header .logo {
     float: left;
     margin-right: 40px;
 }
 
-.header .nav{
+.header .nav {
     float: left;
 }
 
-.header .nav ul{
+.header .nav ul {
     list-style: none;
 }
 
-.header .nav ul li{
+.header .nav ul li {
     float: left;
     width: 100px;
     line-height: 58px;
@@ -39,22 +76,95 @@ body{
     border-left: 1px solid #252947;
 }
 
-.header .nav ul li:last-child{
+.header .nav ul li:last-child {
     border-right: 1px solid #252947;
 }
 
-.header .nav ul li:first-child a{
+.header .nav ul li:first-child a {
     color: white;
     background-color: #252947;
 }
 
-.header .nav ul li a{
+.header .nav ul li a {
     display: block;
     color: #818496;
     text-decoration: none;
 }
 
-.header .nav ul li a:hover{
+.header .nav ul li a:hover {
     background-color: #252947;
     color: white;
+}
+
+.header .join_us{
+    float: left;
+    padding-left: 48px;
+    padding-top: 12px;
+}
+.header .join_us a{
+    display: block;
+    font-size: 12px;
+    width: 100px;
+    height: 34px;
+    text-decoration: none;
+    background: #388774;
+    color: white;
+    text-align: center;
+    line-height: 34px;
+    border-radius: 4px;
+}
+
+.header .join_us a:hover{
+    background-color: #48c784;
+}
+
+.banner{
+    height: 465px;
+    background: url('./images/banner.jpg') no-repeat center center;
+}
+
+.content{
+    padding-top: 50px;
+    background-color: #666;
+}
+
+.content .product{
+    overflow: hidden;
+    /* height: 229px; */
+    border-bottom: 1px solid red;
+}
+
+.content .product ul{
+    list-style: none;
+}
+
+.content .product ul li {
+    float: left;
+    width: 218px;
+    margin-right: 43px;
+}
+.content .product ul li img{
+    width: 100%;
+    height: 130px;
+}
+.content .product ul li:last-child{
+    margin-right: 0;
+    width: 217px;
+}
+.content .product ul li h3{
+    text-align: center;
+    line-height: 38px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.content .product ul li p.play{
+    text-align: center;
+    line-height: 16px;
+}
+.content .product ul li p.play a{
+    font-size: 12px;
+    color: rgb(40, 231, 81);
+    text-decoration: none;
+    padding-right: 10px;
+    background: url('./images/triangle.png') no-repeat right center;
 }
