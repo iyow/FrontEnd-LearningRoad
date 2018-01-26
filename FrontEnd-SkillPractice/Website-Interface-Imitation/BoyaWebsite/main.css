@@ -1,0 +1,60 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-size: 14px;
+    font-family: 'Microsoft YaHei','SimSun';
+}
+
+.header{
+    height: 58px;
+    background-color: #191D3A;
+}
+
+.inner{
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.header .logo{
+    float: left;
+    margin-right: 40px;
+}
+
+.header .nav{
+    float: left;
+}
+
+.header .nav ul{
+    list-style: none;
+}
+
+.header .nav ul li{
+    float: left;
+    width: 100px;
+    line-height: 58px;
+    text-align: center;
+    border-left: 1px solid #252947;
+}
+
+.header .nav ul li:last-child{
+    border-right: 1px solid #252947;
+}
+
+.header .nav ul li:first-child a{
+    color: white;
+    background-color: #252947;
+}
+
+.header .nav ul li a{
+    display: block;
+    color: #818496;
+    text-decoration: none;
+}
+
+.header .nav ul li a:hover{
+    background-color: #252947;
+    color: white;
+}
