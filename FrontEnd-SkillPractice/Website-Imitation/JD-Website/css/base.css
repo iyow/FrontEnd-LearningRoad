@@ -163,7 +163,9 @@ em {
     display: none
 }
 
+
 /* 头 部 开 始 */
+
 
 /* 头部导航 */
 
@@ -235,11 +237,11 @@ em {
 
 
 /* logo 搜索 购物车 */
+
 .logo {
     box-sizing: border-box;
     width: 360px;
     height: 100px;
-    background-color: pink;
     padding: 25px 0;
     background: url("../images/logo.png") no-repeat 0 25px;
     position: relative;
@@ -321,80 +323,180 @@ em {
 }
 
 
+/* nav 部分 */
+
+.jd-nav {
+    width: 100%;
+    height: 44px;
+    border-bottom: 2px solid #b1191a;
+}
+
+.dropdown {
+    width: 210px;
+    height: 44px;
+    overflow: visible;
+}
+
+.dropdown .menu-header {
+    height: 44px;
+    background-color: red;
+}
+
+.dropdown .menu-header a {
+    display: block;
+    height: 44px;
+    font: 400 15px/44px "microsoft yahei";
+    background-color: #b1191a;
+    color: white;
+    padding-left: 10px;
+}
+
+.dropdown .menu {
+    height: 458px;
+    background-color: #b61d1d;
+    margin-top: 2px;
+}
+
+.menu li.item {
+    height: 31px;
+    padding: 0 10px;
+    color: white;
+    font: 400 14px/31px "microsoft yahei";
+}
+.menu li h3{
+    float: left;
+}
+.menu li span {
+    float: right;
+    font-weight: 600;
+    font-family: 'simsun';
+    font-size: 15px;
+}
+
+.nav {
+    height: 44px;
+}
+
+.nav li {
+    float: left;
+}
+
+.nav li.new {
+    background: url("../images/new.jpg") no-repeat top right;
+}
+
+.nav a {
+    display: block;
+    color: #333;
+    font: 444 15px/44px "microsoft yahei";
+    padding: 0 20px;
+}
+
+.nav a:hover {
+    color: #C81623;
+}
+
+.bike-ads {
+    width: 100px;
+    height: 44px;
+    background: url("../images/bike.jpg") no-repeat;
+}
+
+.bike-ads a {
+    display: block;
+    height: 44px;
+}
+
+
 /* 头 部 结 束 */
 
 
 /* 底部开始 */
-.slogan{
+
+.slogan {
     height: 54px;
     padding: 20px 0;
     background: #f5f5f5;
     position: relative;
     margin-bottom: 25px;
 }
-.item{
+
+.slogan .item {
     width: 302px;
     position: absolute;
     top: 20px;
     left: 50%;
 }
-.slogan1{
+
+.slogan1 {
     margin-left: -608px;
 }
-.slogan2{
+
+.slogan2 {
     margin-left: -304px;
 }
-.slogan3{
+
+.slogan3 {
     margin-left: 2px;
 }
-.slogan4{
+
+.slogan4 {
     margin-left: 304px;
 }
 
-.help dl{
+.help dl {
     float: left;
     width: 198px;
 }
-.help dt,.coverage h4{
+
+.help dt,
+.coverage h4 {
     font-size: 16px;
     height: 28px;
 }
-.help dd{
+
+.help dd {
     height: 22px;
 }
 
-.coverage{
+.coverage {
     float: right;
     width: 210px;
     height: 165px;
     background: url("../images/china.png") left bottom;
 }
-.coverage p{
+
+.coverage p {
     margin-top: 10px;
     line-height: 25px;
 }
-.coverage p:last-child{
+
+.coverage p:last-child {
     text-align: right;
 }
 
-.jd-footer .copyright-info .w{
+.jd-footer .copyright-info .w {
     border-top: 1px solid #e5e5e5;
     padding: 30px 0 30px 0;
     margin-top: 30px;
     text-align: center;
 }
-.contact-links a{
+
+.contact-links a {
     display: inline-block;
     padding: 0 6px;
     border-left: 1px solid #e5e5e5;
     line-height: 25px;
 }
-.contact-links a:first-child{
+
+.contact-links a:first-child {
     border: 0;
 }
-.copyright{
+
+.copyright {
     margin-bottom: 15px;
 }
-.copyright span{
+
+.copyright span {
     margin: 0 10px;
 }
