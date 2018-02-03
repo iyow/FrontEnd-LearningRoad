@@ -335,6 +335,8 @@ em {
     width: 210px;
     height: 44px;
     overflow: visible;
+    position: relative;
+    z-index: 10;
 }
 
 .dropdown .menu-header {
@@ -355,6 +357,7 @@ em {
     height: 458px;
     background-color: #b61d1d;
     margin-top: 2px;
+    padding-bottom: 10px;
 }
 
 .menu li.item {
