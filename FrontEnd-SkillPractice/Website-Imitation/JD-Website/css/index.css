@@ -149,3 +149,6 @@
     left: 19px;
     background: url("../images/icon_lifeserv.png") no-repeat top right;
 }
+.life-service .song{
+    background: url("../images/song.png") no-repeat top right;
+}
