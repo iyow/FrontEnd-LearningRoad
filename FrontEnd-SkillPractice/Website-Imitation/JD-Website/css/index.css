@@ -152,3 +152,27 @@
 .life-service .song{
     background: url("../images/song.png") no-repeat top right;
 }
+
+
+/* 双11 活动模块 */
+.activity{
+    position: relative;
+}
+.night{
+    margin: 10px 0 28px 0;
+}
+
+
+.night-r ul{
+    width: 500%;
+}
+.night-r{
+    position: relative;
+    width: 1000px;
+    height: 160px;
+    float: right;
+}
+.night-r ul li{
+    float: left;
+    margin-right: 1px;
+}
