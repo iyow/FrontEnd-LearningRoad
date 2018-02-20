@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>水平滚动条</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .scroll {
+            width: 400px;
+            height: 8px;
+            background-color: #ccc;
+            margin: 100px;
+            position: relative;
+
+        }
+
+        .bar {
+            width: 10px;
+            height: 22px;
+            background-color: #369;
+            position: absolute;
+            top: -7px;
+            left: 0;
+            cursor: pointer;
+        }
+
+        .mask {
+            width: 0;
+            height: 100%;
+            background-color: #369;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scroll" id="scrollBar">
+        <div class="bar"></div>
+        <div class="mask"></div>
+    </div>
+    <div id="demo"></div>
+    <script>
+        var scrollBar = document.getElementById("scrollBar");
+        var bar = scrollBar.children[0];
+        var mask = scrollBar.children[1];
+        var demo = document.getElementById("demo");
+        /* document.onmousedown = function() {
+             alert(11);
+         }*/
+        bar.onmousedown = function (event) {
+            var event = event || window.event;
+            var leftVal = event.clientX - this.offsetLeft;
+            // alert(11);
+            // 拖动一定写到 down 里面才可以
+            var that = this;
+            document.onmousemove = function (event) {
+                var event = event || window.event;
+                that.style.left = event.clientX - leftVal + 'px';
+                //alert(that.style.left);
+                var val = parseInt(that.style.left);
+                if (val < 0) {
+                    that.style.left = 0;
+                } else if (val > 390) {
+                    that.style.left = "390px";
+                }
+                mask.style.width = that.style.left;  // 遮罩盒子的宽度
+                //计算百分比
+                demo.innerHTML = "已经走了:" + parseInt(parseInt(that.style.left) / 390 * 100) + "%";
+                window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                //注意---------------此处清除选中后牵连拖动问题
+            }
+            document.onmouseup = function () {
+                document.onmousemove = null;   // 弹起鼠标不做任何操作
+            }
+        }
+
+    </script>
+</body>
+
+</html>
