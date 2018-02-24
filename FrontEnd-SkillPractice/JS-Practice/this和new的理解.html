@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>this和new的理解</title>
+</head>
+
+<body>
+    <script>
+        function fun() {    // this 指向的是 函数的调用者 或者是 事件的调用者
+            alert(this);
+        }
+        fun();   //   这个的this 指向的是 window
+
+        function fn() {
+            alert(this);
+        }
+        new fn();  // 添加了  new 的函数 this 指向的是 新的对象
+
+        //new 运算符的作用是创建一个对象实例。这个对象可以使用户自定义的也可以是带构造函数的一些系统自带的对象。
+        //new 关键字可以让 this 指向新的对象
+
+        function again() {
+            this.x = 10;  //  x  window
+        }
+        again();
+        console.log(window.x);
+        function person() {
+            this.x = 20;
+        }
+        var demo = new person();
+        var demo1 = new person();
+        //  实例 对象   吃的苹果     类
+        console.log(demo.x);
+    </script>
+</body>
+
+</html>
