@@ -77,6 +77,7 @@
           }*/
 
         //闭包版本tab栏
+        /*
         window.onload = function () {
 
             var tabExchange = function (id) {
@@ -99,7 +100,32 @@
                     }
                 }
             }
+        }
+        */
 
+        //闭包立即执行版本
+        window.onload = function () {
+
+            var tabExchange = function (id) {
+                var target = document.getElementById(id);
+                var tabList = target.getElementsByTagName("span");
+                var boxList = target.getElementsByTagName("li");
+
+                for (var i = 0; i < tabList.length; i++) {
+                    tabList[i].onmouseover = function tab(num) {
+                        return function () {
+                            for (var j = 0; j < tabList.length; j++) {
+                                tabList[j].className = "";
+                                boxList[j].style.display = "none";
+                            }
+                            tabList[num].className = "current";
+                            boxList[num].style.display = "block";
+                        }
+                    }(i);
+                }
+
+
+            }
             tabExchange("one");
             tabExchange("two");
         }
