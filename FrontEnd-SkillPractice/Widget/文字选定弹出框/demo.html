@@ -1,12 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>文字弹出层</title>
+    <style>
+        div {
+            width: 400px;
+            margin: 50px;
+        }
+
+        #demo {
+            width: 50px;
+            padding: 10px;  
+            background-color: yellowgreen;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <span id="demo"></span>
+    <div id="test">可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域可选定弹出区域</div>
+    <div id="another">选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域选定不可弹出区域</div>
+    <script>
+        function $(id) { return document.getElementById(id) }
+        $("test").onmouseup = function (event) {
+            var event = event || window.event;
+            var x = event.clientX;  //  鼠标的x坐标
+            var y = event.clientY;  //  同理
+            var txt;  // 用于存贮文字的变量
+            if (window.getSelection)  // 获取我们选中的文字
+            {
+                txt = window.getSelection().toString();   // 转换为字符串
+            }
+            else {
+                txt = document.selection.createRange().text;   // ie 的写法
+            }
+            if (txt)   // 所有的字符串都为真  "" 是假    所有的数字为真  0  为假
+            {
+                //看看有没有选中的文字，没有选中文字为空的，就不应该执行   点击一下鼠标 就是空的
+                showBox(x, y, txt);  // 调用函数
+            }
+        }
+        document.onmousedown = function (event) {  // 点击空白处隐藏
+            var event = event || window.event;
+            var targetId = event.target ? event.target.id : event.srcElement.id;
+            if (targetId != "demo") {
+                $("demo").style.display = "none";
+            }
+        }
+        function showBox(mousex, mousey, contentText) {  // 相关操作
+            setTimeout(function () {
+                $("demo").style.display = "block";
+                $("demo").style.left = mousex + "px";
+                $("demo").style.top = mousey + "px";
+                $("demo").innerHTML = contentText;
+            }, 200)
+
+
+        }
+    </script>
 </body>
+
 </html>
