@@ -104,24 +104,57 @@
         */
 
         //闭包立即执行版本
+        /* window.onload = function () {
+ 
+             var tabExchange = function (id) {
+                 var target = document.getElementById(id);
+                 var tabList = target.getElementsByTagName("span");
+                 var boxList = target.getElementsByTagName("li");
+ 
+                 for (var i = 0; i < tabList.length; i++) {
+                     tabList[i].onmouseover = function (num) {
+                         return function () {
+                             for (var j = 0; j < tabList.length; j++) {
+                                 tabList[j].className = "";
+                                 boxList[j].style.display = "none";
+                             }
+                             tabList[num].className = "current";
+                             boxList[num].style.display = "block";
+                         }
+                     }(i);
+                 }
+ 
+ 
+             }
+             tabExchange("one");
+             tabExchange("two");
+         }*/
+
+        //立即执行版本 + 函数节流版本 (防止鼠标滑动太快,响应太快)
         window.onload = function () {
 
             var tabExchange = function (id) {
                 var target = document.getElementById(id);
                 var tabList = target.getElementsByTagName("span");
                 var boxList = target.getElementsByTagName("li");
-
+                var timer = null;
                 for (var i = 0; i < tabList.length; i++) {
-                    tabList[i].onmouseover = function tab(num) {
+                    tabList[i].onmouseover = function (num) {
                         return function () {
-                            for (var j = 0; j < tabList.length; j++) {
-                                tabList[j].className = "";
-                                boxList[j].style.display = "none";
-                            }
-                            tabList[num].className = "current";
-                            boxList[num].style.display = "block";
+                            clearTimeout(timer);
+                            timer = setTimeout(function () {
+                                for (var j = 0; j < tabList.length; j++) {
+                                    tabList[j].className = "";
+                                    boxList[j].style.display = "none";
+                                }
+                                tabList[num].className = "current";
+                                boxList[num].style.display = "block";
+                            }, 300)
                         }
                     }(i);
+                    tabList[i].onmouseout = function () {
+                        clearTimeout(timer);
+                    }
                 }
 
 
