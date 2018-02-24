@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>闭包函数节流</title>
+</head>
+
+<body>
+
+    <div id="demo"></div>
+
+    <script>
+        //由于onresize触发过于频繁耗费内存   函数节流   闭包
+        var demo = document.getElementById("demo");
+        var num = 0;
+        window.onresize = throttle(function () {
+            var txt = window.innerWidth || document.documentElement.clientWidth;
+            txt = txt + '屏幕分辨率' + window.screen.width + '*' + window.screen.height;
+            demo.innerHTML = txt;
+            num++;
+            console.log(num);
+        }, 300);
+
+        function throttle(fn, delay) {
+            var timer = null;
+            return function () {
+                clearTimeout(timer);
+                timer = setTimeout(fn, delay);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
