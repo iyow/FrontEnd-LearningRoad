@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>闭包的函数传参</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            background-color: #666;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="btn1">前进</button>
+    <button id="btn2">后退</button>
+    <div id="box"></div>
+
+    <script>
+        //闭包理解及写法
+        function outFun() {
+            var num = 10;
+            function inFun() {
+                console.log(num);   // 非常正常的写法
+            }
+            return inFun;   // 返回的是 inFun函数体  核心
+        }
+        // 使用
+        console.log(outFun());
+        var demo = outFun();   // 看清楚
+        // outFun()    返回的是      function inFun() {console.log(num); }
+        //  相当于 这句话 var demo = function inFun() {console.log(num); }
+        demo();
+        // 其实，每个函数都算一个小闭包
+        var key = 10;
+        function one() {
+            console.log(key);
+        }
+        function outerFun()  // 外部函数
+        {
+            var a = 0;    // 清空
+            function innerFun()  // 内部函数
+            {
+                a++;
+                alert(a);
+            }
+            return innerFun;  // 注意这里  核心
+        }
+        var obj = outerFun();   // 1  2
+        obj(); obj();
+        var obj2 = outerFun();
+        obj2(); obj2();   // 1  2
+        // 结果是 什么 ？
+        function outerFun()  // 外部函数
+        {
+            var a = 0;    // 清空
+            return function ()  // 内部函数
+            {
+                a++;
+                alert(a);
+            }
+
+        }
+
+
+        //闭包函数传参
+        function Fun(x) {
+            return function (y) {
+                console.log(x + y);
+            }
+        }
+
+        var obj = Fun(4);
+        // 相当于  obj = function() {console.log(x)}
+        obj();
+        obj(2);
+
+
+
+        //闭包事件传参
+        var btn1 = document.getElementById("btn1");
+        var btn2 = document.getElementById("btn2");
+        var box = document.getElementById("box");
+        // 阶段一
+        /* var speed = 5;
+         btn1.onclick = function() {
+             box.style.left = box.offsetLeft + speed+ "px";
+         }
+         btn2.onclick = function() {
+             box.style.left = box.offsetLeft + speed+ "px";
+         }*/
+
+        //阶段二
+        /* btn1.onclick = function() {
+             move(5);
+         }
+         btn2.onclick = function() {
+             move(-5);
+         }
+         function move(speed) {
+             box.style.left = box.offsetLeft + speed + "px";
+         }*/
+
+        //阶段三
+        function move(speed) {
+            return function () {
+                box.style.left = box.offsetLeft + speed + "px";
+            }
+        }
+        btn1.onclick = move(5);
+        btn2.onclick = move(-5);
+    </script>
+</body>
+
+</html>
