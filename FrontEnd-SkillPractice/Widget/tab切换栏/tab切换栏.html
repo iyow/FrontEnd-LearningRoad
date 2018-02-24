@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>tab切换栏</title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
         }
-        ul{
+
+        ul {
             list-style: none;
         }
-        .tab{
+
+        .tab {
             width: 350px;
             height: 300px;
             margin: 100px auto;
             border: 1px solid #666;
         }
-        .title{
+
+        .title {
             display: flex;
             width: 100%;
             height: 40px;
         }
-        .title span{
+
+        .title span {
             display: inline-block;
             box-sizing: border-box;
             width: 25%;
@@ -36,33 +41,61 @@
         }
 
 
-        .box ul li{
+        .box ul li {
             height: 260px;
             display: none;
             background-color: yellowgreen;
         }
 
-        .title span.current{
+        .title span.current {
             background-color: yellowgreen;
         }
     </style>
 
     <script>
+        /*  window.onload = function () {
+              var tabExchange = function (id) {
+                  var target = document.getElementById(id);
+                  var tabList = target.getElementsByTagName("span");
+                  var boxList = target.getElementsByTagName("li");
+  
+                  for (var i = 0; i < tabList.length; i++) {
+                      tabList[i].index = i;
+                      tabList[i].onmouseover = function () {
+                          for (var j = 0; j < tabList.length; j++) {
+                              tabList[j].className = "";
+                              boxList[j].style.display = "none";
+                          }
+                          this.className = "current";
+                          boxList[this.index].style.display = "block";
+                      }
+                  }
+              }
+  
+              tabExchange("one");
+              tabExchange("two");
+          }*/
+
+        //闭包版本tab栏
         window.onload = function () {
+
             var tabExchange = function (id) {
                 var target = document.getElementById(id);
                 var tabList = target.getElementsByTagName("span");
                 var boxList = target.getElementsByTagName("li");
 
                 for (var i = 0; i < tabList.length; i++) {
-                    tabList[i].index = i;
-                    tabList[i].onmouseover = function () {
+                    tabList[i].onmouseover = tab(i);
+                }
+
+                function tab(num) {
+                    return function () {
                         for (var j = 0; j < tabList.length; j++) {
                             tabList[j].className = "";
                             boxList[j].style.display = "none";
                         }
-                        this.className = "current";
-                        boxList[this.index].style.display = "block";
+                        tabList[num].className = "current";
+                        boxList[num].style.display = "block";
                     }
                 }
             }
@@ -72,6 +105,7 @@
         }
     </script>
 </head>
+
 <body>
     <div class="tab" id="one">
         <div class="title">
@@ -91,20 +125,21 @@
     </div>
 
     <div class="tab" id="two">
-            <div class="title">
-                <span class="current">tab1</span>
-                <span>tab2</span>
-                <span>tab3</span>
-                <span>tab4</span>
-            </div>
-            <div class="box">
-                <ul>
-                    <li style="display:block;">内容1</li>
-                    <li>内容2</li>
-                    <li>内容3</li>
-                    <li>内容4</li>
-                </ul>
-            </div>
+        <div class="title">
+            <span class="current">tab1</span>
+            <span>tab2</span>
+            <span>tab3</span>
+            <span>tab4</span>
         </div>
+        <div class="box">
+            <ul>
+                <li style="display:block;">内容1</li>
+                <li>内容2</li>
+                <li>内容3</li>
+                <li>内容4</li>
+            </ul>
+        </div>
+    </div>
 </body>
+
 </html>
