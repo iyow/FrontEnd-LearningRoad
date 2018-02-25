@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>QQ微博发布</title>
+    <style type="text/css">
+        body {
+            margin: 0px;
+            background: url('img/wrapBg.jpg') no-repeat #EBF1F1;
+        }
+
+        #logo {
+            margin: 30px 0 0 300px;
+        }
+
+        #myBody {
+            width: 800px;
+            height: 200px;
+            border: 1px solid #000;
+            margin: 0 auto;
+        }
+
+        #myBdLeft {
+            width: 590px;
+            height: 100%;
+            background: #fff;
+            float: left;
+        }
+
+        #talkBox {
+            text-align: left;
+            margin: 0 0 0 25px;
+        }
+
+        #msgTxt {
+            width: 540px;
+            height: 80px;
+            overflow: hidden;
+            font-family: Tahoma, Arial;
+            font-size: 14px;
+            border: 1px solid gray;
+        }
+
+        #talkBox h2 {
+            text-align: left;
+            padding: 0px;
+            margin: 0px;
+            font: normal normal normal 18px/29px 'MicroSoft YaHei', SimHei;
+        }
+
+        #funBox {
+            width: 540px;
+        }
+
+        #funBox a {
+            color: #000;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .creatNew,
+        .atSome,
+        .insertFace,
+        .uploadPic,
+        .uploadVideo {
+            background-position: -170px -33px;
+            display: inline-block;
+            height: 16px;
+            padding-left: 18px;
+        }
+
+        .countTxt {
+            color: #999;
+            float: right;
+            line-height: 33px;
+            margin: 0 15px 0 0;
+        }
+
+        .countTxt em {
+            font-family: Georgia, Tahoma, Arial;
+            font-size: 26px;
+            position: relative;
+            top: -5px;
+            vertical-align: middle;
+        }
+
+        .sendBtn {
+            float: right;
+            margin: 0 20px 0 0;
+            padding: 0px;
+            background: url(img/bg1.png) -117px -165px no-repeat;
+            line-height: 33px;
+            margin-left: 14px;
+            height: 30px;
+            width: 112px;
+            border: 0px;
+            cursor: pointer;
+        }
+
+        #btnCloFri {
+            cursor: pointer;
+        }
+
+        #myBdRight {
+            background: #CCEBF4;
+            width: 210px;
+            height: 100%;
+            float: right;
+        }
+
+        .sendBtnHover {
+            background-position: 0 -195px;
+        }
+
+        #friendDiv {
+            position: absolute;
+            height: 100px;
+            width: 100px;
+            text-align: center;
+        }
+
+        #friendDiv span {
+            display: block;
+            height: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            background-color: #cbe9f1;
+            border: 1px solid #ccc;
+            border-top: none;
+
+
+        }
+
+        #friendDiv span:hover {
+            background-color: #ddd;
+        }
+
+        #faceImgDiv {
+            position: absolute;
+            width: 300px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+        }
+    </style>
+
+    <script src="../tools/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="index.js"></script>
+</head>
+
+<body>
+    <img id="logo" src="img/b3_100901.png" alt="" />
+    <div id="myBody">
+        <div id="myBdLeft">
+            <div id="talkBox">
+                <h2>
+                    <a>夏天来了，你懂得......</a>
+                </h2>
+
+                <textarea id="msgTxt"></textarea>
+
+                <div id="funBox">
+                    <a href="javascript:void(0);" class="creatNew">话题</a>
+                    <a href="javascript:void(0);" class="atSome">朋友</a>
+                    <a href="javascript:void(0);" class="insertFace">表情</a>
+                    <a href="javascript:void(0);" class="uploadPic">照片</a>
+                    <a href="javascript:void(0);" class="uploadVideo">视频</a>
+                </div>
+
+                <div id="sendBox">
+                    <input type="button" class="sendBtn" value="" />
+                    <span class="countTxt">还能输入
+                        <em>140</em>字</span>
+                </div>
+            </div>
+        </div>
+        <div id="myBdRight">
+        </div>
+    </div>
+</body>
+
+</html>
