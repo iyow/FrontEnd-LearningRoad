@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>五角星评分</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .comment {
+            color: red;
+            /*inlineblock去除间隙方法*/
+            /*font-size: 0;*/
+            /*设置字符间距*/
+            /*letter-spacing: -13px;*/
+            /*设置单 词间距 I am a teacher */
+            /*word-spacing: -13px;*/
+        }
+
+        .comment li {
+            float: left;
+            /*display: inline-block;*/
+            font-size: 40px;
+
+        }
+    </style>
+    <script src="../tools/jquery-1.11.1.min.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            var wjx_sel = "★",
+                wjx_none = "☆";
+
+            $(".comment")
+                .on("mouseenter", "li", function () {
+                    //prevAll前面所有的兄弟节点
+                    // $(this).text(wjx_sel).prevAll().text(wjx_sel);
+
+                    // $(this).nextAll().text(wjx_none);
+                    //当执行的jQuery 链式编程断掉的时候，如果能把链再链上就好了。
+
+                    //end()可以结束当前调用的链。 恢复上一级的调用链。
+                    $(this).text(wjx_sel)
+                        .prevAll()
+                        .text(wjx_sel)
+                        .end()	//结束prevAll，回到 $(this)链
+                        .nextAll()
+                        .text(wjx_none);
+
+                    //第二步： 记录一下用户点击的那个五角星
+                    //给点击的li标签添加一个样式类	也可以将标记记录在自定义属性中或jQuery.data()中			
+                })
+                .on("click", "li", function () {
+                    $(this).addClass('clicked').siblings().removeClass('clicked');
+                })
+                .on("mouseleave", function () {
+                    //鼠标移开的时候，先给所有的li标签添加一个空心的 五角星
+
+                    //隐式迭代
+                    $(".comment li").text(wjx_none);
+
+                    var t = $(".comment li").text();
+
+
+                    $(".clicked").text(wjx_sel).prevAll().text(wjx_sel).end()
+                        .nextAll().text(wjx_none);
+                    //第三步： 当鼠标移开评分控件的时候，把click（包括自己）之前的五角星全部变成实心的，后面的变成空心。
+                });
+
+        });
+    </script>
+</head>
+
+<body>
+    <ul class="comment">
+        <li>☆</li>
+        <li>☆</li>
+        <li>☆</li>
+        <li>☆</li>
+        <li>☆</li>
+    </ul>
+</body>
+
+</html>
