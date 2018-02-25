@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery插件扩展</title>
+    <script src="./tools/jquery-1.11.1.min.js"></script>
+    <script>
+        //给jQuery全局对象扩展一个方法
+        $.log = function () {
+            console.log(new Date());
+        };
+
+        // $.each()
+
+        // $.log();
+
+        // 扩展一个普通的jQuery对象的方法。。。所有jQuery对象都拥有的方法
+        $.fn.log = function () {
+            console.log($(this).text());
+
+            //输出所有的 评论组件的所有的代码。
+            return "<ul></ul>"
+        };
+
+        $(function () {
+            $("div").log();
+        });
+    </script>
+</head>
+
+<body>
+    <div>
+        sdjlsjdf
+    </div>
+</body>
+
+</html>
