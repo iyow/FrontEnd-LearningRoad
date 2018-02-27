@@ -9,7 +9,8 @@
 
     <style>
         /* 外包div  flex整体布局 */
-        div{
+
+        div {
             width: 400px;
             height: 600px;
             display: flex;
@@ -19,7 +20,8 @@
         }
 
         /* 头部 */
-        div header{
+
+        div header {
             height: 60px;
             text-align: center;
             line-height: 60px;
@@ -27,7 +29,8 @@
         }
 
         /* 主要部分  内部flex布局 */
-        div main{
+
+        div main {
             flex: 1;
             display: flex;
             text-align: center;
@@ -35,23 +38,52 @@
         }
 
         /* 边栏 拉伸因子1:2 */
-        div main aside{
+
+        div main aside {
             flex: 1;
             background-color: gray;
         }
+
         /* 内容区 拉伸因子1:2*/
-        div main article{
+
+        div main article {
             flex: 2;
             background-color: greenyellow;
         }
+
         /* 底部栏 */
-        div footer{
+
+        div footer {
             height: 60px;
             text-align: center;
             line-height: 60px;
             background-color: turquoise;
         }
 
+        /* 底部导航栏 */
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        footer ul li {
+            flex: 1;
+        }
+
+        footer ul li:nth-of-type(1) {
+            background-color: crimson;
+        }
+
+        div footer ul li:not(:first-of-type):not(:last-of-type) {
+            flex: 2;
+        }
+
+        footer ul li:last-of-type {
+            background-color: darkorchid;
+        }
     </style>
 </head>
 
@@ -62,7 +94,13 @@
             <aside>边栏</aside>
             <article>内容区</article>
         </main>
-        <footer>底部</footer>
+        <footer>
+            <ul>
+                <li>热点</li>
+                <li>新闻</li>
+                <li>个人信息</li>
+            </ul>
+        </footer>
     </div>
 </body>
 
