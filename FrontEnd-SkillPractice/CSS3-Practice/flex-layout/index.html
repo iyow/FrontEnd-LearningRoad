@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>felx布局应用实例</title>
+
+    <style>
+        /* 外包div  flex整体布局 */
+        div{
+            width: 400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        /* 头部 */
+        div header{
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            background-color: tomato;
+        }
+
+        /* 主要部分  内部flex布局 */
+        div main{
+            flex: 1;
+            display: flex;
+            text-align: center;
+            overflow: scroll;
+        }
+
+        /* 边栏 拉伸因子1:2 */
+        div main aside{
+            flex: 1;
+            background-color: gray;
+        }
+        /* 内容区 拉伸因子1:2*/
+        div main article{
+            flex: 2;
+            background-color: greenyellow;
+        }
+        /* 底部栏 */
+        div footer{
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            background-color: turquoise;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <header>头部</header>
+        <main>
+            <aside>边栏</aside>
+            <article>内容区</article>
+        </main>
+        <footer>底部</footer>
+    </div>
+</body>
+
+</html>
