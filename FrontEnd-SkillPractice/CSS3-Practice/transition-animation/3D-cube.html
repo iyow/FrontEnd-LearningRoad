@@ -23,6 +23,9 @@
 
             /* 制作立体图形时开启 景深+透明度 更好观察制作 制作完成后可根据情况删除 */
             /* perspective: 200px; */
+
+            /* 制作长方体时的小技巧  只需要将正方体X轴  Y轴 分别放大相应倍数即可*/
+            /* transform: scaleX(2.5) scaleY(1.5) rotateX(0deg)  rotateY(0deg);             */
         }
 
         ul li {
@@ -69,6 +72,9 @@
 
         ul:hover {
             transform: rotateX(360deg) rotateY(360deg);
+
+            /* 长方体旋转 */
+            /* transform:scaleX(2.5) scaleY(1.5) rotateX(360deg)  rotateY(360deg); */
         }
     </style>
     </style>
