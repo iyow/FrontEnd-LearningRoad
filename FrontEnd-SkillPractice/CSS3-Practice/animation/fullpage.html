@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>全屏图片动画</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 图片全屏显示 */
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+
+
+
+
+        /*对小图列表进行简单的样式修饰*/
+
+        .slider {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            z-index: 9999;
+            bottom: 100px;
+        }
+
+        .slider li {
+            display: inline-block;
+            width: 170px;
+            height: 130px;
+            margin-right: 15px;
+        }
+
+        .slider a {
+            display: inline-block;
+            width: 170px;
+            padding-top: 70px;
+            padding-bottom: 20px;
+            position: relative;
+            cursor: pointer;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            vertical-align: top;
+            color: #fff;
+            text-decoration: none;
+            font-size: 22px;
+            font-family: "微软雅黑";
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.8),
+            -2px -2px 1px rgba(0, 0, 0, 0.3),
+            -3px -3px 1px rgba(0, 0, 0, 0.3);
+
+        }
+
+        .slider li:nth-of-type(1) a {
+            background-image: linear-gradient(to bottom, #dcc8af, #644f56);
+        }
+
+        .slider li:nth-of-type(2) a {
+            background-image: linear-gradient(to bottom, #b5c8ce, #8f91aa);
+        }
+
+        .slider li:nth-of-type(3) a {
+            background-image: linear-gradient(to bottom, #fcf6d8, #ab8b90);
+        }
+
+        .slider a::after {
+            content: "";
+            display: block;
+            height: 120px;
+            width: 120px;
+            border: 5px solid #fff;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            margin-left: -60px;
+            z-index: 9999;
+            top: -80px;
+        }
+
+        .slider li:nth-of-type(1) a::after {
+            background: url(images/bg1.jpg) no-repeat center;
+        }
+
+        .slider li:nth-of-type(2) a::after {
+            background: url(images/bg2.jpg) no-repeat center;
+        }
+
+        .slider li:nth-of-type(3) a::after {
+            background: url(images/bg3.jpg) no-repeat center;
+        }
+
+
+        /* 图片全屏显示 */
+
+        img.bg {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            z-index: 1;
+        }
+
+
+        /*通过伪类：target开启之前定义的动画*/
+
+        .slider-left:target {
+            z-index: 100;
+            animation-name: slider-left;
+            animation-duration: 1s;
+            animation-iteration-count: 1;
+        }
+
+        .zoom-in:target {
+            z-index: 100;
+            animation-name: zoom-in;
+            animation-duration: 1s;
+            animation-iteration-count: 1;
+        }
+
+        .zoom-rotate:target {
+            z-index: 100;
+            animation-name: zoom-rotate;
+            animation-duration: 1s;
+            animation-iteration-count: 1;
+        }
+
+
+
+        /*定义动画*/
+
+        /*定义sliderleft动画，图片从左向右出现*/
+
+        @keyframes slider-left {
+            0% {
+                left: -1000px;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+
+        /*定义zoomin动画，图片由小变大放大出现*/
+
+        @keyframes zoom-in {
+            0% {
+                transform: scale(0.1);
+            }
+
+            100% {
+                transform: none;
+            }
+        }
+
+        /* 定义zoom-rotate动画。图片由小变大旋转出现 */
+
+        @keyframes zoom-rotate {
+            0% {
+                transform: rotate(-360deg) scale(0.1);
+            }
+
+            100% {
+                transform: none;
+            }
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="slider">
+            <ul>
+                <li>
+                    <a href="#bg1">温柔的入梦，认真的思考</a>
+                </li>
+                <li>
+                    <a href="#bg2">温柔的入梦，认真的思考</a>
+                </li>
+                <li>
+                    <a href="#bg3">温柔的入梦，认真的思考</a>
+                </li>
+            </ul>
+        </div>
+        <img id="bg1" src="images/bg1.jpg" alt="" class="bg slider-left">
+        <img id="bg2" src="images/bg2.jpg" alt="" class="bg zoom-rotate">
+        <img id="bg3" src="images/bg3.jpg" alt="" class="bg zoom-in">
+    </section>
+</body>
+
+</html>
