@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>钢琴键盘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        nav {
+            width: 700px;
+            height: 35px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+        }
+
+        nav li {
+            width: 99px;
+            height: 35px;
+            border-right: 1px dashed #ccc;
+            float: left;
+            text-align: center;
+            line-height: 35px;
+            position: relative;
+            /*overflow: hidden;*/
+        }
+
+        nav li ins {
+            position: absolute;
+            top: 35px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: pink;
+            z-index: -1;
+        }
+    </style>
+    <script src="../tools/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("nav li:last").css("border", 0);
+            // 隐式迭代
+            // a.append(b)     //  把 b 放到 a 里面
+            $("nav li").append("<ins></ins>");
+            var arr = new Array("red", "blue", "green", "yellow", "pink", "deeppink", "orange", "purple");
+            $("nav li ins").each(function (index, ele) { //  for
+                $(this).css("background-color", arr[index]);
+            })
+
+            $("nav li").mouseenter(function () {
+                $(this).children("ins").stop().animate({ top: 0 }, 200);
+                // get()返回dom对象
+                $("audio").get($(this).index()).load();  // 加载
+                $("audio").get($(this).index()).play();  // 播放
+            }).mouseleave(function () {
+                $(this).children("ins").stop().animate({ top: 35 }, 200);
+            })
+            // 键盘事件
+            $(window).keydown(function (event) {   // 事件对象
+                // alert(event.keyCode); //  返回该键盘的  unicode  编码
+                /*  if(event.keyCode == 13)
+                  {
+                      alert("您按了回车")
+                  }*/
+                var num = 0;
+                if (event.keyCode >= 49 && event.keyCode <= 56) {
+                    /*比如 我按了  1 键盘   应该 第 0 个li操作
+                    比如 我按了  2 键盘   应该 第 1 个li操作 */
+                    num = event.keyCode - 49;
+
+                    $("nav li").eq(num).trigger("mouseenter");  // 事件触发
+                    setTimeout(function () {
+                        $("nav li").eq(num).trigger("mouseleave");  // 事件触发
+                    }, 300)
+
+                }
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+    <h1>按下键盘1~7进行操作</h1>
+    <nav>
+        <ul>
+            <li>A 5</li>     <!-- <ins></ins>    insert插入 -->
+            <li>B 5</li>
+            <li>C 5</li>
+            <li>D 5</li>
+            <li>E 5</li>
+            <li>F 5</li>
+            <li>G 5</li>
+        </ul>
+    </nav>
+    <audio src="music/A 5.mp3"></audio>
+    <audio src="music/B 5.mp3"></audio>
+    <audio src="music/C 5.mp3"></audio>
+    <audio src="music/D 5.mp3"></audio>
+    <audio src="music/E 5.mp3"></audio>
+    <audio src="music/F 5.mp3"></audio>
+    <audio src="music/G 5.mp3"></audio>
+</body>
+
+</html>
