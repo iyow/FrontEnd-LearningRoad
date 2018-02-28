@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D效果翻转导航栏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+            display: inline-block;
+        }
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        nav {
+            display: inline-block;
+            margin-top: 100px;
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+
+            /* 视距 给所需元素的父级添加*/
+            perspective: 200px;
+        }
+
+        nav a span {
+            line-height: 40px;
+            background-color: #2195de;
+            display: inline-block;
+            padding: 0 25px;
+            position: relative;
+            transform-origin: top;
+            transition: all 1s;
+
+            /* 重要属性设定内嵌元素是否以3d呈现 */
+            transform-style: preserve-3d;
+        }
+
+        nav a span::after {
+            content: attr(data-hover);
+            /* attribute 自定义属性 的值*/
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #0965a0;
+            width: 100%;
+            height: 100%;
+            transform: rotateX(-90deg);
+            /* 往下翻转  是 负值 */
+            transform-origin: top;
+        }
+
+        nav a:hover span {
+            /* 网上翻转是正值 */
+            transform: rotateX(90deg) translateY(-20px);   
+        }
+
+        nav li:first-of-type a:hover span{
+            transform: rotateX(1530deg) translateY(-20px)
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li>
+                <a href="#">
+                    <span data-hover="花有信">风有常</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span data-hover="岁月含香">花事次第</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span data-hover="君前舞">大宝剑</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</body>
+
+</html>
