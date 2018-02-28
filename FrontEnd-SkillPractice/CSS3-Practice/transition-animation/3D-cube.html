@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D立方体旋转</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        ul {
+            list-style: none;
+            width: 200px;
+            height: 200px;
+            margin: 100px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 5s;
+
+            /* 制作立体图形时开启 景深+透明度 更好观察制作 制作完成后可根据情况删除 */
+            /* perspective: 200px; */
+        }
+
+        ul li {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: 200px;
+            color: #666;
+            font-size: 40px;
+            opacity: 0.6;
+            position: absolute;
+        }
+
+        ul li:nth-child(1) {
+            background-color: turquoise;
+            transform: rotateX(0deg) translateZ(100px);
+        }
+
+        ul li:nth-child(2) {
+            background-color: tomato;
+            transform: rotateX(-90deg) translateZ(100px);
+        }
+
+        ul li:nth-child(3) {
+            background-color: yellowgreen;
+            transform: rotateX(-180deg) translateZ(100px);
+
+        }
+
+        ul li:nth-child(4) {
+            background: indigo;
+            transform: rotateX(-270deg) translateZ(100px);
+        }
+
+        ul li:nth-child(5) {
+            background: orangered;
+            transform: rotateY(-90deg) translateZ(100px);
+        }
+
+        ul li:nth-child(6) {
+            background: sienna;
+            transform: rotateY(90deg) translateZ(100px);
+        }
+
+        ul:hover {
+            transform: rotateX(360deg) rotateY(360deg);
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>正面</li>
+        <li>下面</li>
+        <li>后面</li>
+        <li>上面</li>
+        <li>左面</li>
+        <li>右面</li>
+    </ul>
+</body>
+
+</html>
