@@ -1,0 +1,51 @@
+.demo {
+    width: 100%;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.list {
+    border-radius: 15px;
+    overflow: hidden;
+    width: 300px;
+    height: 200px;
+    float: left;
+    margin: 20px;
+    position: relative;
+}
+
+.list div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-100deg);
+        /* 旋转中心点根据自身确定*/
+    transform-origin: top left;
+    transition: transform .8s;
+}
+.list img{
+    width: 300px;
+    height: 200px;
+}
+
+.current div {
+    transform: rotate(0deg);
+}
+
+.list div.top {
+    transform-origin: top left;
+}
+
+.list div.right {
+    transform-origin: top right;
+}
+
+.list div.bottom {
+    transform-origin: bottom right;
+}
+
+.list div.left {
+    transform-origin: bottom left;
+}
