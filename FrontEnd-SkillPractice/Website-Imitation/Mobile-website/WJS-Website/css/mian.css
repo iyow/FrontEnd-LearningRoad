@@ -1,0 +1,29 @@
+/* 
+* 公共样式
+* 
+*/
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+}
+
+/*
+* 头部样式
+* 
+*/
+
+.container>.row>div:nth-of-type(n+2){
+    border-left: 1px solid turquoise;
+}
+
+/*
+* 脚注样式
+* 
+*/
+
+
+
+/*
+* 脚注样式
+* 
+*/

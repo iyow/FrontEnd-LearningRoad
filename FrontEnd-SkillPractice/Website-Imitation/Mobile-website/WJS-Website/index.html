@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 设置当前HTML文件的字符编码 -->
+    <meta charset="UTF-8">
+    <!-- 视口作用：在移动浏览器中，当页面宽度超出设备视口宽度时，
+        浏览器内部虚拟了一个页面容器然后将这个页面容器缩放到设备视口的大小再正常展示，
+        width=device-width 设置视口宽度为设备宽度，
+        initial-scale=1.0 初始缩放为1.0，
+        user-scalable=no 用户是否可手动缩放
+        minimum-scale，maximum-scale 最大最小缩放
+        shrink-to-fit=no 自动适应手机屏幕的宽度。
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <!-- 设置浏览器的兼容模式版本 (让IE使用最新的渲染引擎工作) -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>仿微金所-网页练习</title>
+    <style>
+        .interest-font{
+            font-family: 'Webdings';
+            font-size: 50px;
+            text-align: center;
+        }
+    </style>
+
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./css/mian.css">
+
+    <!-- 条件注释的作用就是当条件满足时，就会执行注释中的html代码，否则就会当做注释忽略 -->
+    <!-- [if lt IE 9]>
+        <p>You are using an outdated browser</p>
+        <p>Please <a href='some link'>upgrade your brower </a> to improve your experience.</p>
+        <script src="./lib/html5shiv/html5shiv.min.js"></script>
+        <script src="./lib/respond/respond.min.js"></script>
+    <!<end if> -->
+</head>
+
+<body>
+
+    <!-- 头部区域 -->
+    <header>
+        <div class="interest-font">ABCDEFGHIJKMPQRSTY</div>
+        <!-- 通栏菜单 -->
+        <div class="topbar hidden-sm hidden-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="tb-1 col-md-2">
+                        <a href="#" class="text-muted">
+                            <i class="icon-mobilephone"></i>
+                            <span>手机微金所</span>
+                            <i class="glyphicon glyphicon-chevron-down"></i>
+                            <img src="img/c_06.jpg" alt="扫一扫">
+                        </a>
+                    </div>
+                    <div class="tb-2 col-md-5 text-center text-muted">
+                        <i class="icon-telephone"></i>
+                        <span>4006-89-4006（服务时间：9:00-21:00）</span>
+                    </div>
+                    <div class="tb-3 col-md-2 text-center">
+                        <a href="#" class="text-muted">常见问题</a>
+                        <a href="#" class="text-muted">财富登录</a>
+                    </div>
+                    <div class="tb-4 col-md-3 text-center">
+                        <a href="#" class="btn btn-register btn-sm">免费注册</a>
+                        <a href="#" class="text-muted" data-toggle="modal" data-target=".modal">登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- /头部区域 -->
+
+    <!-- 广告轮播 -->
+    <section></section>
+    <!-- /广告轮播 -->
+
+    <!-- 特色介绍 -->
+    <section></section>
+    <!-- /特色介绍 -->
+
+    <!-- 立即预约 -->
+    <section></section>
+    <!-- /立即预约 -->
+
+    <!-- 产品推荐 -->
+    <section></section>
+    <!-- /产品推荐 -->
+
+    <!-- 新闻列表 -->
+    <section></section>
+    <!-- /新闻列表 -->
+
+    <!-- 合作伙伴 -->
+    <section></section>
+    <!-- /合作伙伴 -->
+
+    <!-- /脚注区域 -->
+    <footer></footer>
+    <!-- /脚注区域 -->
+
+    <script src="./lib/jquery/jquery.js"></script>
+    <script src="./lib/bootstrap/js/bootstrap.js"></script>
+    <script src="./js/main.js"></script>
+
+</body>
+
+</html>
