@@ -1,0 +1,92 @@
+body {
+    background: #f5f5f5;
+}
+
+.jd-layout {
+    min-width: 300px;
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+/*搜索头部*/
+
+.jd-header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 40px;
+    z-index: 999;
+}
+
+
+/*搜索头部的内容*/
+
+.jd-header .jd-header-box {
+    min-width: 300px;
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    background: rgba(201, 21, 35, 0.85);
+    height: 40px;
+}
+
+
+/*logo*/
+
+.jd-header .jd-header-box .icon-logo {
+    background-position: 0 -103px;
+    width: 60px;
+    height: 36px;
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 10px;
+}
+
+.jd-header form {
+    width: 100%;
+    height: 40px;
+    padding-left: 75px;
+    padding-right: 55px;
+    position: relative;
+}
+
+
+/*搜索按钮*/
+
+.jd-header form .icon-search {
+    background-position: -60px -109px;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 85px;
+}
+
+.jd-header form input {
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
+    margin-top: 5px;
+    padding-left: 30px;
+}
+
+
+/*登录*/
+
+.jd-header .login {
+    width: 50px;
+    height: 40px;
+    display: block;
+    text-align: center;
+    line-height: 40px;
+    font-size: 15px;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
