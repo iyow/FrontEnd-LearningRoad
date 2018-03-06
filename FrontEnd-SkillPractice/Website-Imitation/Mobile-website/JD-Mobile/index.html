@@ -1,31 +1,214 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
-<head>
+<head lang="en">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>M-JD-首页</title>
-    <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/index.css">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
+    <title>首页</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/index.css" />
 </head>
 
 <body>
-    <!-- 整体布局大盒子 -->
-    <div class="jd-header">
-        <!-- 头部搜索部分 -->
-        <header class="jd-header">
-            <div class="jd-header-box">
-                <a href="#" class="icon-logo"></a>
-                <form action="#">
-                    <span class="icon-search"></span>
-                    <!--定义能调出搜索按钮的方式-->
-                    <input type="search" placeholder="提示" />
+    <div class="jd_layout">
+        <!--搜索头部  start -->
+        <header class="jd_header">
+            <div class="jd_header_box">
+                <a href="" class="icon_logo"></a>
+                <form action="">
+                    <span class="icon_search"></span>
+                    <input type="search" placeholder="京东的默认提示" />
                 </form>
-                <a href="#" class="login">登录</a>
+                <a href="" class="login">登录</a>
             </div>
         </header>
+        <!--搜索头部  end-->
+        <!--滚动图片  start -->
+        <div class="jd_banner">
+            <ul class="clearfix">
+                <li>
+                    <img src="images/l8.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l1.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l2.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l3.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l4.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l5.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l6.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l7.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l8.jpg" alt="" />
+                </li>
+                <li>
+                    <img src="images/l1.jpg" alt="" />
+                </li>
+            </ul>
+            <ul>
+                <li class="now"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <!--滚动图片  start -->
+        <!--导航栏  start -->
+        <nav class="jd_nav">
+            <ul>
+                <li>
+                    <img src="images/nav0.png" alt="" />
+                    <p>分类查询</p>
+                </li>
+                <li>
+                    <img src="images/nav1.png" alt="" />
+                    <p>物流查询</p>
+                </li>
+                <li>
+                    <img src="images/nav2.png" alt="" />
+                    <p>购物车</p>
+                </li>
+                <li>
+                    <img src="images/nav3.png" alt="" />
+                    <p>我的京东</p>
+                </li>
+                <li>
+                    <img src="images/nav4.png" alt="" />
+                    <p>充值</p>
+                </li>
+                <li>
+                    <img src="images/nav5.png" alt="" />
+                    <p>领券中心</p>
+                </li>
+                <li>
+                    <img src="images/nav6.png" alt="" />
+                    <p>京东超市</p>
+                </li>
+                <li>
+                    <img src="images/nav7.png" alt="" />
+                    <p>我的关注</p>
+                </li>
+            </ul>
+        </nav>
+        <!--导航栏  end -->
+        <!--主区块  start -->
+        <main class="jd_product">
+            <!--掌上秒杀-->
+            <section class="jd_killSecond jd_areaBox">
+                <div class="jd_areaBox_top clearfix">
+                    <div class="kill_top_left">
+                        <span class="icon_kill"></span>
+                        <h3>掌上秒杀</h3>
+                        <div class="kill_time">
+                            <span class="num">0</span>
+                            <span class="num">0</span>
+                            <span class="str">:</span>
+                            <span class="num">0</span>
+                            <span class="num">0</span>
+                            <span class="str">:</span>
+                            <span class="num">0</span>
+                            <span class="num">0</span>
+                        </div>
+                    </div>
+                    <div class="kill_top_right">
+                        <a href="#">更多></a>
+                    </div>
+                </div>
+                <div class="jd_areaBox_bot no_bor">
+                    <ul class="clearfix">
+                        <li>
+                            <div class="img_box">
+                                <img src="images/seckill_1.jpg" alt="" />
+                            </div>
+                            <p class="new_price">&yen;12.12</p>
+                            <p class="old_price">&yen;26.60</p>
+                        </li>
+                        <li>
+                            <div class="img_box">
+                                <img src="images/seckill_1.jpg" alt="" />
+                            </div>
+                            <p class="new_price">&yen;12.12</p>
+                            <p class="old_price">&yen;26.60</p>
+                        </li>
+                        <li>
+                            <div class="img_box">
+                                <img src="images/seckill_1.jpg" alt="" />
+                            </div>
+                            <p class="new_price">&yen;12.12</p>
+                            <p class="old_price">&yen;26.60</p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="jd_areaBox">
+                <div class="jd_areaBox_top">
+                    <h3 class="tit">疯狂星期二</h3>
+                </div>
+                <div class="jd_areaBox_bot">
+                    <div class="jd_big_box">
+                        <img src="images/banner_1.png" alt="" />
+                    </div>
+                </div>
+            </section>
+
+            <!--商品-->
+            <section class="jd_areaBox">
+                <div class="jd_areaBox_top">
+                    <h3 class="tit">超值购</h3>
+                </div>
+                <div class="jd_areaBox_bot clearfix">
+                    <a href="" class="f_left border_right">
+                        <img src="images/cp1.jpg" alt="" />
+                    </a>
+                    <a href="" class="f_right border_bottom">
+                        <img src="images/cp2.jpg" alt="" />
+                    </a>
+                    <a href="" class="f_right">
+                        <img src="images/cp3.jpg" alt="" />
+                    </a>
+                </div>
+            </section>
+
+            <section class="jd_areaBox">
+                <div class="jd_areaBox_top">
+                    <h3 class="tit">热门活动</h3>
+                </div>
+                <div class="jd_areaBox_bot clearfix">
+                    <a href="" class="f_right border_left">
+                        <img src="images/cp4.jpg" alt="" />
+                    </a>
+                    <a href="" class="f_left border_bottom">
+                        <img src="images/cp5.jpg" alt="" />
+                    </a>
+                    <a href="" class="f_left">
+                        <img src="images/cp6.jpg" alt="" />
+                    </a>
+                </div>
+            </section>
+        </main>
+        <!--主区块  end -->
+
+        <!--回到顶部的区块-->
+        <div class="jd_back_top"></div>
     </div>
+    <script src="js/index.js"></script>
 </body>
 
 </html>

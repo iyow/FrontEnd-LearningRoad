@@ -1,73 +1,57 @@
-body {
-    background: #f5f5f5;
-}
 
-.jd-layout {
+.jd_layout{
     min-width: 300px;
     max-width: 640px;
-    margin: 0 auto;
+    margin:0 auto;
     position: relative;
 }
 
-
-/*搜索头部*/
-
-.jd-header {
-    width: 100%;
+/* ͷ������  start */
+.jd_header{
     position: fixed;
+    width: 100%;
     top: 0;
     left: 0;
     height: 40px;
-    z-index: 999;
+    z-index: 1000;
 }
 
-
-/*搜索头部的内容*/
-
-.jd-header .jd-header-box {
+.jd_header .jd_header_box{
     min-width: 300px;
     max-width: 640px;
-    margin: 0 auto;
+    margin:0 auto;
     position: relative;
-    background: rgba(201, 21, 35, 0.85);
-    height: 40px;
+    background: rgba(201,21,35,0);
 }
 
-
-/*logo*/
-
-.jd-header .jd-header-box .icon-logo {
+.jd_header .icon_logo{
     background-position: 0 -103px;
-    width: 60px;
     height: 36px;
+    width: 60px;
     display: block;
     position: absolute;
-    top: 4px;
-    left: 10px;
+    top:4px;
+    left: 5px;
 }
 
-.jd-header form {
+.jd_header form{
     width: 100%;
     height: 40px;
-    padding-left: 75px;
-    padding-right: 55px;
-    position: relative;
+    padding-left: 70px;
+    padding-right: 50px;
 }
 
-
-/*搜索按钮*/
-
-.jd-header form .icon-search {
+.jd_header form .icon_search{
     background-position: -60px -109px;
-    width: 20px;
     height: 20px;
+    width: 20px;
     display: block;
     position: absolute;
+    left: 80px;
     top: 10px;
-    left: 85px;
 }
 
-.jd-header form input {
+.jd_header form input{
     width: 100%;
     height: 30px;
     border-radius: 15px;
@@ -75,18 +59,258 @@ body {
     padding-left: 30px;
 }
 
-
-/*登录*/
-
-.jd-header .login {
+.jd_header .login{
     width: 50px;
     height: 40px;
-    display: block;
-    text-align: center;
     line-height: 40px;
-    font-size: 15px;
+    text-align: center;
+    display: block;
     color: #fff;
+    font-size: 15px;
     position: absolute;
-    top: 0;
     right: 0;
+    top: 0;
 }
+
+/* ͷ������  end */
+/* ͼƬ����  start */
+.jd_banner{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.jd_banner ul:first-child{
+    width: 1000%;
+    -webkit-transform:translateX(-10%);
+    transform:translateX(-10%);
+}
+.jd_banner ul:first-child li{
+    width: 10%;
+    float: left;
+}
+.jd_banner ul:first-child li img{
+    width: 100%;
+}
+
+.jd_banner ul:last-child{
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    width: 118px;
+    margin-left: -59px;
+
+}
+
+.jd_banner ul:last-child li{
+    width: 6px;
+    height: 6px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    margin-left: 10px;
+    z-index: 999;
+    float: left;
+}
+.jd_banner ul:last-child li:first-child{
+    margin-left: 0;
+}
+.jd_banner ul:last-child li.now{
+    background: #fff;
+}
+/* ͼƬ����  end */
+/* ������  start */
+.jd_nav{
+    padding-top: 11px;
+    background: #fff;
+    border-bottom: 1px solid #ebebeb;
+}
+.jd_nav ul{
+    height: 138px;
+    padding:0 3.125%;
+}
+.jd_nav ul li{
+    width: 25%;
+    text-align: center;
+    float: left;
+}
+.jd_nav ul li img{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+}
+.jd_nav ul li p{
+    font-size: 12px;
+    line-height:12px;
+    color: #5d5d5d;
+    margin-bottom: 11px;
+}
+/* ������  end */
+/*��Ʒ������ start*/
+.jd_product{
+    padding: 0 5px;
+    margin-top: 8px;
+}
+
+.jd_areaBox{
+    box-shadow: 0 0 1px 1px #ebebeb;
+    background: #fff;
+    margin-bottom: 8px;
+}
+.jd_areaBox .jd_areaBox_top{
+    height: 32px;
+    line-height: 32px;
+    position: relative;
+}
+
+.jd_areaBox .jd_areaBox_top .tit{
+    color: #666;
+    font-size: 14px;
+    padding-left: 15px;
+    font-weight: inherit;
+}
+
+.jd_areaBox .jd_areaBox_top .tit::before{
+    height: 12px;
+    width: 3px;
+    display: block;
+    content: "";
+    position: absolute;
+    top:10px;
+    left: 7px;
+    background: #d8505c;
+}
+
+
+.jd_areaBox .jd_areaBox_bot{
+    border-top: 1px solid #ebebeb;
+}
+.jd_areaBox .jd_areaBox_bot.no_bor{
+    border-top: 0;
+}
+/*��Ʒ������ end*/
+/*��ɱ start*/
+.jd_killSecond{
+    background: #fff;
+}
+.jd_killSecond .kill_top_left{
+    float: left;
+}
+.jd_killSecond .kill_top_left .icon_kill{
+    width: 16px;
+    height: 20px;
+    display: block;
+    background: url("../images/seckill-icon.png") no-repeat;
+    background-size: 16px 20px;
+    margin-top: 6px;
+    margin-left: 5px;
+    float: left;
+}
+.jd_killSecond .kill_top_left h3{
+    font-weight: inherit;
+    color: #c91523;
+    font-size: 15px;
+    margin-left: 5px;
+    float: left;
+}
+.jd_killSecond .kill_top_left .kill_time{
+    margin-left: 5px;
+    float: left;
+}
+.jd_killSecond .kill_top_left .kill_time .num{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    color: #fff;
+    background: #333;
+    display: inline-block;
+    margin-top: 8px;
+}
+.jd_killSecond .kill_top_left .kill_time .str{
+}
+.jd_killSecond .kill_top_right{
+    float: right;
+}
+.jd_killSecond ul li{
+    width: 33.3%;
+    text-align: center;
+    float: left;
+    margin-bottom: 10px;
+}
+.jd_killSecond ul li .img_box{
+    border-right: 1px solid #dcdcdc;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+.jd_killSecond ul li:last-child .img_box{
+    border-right: 0;
+}
+.jd_killSecond ul li .img_box img{
+    width: 64%;
+}
+.jd_killSecond ul li .new_price{
+    color: #d8505c;
+    font-size: 14px;
+    line-height: 20px;
+}
+.jd_killSecond ul li .old_price{
+    color: #666;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: line-through;
+}
+/*��ɱ end*/
+
+/*���ڶ� start*/
+.jd_big_box{
+    padding: 5px;
+}
+.jd_big_box img{
+    width: 100%;
+}
+/*���ڶ� end*/
+
+/*��Ʒ���� start*/
+.border_left{
+    border-left: 1px solid #ebebeb;
+}
+.border_right{
+    border-right: 1px solid #ebebeb;
+}
+.border_bottom{
+    border-bottom: 1px solid #ebebeb;
+}
+.f_left{
+    float: left;
+    width: 50%;
+}
+.f_right{
+    float: right;
+    width: 50%;
+}
+
+.f_left img{
+    width: 100%;
+}
+.f_right img{
+    width: 100%;
+}
+/*��Ʒ���� start*/
+
+/*�ص�����*/
+.jd_back_top{
+    width: 35px;
+    height: 35px;
+    position: fixed;
+    bottom: 50px;
+    right: 10px;
+    background: url("../images/scroll-to-top-icon.png") no-repeat;
+    background-size: 35px 35px;
+    opacity: 0;
+    transition: all .3s ease 0s;
+    -webkit-transition: all .3s ease 0s;
+}
+
+
+
+
