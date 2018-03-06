@@ -1,56 +1,134 @@
 /* reset 样式 */
-
 *,
-::before,
-::after {
-    margin: 0;
+::after,
+::before {
     padding: 0;
+    margin: 0;
+    /*清除手机点击默认高亮效果*/
     -webkit-tap-highlight-color: transparent;
-    /*清除手机点击默认的高亮效果*/
     box-sizing: border-box;
 }
 
 body {
+    font-family: "Microsoft YaHei", "sans-serif";
     font-size: 14px;
-    font-family: "Microsoft YaHei", sans-serif;
-    /*第二个是手机的一个默认的字体*/
-    color: #000;
-}
-
-a {
-    text-decoration: none;
-    color: #000;
+    line-height: 1;
+    color: #333;
+    position: relative;
+    background: #f5f5f5;
 }
 
 ul {
     list-style: none;
 }
 
-input,
-textarea {
-    border: none;
-    resize: none;
-    outline: none;
-    /*清除选中效果*/
-    -webkit-appearance: none;
-    /*清楚浏览器默认的样式*/
+a {
+    text-decoration: none;
+    color: #333;
 }
 
+input,
+textarea {
+    border: 0;
+    outline: none;
+    resize: none;
+    /* 清除手机浏览器默认样式 */
+    -webkit-appearance: none;
+}
 
-/*清除浮动*/
+img {
+    vertical-align: middle;
+    /*3px bug*/
+    border: 0;
+}
 
-.clearfix::before,
-.clearfix::after {
-    content: ".";
-    display: block;
+.clearfix::after,
+.clearfix::before {
+    clear: both;
+    content: '.';
     height: 0;
     line-height: 0;
     visibility: hidden;
-    clear: both;
+    display: block;
 }
 
-/* 共用一个精灵图 */
-[class^="icon-"]{
+.jd_layout {
+    min-width: 300px;
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+}
+
+[class^="icon_"] {
     background: url("../images/sprites.png") no-repeat;
     background-size: 200px 200px;
+}
+
+
+
+
+.jd_topBar {
+    height: 45px;
+    width: 100%;
+    background: url("../images/header-bg.png") repeat-x;
+    background-size: 1px 44px;
+    border-bottom: 1px solid #e0e0e0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.jd_topBar .icon_back {
+    height: 44px;
+    width: 40px;
+    background-position: -20px 0;
+    display: block;
+    padding: 12px 10px;
+    background-clip: content-box;
+    background-origin: content-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.jd_topBar .icon_menu {
+    height: 20px;
+    width: 20px;
+    background-position: -60px 0;
+    display: block;
+    margin: 12px 10px;
+    background-clip: content-box;
+    background-origin: content-box;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.jd_topBar form {
+    width: 100%;
+    height: 44px;
+    padding: 0 40px;
+}
+
+.jd_topBar form input {
+    width: 100%;
+    height: 32px;
+    border: 1px solid #bfbfbf;
+    padding: 0 8px;
+    border-radius: 4px;
+    margin-top: 7px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+.jd_topBar h2 {
+    width: 100%;
+    height: 44px;
+    line-height: 42px;
+    font-size: 16px;
+    font-family: sans-serif;
+    color: #000;
+    font-weight: inherit;
+    text-align: center;
 }
