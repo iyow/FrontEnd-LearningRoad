@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>面向对象版本帧动画实例</title>
+</head>
+<body>
+	<canvas>
+		
+	</canvas>
+	<div>
+		
+	<button id="left">left</button>
+	<button id="right">right</button>
+	<button id="in">in</button>
+	<button id="out">out</button>
+
+	</div>
+
+	<script src="./js/sprite.js"></script>
+	<script>
+		(function () {
+			function $ (id) {
+				return document.querySelector(id);
+			}
+			var canvas = $('canvas');
+			var ctx = canvas.getContext('2d');
+			var btnleft = $('#left');
+			var btnright = $('#right');
+			var btnin = $('#in');
+			var btnout = $('#out');
+
+			canvas.width = 600;
+			canvas.height = 500;
+
+
+
+			//封装一个类：
+			//属性：width，height，imgsrc，speed，dir
+			//行为：render，changeDir
+
+			var NPC1 = new Sprite({
+				x: 300,
+				y: 300,
+				w: 40,
+				h: 65,
+				fps: 4,
+				originW: 40,
+				originH: 65,
+				imgSrc: '../img/NPC1.png'
+			});
+			NPC1.render(ctx);
+
+			btnleft.onclick = function () {
+				NPC1.changeDir('left');
+			}
+			btnright.onclick = function () {
+				NPC1.changeDir('right');
+			}
+			btnin.onclick = function () {
+				NPC1.changeDir('in');
+			}
+			btnout.onclick = function () {
+				NPC1.changeDir('out');
+			}
+
+
+
+		}());
+
+
+	</script>
+</body>
+</html>
