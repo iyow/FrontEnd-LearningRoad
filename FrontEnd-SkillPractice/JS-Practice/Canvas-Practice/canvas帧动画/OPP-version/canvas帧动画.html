@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas帧动画</title>
+</head>
+<body>
+	<canvas>
+		
+	</canvas>
+
+	<div>
+			
+	<button id="left">left</button>
+	<button id="right">right</button>
+	<button id="in">in</button>
+	<button id="out">out</button>
+	</div>
+	<script>
+		(function  () {
+			function $ (id) {
+				return document.querySelector(id);
+			}
+			var canvas = document.querySelector('canvas');
+			canvas.width = 600;
+			canvas.height = 600;
+			canvas.style.border = '1px solid #666'
+			// console.log(canvas);
+
+			var ctx = canvas.getContext('2d');
+
+			var img = new Image();
+			img.src = './img/NPC1.png';
+
+			var dirIndex = 0;
+			// 必须在图片加载后在绘制否则无法绘制出图片
+			img.onload = function () {
+				var frameIndex = 0;
+
+				setInterval(function () {
+					ctx.clearRect(0,0,canvas.width,canvas.height);
+				ctx.drawImage(img,40*frameIndex,65*dirIndex,40,65,200,200,40,65);
+				frameIndex++
+				frameIndex = frameIndex%4;
+				// console.log(frameIndex);
+				}, 1000/5);
+			}
+
+			$('#left').onclick = function () {
+				dirIndex = 1;
+			}
+			$('#right').onclick = function () {
+				dirIndex = 2;
+			}
+			$('#in').onclick = function () {
+				dirIndex = 0;
+			}
+			$('#out').onclick = function () {
+				dirIndex = 3;
+			}
+		}());
+	</script>
+</body>
+</html>
