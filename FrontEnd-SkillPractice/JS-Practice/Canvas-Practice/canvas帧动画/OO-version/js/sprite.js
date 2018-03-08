@@ -28,7 +28,8 @@ Sprite.prototype = {
 			// console.log(this);
 			setInterval(() => {
 				// console.log(this);
-				ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+				// 只清除指定区域的的内容
+				ctx.clearRect(this.x,this.y,this.w,this.h);
 				ctx.drawImage(
 					img //绘制的原始图片
 					, frameIndex * this.originW  // 剪切图片的x坐标
