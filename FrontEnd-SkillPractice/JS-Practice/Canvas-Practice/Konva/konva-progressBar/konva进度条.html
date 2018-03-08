@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>konva进度条</title>
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+			background-color: #f0f0f0;
+			overflow: hidden;
+		}
+		#control{
+			position: absolute;
+			top: 100px;
+			left: 100px;
+		}
+	</style>
+	<script src="../js/konva.js"></script>
+	<script src="Progress.js"></script>
+</head>
+<body>
+	<div id="container">
+		
+	</div>
+
+	<div id="control">
+		<button id="btn1">0.1</button>
+		<button id="btn2">0.5</button>
+		<button id="btn3">0.8</button>
+	</div>
+
+	<script>
+
+		//创建舞台
+		var stage = new Konva.Stage({
+			container: 'container',
+			width: window.innerWidth,//全屏
+			height: window.innerHeight
+		});
+
+		//创建层
+		var layer = new Konva.Layer();
+		stage.add(layer);
+	
+		//中心点坐标
+		var cenX = stage.width() / 2;
+		var cenY = stage.height() / 2;
+
+		var option = {
+			x: 1/8 * stage.width(),		//进度条x坐标
+			y: 1/2 * stage.height(),	//进度条y坐标
+			w: 3/4 * stage.width(),		//进度条的宽度
+			h: 1/12 * stage.height(),	//进度条的高度
+			fillStyle: 'red',			//进度条内部矩形的填充的颜色
+			strokeStyle: 'blue'			//进度条的外边框的颜色
+		};
+
+		// 创建 进度条对象实例
+		var progressBar = new Progress( option );
+
+		//把进度条放到 层中
+		progressBar.addToGroupOrLayer( layer );
+		
+		//渲染层
+		layer.draw();
+
+		document.getElementById('btn1').onclick = function () {
+			progressBar.changeValue( .1 );
+		}
+		document.getElementById('btn2').onclick = function () {
+			progressBar.changeValue( .5 );
+		}
+		document.getElementById('btn3').onclick = function () {
+			progressBar.changeValue( .8 );
+		}
+
+		
+	</script>
+</body>
+</html>
