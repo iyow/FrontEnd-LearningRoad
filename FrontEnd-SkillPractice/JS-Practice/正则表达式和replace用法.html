@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>正则表达式学习及replace用法详解</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        /******************************************************************************
+     replace用法1 - 基础用法
+     最核心的易错点：如果要替换全部匹配项，需要传入一个 RegExp 对象并指定其 global 属性。
+     *******************************************************************************/
+        console.log('replace基本用法')
+
+        //基本用法：
+        myString = "javascript is a good script language";
+        //在此我想将字母a替换成字母A
+        console.log(myString.replace("a", "A"));
+        //    我想大家运行后可以看到结果，它只替换了找到的第一个字符，如果想替换多个字符怎么办？
+        //    答案：结合正则表达式，这也是replace的核心用法之一！
+
+
+        //将字母a替换成字母A 错误的写法  少了/g
+        myString = "javascript is a good script language";
+        console.log(myString.replace(/a/, "A"));
+        //console.log(myString.replace(new RegExp('a','gm'),"A"));
+
+        //将字母a替换成字母A  正确的写法 /g表示匹配所有
+        myString = "javascript is a good script language";
+        console.log(myString.replace(/a/g, "A"));
+
+
+
+        /******************************************************************************
+         replace用法2 - 高级用法 特殊标记$
+         *******************************************************************************/
+
+
+        //replace高级技巧 - 特殊标记$
+        console.log('replace功能4 - 特殊标记$')
+
+        //    对于正则replace约定了一个特殊标记符$：
+        //    1.$i (i:1-99) : 表示从左到右正则子表达式所匹配的文本。
+        //    2.$&:表示与正则表达式匹配的全文本。
+        //    3.$`(`:切换技能键)：表示匹配字符串的左边文本。
+        //    4.$'(‘:单引号)：表示匹配字符串的右边文本。
+        //    5.$$：表示$转移。
+
+
+        //    $i (i:1-99) : 表示从左到右正则子表达式所匹配的文本
+
+        //案例1- 匹配后替换
+        console.log('replace功能1 - 匹配后替换')
+        //在本例中，我们将把所有的花引号替换为直引号：
+        myString = '"a", "b"';
+        myString = myString.replace(/"([^"]*)"/g, "'$1'");//寻找所有的"abb"形式字符串，此时组合表示字符串，，然后用'$1'替换
+        console.log(myString)
+
+
+
+        //案例2- 匹配后替换
+        myString = "javascript is a good script language";
+        console.log(myString.replace(/(javascript)\s*(is)/g, "$1 $2 fun. it $2"));
+
+
+
+        //案例3 - 分组匹配后颠倒
+        console.log('replace功能2 - 颠倒')
+        //在本例中，我们将把 "itcast,cn" 转换为 "cn itcast" 的形式：
+        myString = "itcast , cn";
+        myString = myString.replace(/(\w+)\s*, \s*(\w+)/, "$2 $1");
+        console.log(myString)
+
+
+        //案例4 - 分组匹配后颠倒
+        myString = "boy & girl";
+        myString.replace(/(\w+)\s*&\s*(\w+)/g, "$2 & $1") //girl & boy
+        console.log(myString)
+
+
+
+
+
+        //    $&:表示与正则表达式匹配的全文本。
+        myString = "boy";
+        myString.replace(/\w+/g, "$&-$&") // boy-boy
+        console.log(myString)
+
+        //    $`(`:切换技能键)：表示匹配字符串的左边文本。
+        myString = "javascript";
+        myString.replace(/script/, "$& != $`") //javascript != java
+        console.log(myString)
+
+        //    $'(‘:单引号)：表示匹配字符串的右边文本。
+        myString = "javascript";
+        myString.replace(/java/, "$&$' is ") // javascript is script
+        console.log(myString)
+
+
+
+
+
+        /******************************************************************************
+         replace用法2 - 高级用法 第二个参数可以是函数 - 最常用 
+         *******************************************************************************/
+
+        //函数 - replace第二个参数可以传递函数
+        //如果第二参数是一个函数的话，那么函数的参数是什么呢？技巧直接输出arguments看一看
+        console.log('replace功能5 - 无敌的函数 - replace第二个参数可以传递函数')
+        myString = "bbabc";
+        myString.replace(/(a)(b)/g, function () {
+            console.log(arguments) // ["ab", "a", "b", 2, "bbabc"]
+        });
+        //    参数将依次为：
+        //    1、整个正则表达式匹配的字符。
+        //    2、第一分组匹配的内容、第二分组匹配的内容…… 以此类推直到最后一个分组。
+        //    3、此次匹配在源自符串中的下标（位置）。
+        //    4、源自符串
+        //    所以例子的输出是 ["ab", "a", "b", 2, "bbabc"]
+
+
+        //用法举例  首字母大写 -- 一个参数 表示匹配的整个字符串
+        console.log('replace功能3 - 将首字符转为大写')
+
+        //在本例中，我们将把字符串中所有单词的首字母都转换为大写：
+        myString = 'aaa bbb ccc';
+        myString = myString.replace(/\b\w+\b/g, function (word) {
+            return word.substring(0, 1).toUpperCase() + word.substring(1);
+        }
+        );
+        console.log(myString)
+
+
+
+        //用法举例  首字母大写 -- 多个参数 - 第一个表示匹配的整个字符串，后面的表示分组中的内容
+        /* 字符^
+        意义：表示匹配的字符必须在最前边。
+        例如：/^A/不匹配"an A,"中的'A'，但匹配"An A."中最前面的'A'。
+        
+        字符$
+        意义：与^类似，匹配最末的字符。
+        例如：/t$/不匹配"eater"中的't'，但匹配"eat"中的't'。*/
+        function capitalize(str) {
+            return str.replace(/(^|\s)([a-z])/g, function (m, p1, p2) {
+                return p1 + p2.toUpperCase();
+            });
+
+        };
+        myString = "i am a boy !"
+        console.log(capitalize(myString)) //I Am A Boy！
+
+
+
+
+
+
+
+
+
+
+//正则表达式基础知识
+
+//星号(*) : 星号代表匹配它前面一个字符任意遍(0或任意次)
+
+//加号(+): 加号是一个与星号(*)类似的通配符，它也是数量词，表示匹配前面的字符一次或多次（至少一次).
+//它与星号的差别就在这里，星号可以匹配0次，加号则必须一次以上。
+
+//问号(?): 问号也是一个数量词，它代表匹配前一个字符0或1次。
+
+
+//中括号[]： 中括号用来表示一个字符集合，
+//如果这个集合有很多元素，如26个字母，数字等，一个个地写在中括号里，未免太麻烦太蠢笨，
+//这时可以用连字符(hyphen)来表示一个范围，
+// 如:[a-z]表示小写字母的集合，
+// [a-zA-Z]表示大小写字母的集合。
+// 脱字符^ (caret).
+// 这种写法表示，匹配任何不在该集合中的字符，与上面的用法刚好相反
+
+
+//特殊字符：
+//    \w -- (小写w) 表示字母或数字，等价于 [a-zA-Z0-9]
+//    \W -- (大写W)非字母且非数字，与\w相反 等价于 '[^A-Za-z0-9_]'
+//    \s  --  (小写s)匹配一个空格字符，包括：空格，换行，回车,tab,等价于[ \n\r\t\f]
+//    \S --  (大写S)匹配非空格字符，\s的相反 等价于 [^ \f\n\r\t\v]。
+//    \d -- 表示10进制数字，等价于 [0-9]
+//    \D --	匹配一个非数字字符。等价于 [^0-9]。
+
+//    \f	匹配一个换页符。等价于 \x0c 和 \cL。
+//    \n	匹配一个换行符。等价于 \x0a 和 \cJ。
+//    \r	匹配一个回车符。等价于 \x0d 和 \cM。
+//    \t	匹配一个制表符。等价于 \x09 和 \cI。
+//    \v	匹配一个垂直制表符。等价于 \x0b 和 \cK。
+
+
+
+//    大括号:{}
+//    大括号的作用是指定重复前面一个字符多少遍:
+//    {N} 重复N遍
+//    {n,m} 重复 n~m 遍
+//    {n,}  至少重复n遍
+//    {,m} 至多重复m遍
+
+
+//定位符：
+//    ^	    匹配输入字符串的开始位置。
+//    $	    匹配输入字符串的结束位置。
+//   \b     匹配一个单词边界，也就是指单词和空格间的位置。//例如， 'er\b' 可以匹配"never" 中的 'er'，但不能匹配 "verb" 中的 'er'。
+//    \B	和\b相反，匹配非单词边界。'er\B' 能匹配 "verb" 中的 'er'，但不能匹配 "never" 中的 'er'。
+
+
+
+    </script>
+</body>
+
+</html>
