@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>判断变量类型</title>
+</head>
+
+<body>
+    <script>
+        var num = 5;
+        var boole = true;
+        var str = 'asdasda';
+        var un = undefined;
+        var none = null;
+        var arr = [1, 2, 3];
+        var obj = { a: 'aa', b: 5 };
+        var data = new Date();
+
+
+
+        // 第一种方法 typeof
+
+        console.log(typeof num);
+        console.log(typeof boole);
+        console.log(typeof str);
+        console.log(typeof un);
+        console.log(typeof none);
+        console.log(typeof arr);
+        console.log(typeof obj);
+        console.log(typeof data);
+
+
+        console.log('------------分割线----------------');
+
+
+        // 第二种方法 instanceof   
+        // 用于判断一个构造函数的prototype属性所指向的对象是否存在另外一个要检测的对象原型链上
+        console.log(num instanceof Number);
+        console.log(boole instanceof Boolean);
+        console.log(str instanceof String);
+        console.log(un instanceof Object);
+        console.log(none instanceof Object);
+        console.log(arr instanceof Array);
+        console.log(obj instanceof Object);
+        console.log(data instanceof Object);
+
+        //使用
+        function Person() { };
+        function Student() { };
+        var p = new Person();
+        Student.prototype = p;//继承原型
+        var s = new Student();
+        console.log(s instanceof Student);//true
+        console.log(s instanceof Person);//true
+
+        console.log('------------分割线----------------');
+
+
+
+        // 第三种方法利用  Object.prototype.toString.call()
+
+        console.log(Object.prototype.toString.call(num));
+        console.log(Object.prototype.toString.call(boole));
+        console.log(Object.prototype.toString.call(str));
+        console.log(Object.prototype.toString.call(un));
+        console.log(Object.prototype.toString.call(none));
+        console.log(Object.prototype.toString.call(arr));
+        console.log(Object.prototype.toString.call(obj));
+        console.log(Object.prototype.toString.call(data));
+
+        console.log('````````````````');
+        // 等同于
+        console.log(toString.call(num));
+        console.log(toString.call(boole));
+        console.log(toString.call(str));
+        console.log(toString.call(un));
+        console.log(toString.call(none));
+        console.log(toString.call(arr));
+        console.log(toString.call(obj));
+        console.log(toString.call(data));
+
+
+        console.log('------------分割线----------------');
+        // 第四种方法利用  constructor
+        console.log(num.constructor);
+        console.log(boole.constructor);
+        console.log(str.constructor);
+        // console.log(un.constructor);
+        // console.log(none.constructor);
+        console.log(arr.constructor);
+        console.log(obj.constructor);
+        console.log(data.constructor);
+
+
+    </script>
+</body>
+
+</html>
