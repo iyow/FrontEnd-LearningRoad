@@ -29,19 +29,29 @@
 		say();
 
 
-		class my {
-			var name = 1;
-			var age = 2;
-			construct(name, age){
-				this.name = name;
-				this.age = age;
-			}
-			myFunction(){
-				alert('myFunction');
-			}
-		}
-		var myClass = new my();
-		myClass.myFunction();
+		// class my {
+		// 	var name = 1;
+		// 	var age = 2;
+		// 	construct(name, age){
+		// 		this.name = name;
+		// 		this.age = age;
+		// 	}
+		// 	myFunction(){
+		// 		alert('myFunction');
+		// 	}
+		// }
+		// var myClass = new my();
+		// myClass.myFunction();
+
+
+		// 引用类型和值类型问题
+		var a = {n:1};
+		var b = a;
+		a.x = a = {n:2};
+		console.log(a.x);
+		console.log(b.x);
+		console.log(a);
+		console.log(b);
 	</script>
 </body>
 </html>
