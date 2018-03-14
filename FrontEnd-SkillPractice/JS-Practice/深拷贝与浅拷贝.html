@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>深拷贝与浅拷贝</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        // 首先深浅复制只针对像 Object 和 Array这类复杂的对象
+
+
+        // 浅复制只会将对象的各个属性进行依次复制，并不会进行递归复制
+        // 而javascript存储对象都是存储地址所以浅复制会导致obj.arr和shallowObj.arr指向同一块内存
+        // 简单实现：
+
+        var shallowCopy = function (obj) {
+            var dst = {};
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    dst[prop] = obj[prop];
+                }
+            }
+
+            return dst;
+        }
+
+
+
+        // 深复制不仅将原对象的属性逐个复制，而且将对象各属性所包含的对象也依次采用深复制递归复制到新对象
+        // 这样就不存在浅复制出现的问题
+        // 简单实现：当前嵌套层级过深时性能较差
+
+
+        var deepCopy = function (obj) {
+            var str, newObj;
+            obj.constructor === Array ? [] : {};
+            if (typeof obj !== 'object') {
+                return;
+            } else if (window.JSON) {
+                str = JSON.stringify(obj);
+                newObj = JSON.parse(str);
+            } else {
+                for (var i in obj) {
+                    newObj[i] = typeof obj[i] === 'object' ? deepCopy(obj[i]) : obj[i];
+                }
+            }
+            return newObj;
+        }
+    </script>
+</body>
+
+</html>
