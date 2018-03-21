@@ -45,19 +45,31 @@ function $require(id) {
   // 定义一个数据容器，用容器去装模块导出的成员
   let module = { id: filename, exports: {} };
   let exports = module.exports; // module.exports
+
+  //模块缓存
+  //定义cache属性存储缓存
+  $require.cache = $require.cache || {};
+  //如果有缓存直接返回导出模块
+  if ($require.cache[filename]) {
+    return $require.cache[filename].exports;
+    // return $require.cache[filename];
+  }
   
   code =`
   (function($require, module, exports, __dirname, __filename) { 
     ${code} 
   })($require, module, exports, dirname, filename);`;
   eval(code);
+
+  //如果没有缓存将模块存入缓存属性
+  $require.cache[filename] = module;
+  // $require.cache[filename] = module.exports;
   
   return module.exports;
 }
 
-
-
-var m1 = $require('./module1.js');
-
-m1.a.say();
-m1.b.say();
+setInterval(()=>{
+  let m1 = $require('./module1.js');
+  console.log(m1.m1_myDate.getTime());
+  console.log(m1.b.m2_myDate.getTime());
+},1000);

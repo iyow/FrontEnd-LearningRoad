@@ -9,5 +9,6 @@ module.exports = {
       console.log('module1 say');
     }
   },
-  b:module2
+  b:module2,
+  m1_myDate: new Date()
 };
