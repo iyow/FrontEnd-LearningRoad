@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>聊天室</title>
+    <style>
+        canvas {
+            border: 1px solid #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas width="1000px" height="600px" id="canvas"></canvas>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext('2d');
+
+        let colors = ['tan', 'tomato', 'teal', 'turquoise', 'yellow', 'thistle'];
+        let myColor = colors[parseInt(Math.random() * colors.length)];
+
+        let socket = io();
+        canvas.onmousedown = () => {
+            canvas.addEventListener('mousemove', handle,true);
+        };
+        canvas.onmouseup = () => {
+            canvas.removeEventListener('mousemove',handle,true);
+        };
+
+        function handle(e) {
+            ctx.beginPath();
+            ctx.arc(e.pageX, e.pageY, 10, 0, Math.PI * 2, true);
+            ctx.fillStyle = myColor;
+            ctx.fill();
+
+            //触发事件
+            socket.emit("paint", { "x": e.pageX, "y": e.pageY, "color": myColor });
+        }
+
+        socket.on("otherpaint", (paintinfo) => {
+            ctx.beginPath();
+            ctx.arc(paintinfo.x, paintinfo.y, 10, 0, Math.PI * 2, true);
+            ctx.fillStyle = paintinfo.color;
+            ctx.fill();
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
