@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>vue 路由练习</title>
+	<script src="./lib/vue.js"></script>
+	<script src="./lib/vue-router.js"></script>
+	<link rel="stylesheet" href="./lib/animate.min.css">
+
+	<style>
+		a {
+			text-decoration: none;
+			color: violet;
+		}
+
+		.router-link-active {
+			font-size: 25px;
+			color: tomato;
+		}
+	</style>
+
+
+	<script>
+
+		window.onload = function () {
+
+			const Home = {
+				template: `<h1>欢迎来到主页</h1>`
+			};
+			const User = {
+				template: '#user',
+				data() {
+					return {
+						users: [{ name: 'x先生', age: 15 }, { name: 'y先生', age: 20 }, { name: 'z先生', age: 25 }]
+					}
+				}
+			};
+			const Userinfo = {
+				template: "<div>infomation: {{$route.params}} </div>"
+			};
+			const Index = {
+				template: "<h1>Here We Go</h1>"
+			};
+			const Miss = {
+				template: "<h1>404040404040404040404</h1>"
+			};
+
+			const routes = [
+				{ path: '/home', component: Home },
+				{
+					path: '/user',
+					component: User,
+					children: [{ path: '/user/:username/age/:userage', component: Userinfo }]
+				},
+				{ path: '/', component: Index },
+				{ path: '/404', component: Miss },
+				{ path: '*', redirect: '/404' }
+			];
+
+			const router = new VueRouter({
+				routes: routes
+			});
+
+			new Vue({
+				el: '#app',
+				router: router
+			});
+
+		};
+	</script>
+</head>
+
+<body>
+
+	<template id="user">
+		<div>
+			<h1>用户信息</h1>
+			<ul>
+				<li v-for="(user,index) in users" :key="index">
+					<!-- 注意此处动态绑定属性 -->
+					<router-link :to="'/user/'+user.name+'/age/'+user.age">{{index}} {{user.name}}</router-link>
+				</li>
+			</ul>
+			<!-- 此处由于组件复用(猜测)所以动画只会有一次 -->
+			<transition enter-active-class="animated flip">
+				<router-view></router-view>
+			</transition>
+		</div>
+	</template>
+
+	<div id="app">
+
+		<router-link to="/home">主页</router-link>
+		<router-link to="/user">用户</router-link>
+
+
+		<transition enter-active-class="animated bounceInLedt" leave-active-class="animated bounceOutRight">
+			<router-view></router-view>
+		</transition>
+	</div>
+
+</body>
+
+</html>
