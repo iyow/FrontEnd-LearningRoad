@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>todoList Vue</title>
+	<script src="./lib/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="./lib/bootstrap.css">
+	<script src="./lib/jquery.js"></script>
+	<script src="./lib/bootstrap.js"></script>
+	<style>
+		[v-cloak]{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		
+		<div class="container">
+			<form action="" role="form">
+				<div class="form-group">
+					<label name="username">Input Your Name</label>
+					<input v-model="username" class="form-control" type="text" name="username" placeholder="your name" value="your name">
+				</div>
+				<div class="form-group">
+					<label name="age">Input Your Age</label>
+					<input v-model="age" class="form-control" type="text" name="age" placeholder="your age" value="your age">
+				</div>
+				<div class="form-group">
+				<input @click="add()" type="button" class="btn btn-primary" value="ADD">
+				<input @click="reset()" type="button" class="btn btn-danger" value="RESET">
+				</div>
+			</form>
+
+			<table v-cloak class="table table-border">
+				<caption class="h2 text-info">User Info</caption>
+				<tr class="text-danger">
+					<th class="text-center">username</th>
+					<th class="text-center">userage</th>
+					<th class="text-center">Operation</th>
+				</tr>
+
+				<tr v-if="user_info.length === 0">
+					<td colspan="3" class="text-center">no data...</td>
+				</tr>
+				<tr v-else class="text-center" v-for="(user,index) in user_info">
+					<td>{{index + 1}}</td>
+					<td>{{user.name}}</td>
+					<td>{{user.age}}</td>
+					<td>
+						<button @click="nowIndex=index" class="btn btn-primary" data-toggle="modal" data-target="#layer">DELETE</button>
+					</td>
+				</tr>
+				<tr v-show="user_info.length" class="text-right">
+					<td colspan="4">
+						<button @click="nowIndex=-2" data-toggle="modal" data-target="#layer" class="btn btn-danger">DELETE ALL</button></td>
+				</tr>
+			</table>
+		</div>
+
+
+		<!-- 模态框 -->
+		<div id="layer" role="dialog" class="modal fade bs-example-modal-sm">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+						<h4>Are You Sure To Delete ?</h4>
+					</div>
+					<div class="modal-body text-right">
+						<button @click="nowIndex=0" data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+						<button @click="remove(nowIndex)" data-dismiss="modal" class="btn btn-danger btn-sm">confirm</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<script>
+		var vm = new Vue({
+			el: "#app",
+			data:{
+				user_info:[],
+				username: "",
+				age: "",
+				nowIndex: 0
+			},
+			methods:{
+				add: function (){
+					this.user_info.push({
+						name:this.username,
+						age:this.age
+					});
+					this.username = '';
+					this.age = '';
+				},
+				reset: function () {
+					this.username = '';
+					this.age = '';
+				},
+				remove:function (index) {
+					if (index < 0) {
+						this.user_info = [];
+					} else {
+						this.user_info.splice(index, 1);
+					}
+				}
+			}
+		
+		});
+	</script>
+</body>
+</html>
