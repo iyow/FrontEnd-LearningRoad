@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>postmessage</title>
+</head>
+<body>
+	<input id="input" type="text">
+	<button id="btn">发送</button>
+	<span id="text"></span>
+
+
+
+	<script>
+		window.onload = function () {
+			var input = document.querySelector('#input');
+			var btn = document.querySelector('#btn');
+			var text = document.querySelector('#text');
+
+
+
+			// 左边iframe的按钮点击后  取得右边iframe调用postmessage，
+			//参数： message	发送的数据   targetOrigin	发送数据的来源
+			btn.onclick = function () {
+				window.parent.frames[1].postMessage(input.value, 'http://localhost:8080');
+			}
+
+
+
+
+
+
+
+			//window当前iframe监听message事件
+			window.addEventListener('message', recive, false);
+
+
+			function recive (e) {
+				console.log('second');
+				console.log(e);
+				text.innerHTML = e.data;
+			}
+		}
+	</script>
+</body>
+</html>
