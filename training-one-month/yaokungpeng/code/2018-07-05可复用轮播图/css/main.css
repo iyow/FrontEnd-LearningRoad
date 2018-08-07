@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+li {
+    list-style: none
+}
+
+img {
+    vertical-align: top;
+    border: none
+}
+
+a {
+    text-decoration: none;
+}

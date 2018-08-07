@@ -1,0 +1,237 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style: none
+}
+
+img {
+    vertical-align: top;
+    border: none
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.outer {
+    width: 100%;
+    padding: 0 25%;
+}
+
+.container {
+    width: 100%;
+    height: 3500px;
+    padding: 0 20px;
+    padding-top: 50px;
+}
+
+header img {
+    width: 100%;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.title img {
+    width: 50px;
+    padding-right: 10px;
+}
+
+/* 为什么要学文言文 */
+
+.why-classic-chinese, .course-features {
+    margin-top: 50px;
+}
+
+.answer-classic-chinese {
+    margin-top: 20px;
+    padding: 10px;
+    display: flex;
+}
+
+.left-answer {
+    width: 65%;
+}
+
+.left-answer img {
+    width: 100%;
+    height: 100%;
+}
+
+.right-answer ol {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    margin-left: 20px;
+}
+
+.right-answer li {
+    display: flex;
+    text-align: left;
+    line-height: 17px;
+    padding: 7px 15px 5px 10px;
+    background-color: #fdc6c2;
+    /* height: 20%; */
+    margin-bottom: 10px;
+}
+.right-answer li:last-of-type{
+    margin-bottom: 0;
+}
+
+.right-answer li img {
+    margin-right: 10px;
+    width: 20px;
+    height: 30px;
+}
+
+/* 文言文学习有哪些难点 */
+
+.course-features {
+    background-image: url(../images/纹理.png);
+    padding: 40px 15px;
+}
+
+.course-features .title img {
+    vertical-align: middle;
+}
+
+.img-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.course-features ul li {
+    width: 31%;
+}
+
+.img-row img {
+    width: 100%;
+}
+
+.img-row span {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.course-answer .title {
+    margin: 50px 0;
+}
+
+.course-answer .img-row span {
+    width: 67%;
+    margin: 10px auto;
+}
+
+/* 课程安排 */
+
+.course-arrange {
+    margin-top: 50px;
+}
+
+.hollow-circle {
+    position: relative;
+    top: -5px;
+    right: 10px;
+    border: 2px solid red;
+    border-radius: 50%;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+}
+
+.outer-table-round{
+    overflow: hidden;
+    border: 1px solid red;
+    border-radius: 10px;
+    margin: 50px auto;
+}
+.course-arrange table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.course-arrange table tr th {
+    color: white;
+    background-color: red;
+    height: 70px;
+}
+
+.course-arrange table tr td {
+    border-top: 1px solid red;
+    border-left: 1px solid red;
+    padding: 10px;
+}
+
+.course-arrange table tr td:nth-of-type(1) {
+    border-left: 0;
+}
+
+.course-arrange table tr td a {
+    color: red;
+}
+
+.course-arrange table tr td:nth-of-type(5) {
+    background-color: #ffc80d;
+}
+
+/* 直播班配套服务 */
+
+.course-serve {
+    padding: 20px 50px;
+    margin: 50px 0;
+}
+
+.course-serve ul li {
+    width: 21%;
+}
+
+.course-serve ul li:first-of-type span {
+    width: 65px;
+    margin: 10px auto;
+}
+
+/* 联系我们 */
+
+.contact ul li {
+    width: 30%;
+}
+
+.contact .img-row span::before {
+    display: block;
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+/* 学而思网校APP下载 */
+
+.joinus {
+    text-align: center;
+    margin-top: 50px;
+    padding: 40px 40px 80px 40px;
+    color: white;
+    background-color: red;
+}
+
+.joinus h2 .hollow-circle {
+    border-color: white;
+}
+
+.joinus img {
+    margin: 50px 0;
+    width: 30%;
+}

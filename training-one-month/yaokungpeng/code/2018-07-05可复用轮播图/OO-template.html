@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>可复用轮播图</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/carousel.css">
+</head>
+
+<body>
+
+    <!-- 轮播图组件 -->
+    <div id="carousel" class="carousel-container">
+
+        <!-- 轮播图指示器 -->
+        <ol class="carousel-dots">
+        </ol>
+
+
+        <!-- 轮播图内部图片容器 -->
+        <div class="carousel-inner">
+        </div>
+
+        <!-- 轮播图控制箭头 -->
+        <a class="carousel-ctrl carousel-left-ctrl">
+            <span class="carousel-left-arrow">&lt</span>
+        </a>
+        <a class="carousel-ctrl carousel-right-ctrl">
+            <span class="carousel-right-arrow">&gt</span>
+        </a>
+    </div>
+
+    <script src="./js/OO-carousel.js"></script>
+    <script>
+        var myCarousel = new Carousel({
+            id: "#carousel",
+            images: ['1.jpg', '2.jpg', '3.png', '4.jpg']
+        })
+    </script>
+
+
+</body>
+
+</html>
