@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>elastic-input SVG and CSS3实现</title>
+
+    <style>
+        /* SVG实现 */
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: grid;
+            font-family: Avenir;
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .inp {
+            position: relative;
+            margin: auto;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .inp .label {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            font-size: 16px;
+            color: #9098a9;
+            font-weight: 500;
+            transform-origin: 0 0;
+            transition: all 0.2s ease;
+        }
+
+        .inp svg {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 26px;
+            fill: none;
+        }
+
+        .inp svg path {
+            stroke: #c8ccd4;
+            stroke-width: 2;
+        }
+
+        .inp svg path d {
+            transition: all 0.2s ease;
+        }
+
+        .inp .border {
+            position: absolute;
+            bottom: 0;
+            left: 120px;
+            height: 2px;
+            right: 0;
+            background: #c8ccd4;
+        }
+
+        .inp input {
+            -webkit-appearance: none;
+            width: 100%;
+            border: 0;
+            font-family: inherit;
+            padding: 12px 0;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border-radius: 0;
+            color: #223254;
+            transition: all 0.15s ease;
+        }
+
+        .inp input:not(:placeholder-shown)+span {
+            color: #5a667f;
+            transform: translateY(-26px) scale(0.75);
+        }
+
+        .inp input:focus {
+            background: none;
+            outline: none;
+        }
+
+        .inp input:focus+span {
+            color: #07f;
+            transform: translateY(-26px) scale(0.75);
+            transition-delay: 0.1s;
+        }
+
+        .inp input:focus+span+svg path {
+            stroke: #07f;
+            animation: elasticInput 0.4s ease forwards;
+        }
+
+        .inp input:focus+span+svg+.border {
+            background: #07f;
+        }
+
+        @keyframes elasticInput {
+            50% {
+                d: path("M2,2 C21,17 46,25 74,25 C102,25 118,25 120,25");
+            }
+        }
+
+
+        /* CSS3实现 */
+
+        *,
+        *:after,
+        *:before {
+            box-sizing: border-box;
+        }
+
+        .box {
+            padding: 5px 0;
+            width: 300px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-bottom-color: currentcolor;
+            display: inline-flex;
+            padding: 0;
+            position: relative;
+            min-width: 0;
+            flex-direction: column;
+            transition: all 200ms
+        }
+
+        .box input {
+            outline: 0;
+            border: 0;
+            width: 100%;
+            height: 40px;
+            background-color: transparent;
+        }
+
+        .box .label {
+            top: 0;
+            left: 0;
+            position: absolute;
+            transform: translate(0, 24px) scale(1);
+            transform-origin: top left;
+            transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+        }
+
+        .box .input {
+            margin: 0;
+            font-size: 0.75rem;
+            text-align: left;
+            margin-top: 8px;
+            min-height: 1em;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            line-height: 1em;
+        }
+
+        .box:focus-within {
+            color: #59b6d3;
+            animation-name: inputFocus;
+            animation-duration: .4s;
+            animation-iteration-count: 1;
+            animation-timing-function: cubic-bezier(0.0, 0, 0.2, 1);
+        }
+
+        .box:focus-within .label {
+            transform: scale(.7);
+        }
+
+        @keyframes inputFocus {
+            0% {
+                border-bottom-left-radius: 0
+            }
+            60% {
+                border-bottom-left-radius: 40%
+            }
+            100% {
+                border-bottom-left-radius: 0
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SVG实现 -->
+    <label for="inp" class="inp">
+        <input type="text" id="inp" placeholder="&nbsp;">
+        <span class="label">Label</span>
+        <svg width="120px" height="26px" viewBox="0 0 120 26">
+            <path d="M0,25 C21,25 46,25 74,25 C102,25 118,25 120,25"></path>
+        </svg>
+        <span class="border"></span>
+    </label>
+
+    <!-- CSS3实现 -->
+    <div class="box hover">
+        <label for="input" class="label">Label</label>
+        <div class="input">
+            <input id="input" type="text" />
+        </div>
+    </div>
+</body>
+
+</html>
