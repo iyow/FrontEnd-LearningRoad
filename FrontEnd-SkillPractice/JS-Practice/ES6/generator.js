@@ -75,21 +75,22 @@ for(let n of fibonacci()){
 
 
 
-// 二叉树例子
+// 二叉树
 let treeArr = [[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]];
 class TreeNode {
 	constructor(left,label,right){
-	  this.left = left
-	  this.label = label
-	  this.right = right
+	  this.left = left || null
+	  this.label = label || null
+	  this.right = right || null 
 	}
 }
-class Tree {
+class Tree extends TreeNode {
 	constructor(arr){
-	  let obj = this.createTree(arr)
-	  this.left = obj.left
-	  this.label = obj.label
-	  this.right = obj.right
+	  super()
+	  var obj = this.createTree(arr)
+	  super.left = obj.left
+	  super.label = obj.label
+	  super.right = obj.right
 	}
 	createTree(arr){
 	 if(arr.length ==1 ){ return new TreeNode(null,arr[0],null); }
@@ -119,3 +120,84 @@ for(let node of myTree.inorder()){
 for(let str of myTree){
 	console.log(str)
 }
+
+
+
+//generator 绑定this 实现构造函数
+
+
+function* F(){
+	this.a = 666
+	yield this.b = 2
+	yield this.c = 3
+}
+
+
+// 使用 call 绑定外部对象实现 三次执行next完成F内部所有代码的运行
+let generatorObj = {}
+let f1 = F.call(generatorObj)
+console.log('---------------')
+console.log(f1.next())
+console.log(f1.next())
+console.log(f1.next())
+console.log(generatorObj.a)
+console.log(generatorObj.b)
+console.log(generatorObj.c)
+
+
+
+// 使用 call 绑定 generator函数的prototype
+let f2 = F.call(F.prototype)
+console.log('---------------')
+console.log(f2.next())
+console.log(f2.next())
+console.log(f2.next())
+console.log(f2.a)
+console.log(f2.b)
+console.log(f2.c)
+console.log(F.prototype)
+
+// 将F改为构造函数 可执行new操作
+function* gen(){
+	this.a = 777
+	yield this.b = 111
+	yield this.c = 222
+}
+function GF(){
+	return gen.call(gen.prototype)
+}
+let gf = new GF()
+console.log('---------------')
+console.log(gf.next())
+console.log(gf.next())
+console.log(gf.next())
+console.log(gf.a)
+console.log(gf.b)
+console.log(gf.c)
+
+
+
+
+// Generator意义
+// 实现状态机 使用generator试下你状态机可减少用来保存状态的外部变量更简洁跟安全
+let ticking = true
+let traditionaryClock = function(){
+	if(ticking) { console.log('traditionary Tick!!!') }
+	else { console.log('traditionary Tock---') }
+	ticking = !ticking
+}
+
+let generatorClock = function* (){
+    while(true){
+	console.log('generator Tick')
+	yield '------';
+	console.log('generator Tock')
+	yield '------';
+    }
+}
+let clock = generatorClock()
+for(let i = 0;i < 5;i++){
+	clock.next()
+	traditionaryClock()
+}
+
