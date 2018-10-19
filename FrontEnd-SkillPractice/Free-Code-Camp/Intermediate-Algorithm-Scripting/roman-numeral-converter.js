@@ -1,3 +1,6 @@
+// 将给定的数字转换成罗马数字。
+// 所有返回的 罗马数字 都应该是大写形式。
+
 function convert(num) {
     let romanStr = '';
     let ones = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
