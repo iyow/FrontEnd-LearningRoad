@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Grid布局+Media-Query实现响应式</title>
+    <style>
+  .item1 {
+    background: LightSkyBlue;
+    grid-area: header;
+  }
+  
+  .item2 {
+    background: LightSalmon;
+    grid-area: advert;
+  }
+  
+  .item3 {
+    background: PaleTurquoise;
+    grid-area: content;
+    display: grid;
+    grid-template-columns: repeat(2,minmax(60px,1fr));
+  }
+  
+  .item4 {
+    background: lightpink;
+    grid-area: footer;
+  }
+  .paragraph-one {
+    background: PaleGreen;
+  }
+  
+  .paragraph-two {
+    background: BlanchedAlmond;
+  }
+  
+  .container {
+    font-size: 1.5em;
+    min-height: 300px;
+    width: 100%;
+    background: LightGray;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px auto 1fr auto;
+    grid-gap: 10px;
+    grid-template-areas:
+      "header"
+      "advert"
+      "content"
+      "footer";
+  }
+  
+  @media (min-width: 300px){
+    .container{
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "advert header"
+        "advert content"
+        "advert footer";
+    }
+  }
+  
+  @media (min-width: 400px){
+    .container{
+      grid-template-areas:
+        "header header"
+        "advert content"
+        "footer footer";
+    }
+  }
+    </style>
+</head>
+<body>
+      
+<div class="container">
+        <div class="item1">header</div>
+        <div class="item2">advert</div>
+        <div class="item3">
+            <div class="paragraph-one">p1</div>
+            <div class="paragraph-two">p2</div>
+        </div>
+        <div class="item4">footer</div>
+      </div>
+</body>
+</html>
