@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3</title>
+    <style>
+        div {
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        .tips {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .tips::before {
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 32px;
+            left: 5px;
+            border-width: 7px 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) transparent transparent;
+        }
+
+        .states :hover {
+            fill: yellow;
+            stroke-width: 2px;
+        }
+
+        .state-borders {
+            fill: none;
+            stroke: #fff;
+            stroke-width: 0.5px;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <p>1</p>
+    <p>2</p>
+    <p>3</p>
+
+
+    <script src="https://cdn.bootcss.com/d3/5.7.0/d3.min.js"></script>
+    <script>
+        // -----------------------------------------这里是一条分割线------------------------------------------
+
+        // 基本操作，绑定数据
+        let p = d3.selectAll("body p")
+        let arr = ['pig', 'apple', 'cat', 'asd', 'uuuuu']
+        let map = new Map([
+            ['kk', 1],
+            ['ll', 2]
+        ])
+        let set = new Set([1, 2])
+        let obj = {
+            k: 1234,
+            l: 1234567
+        }
+        let str2 = 'asdasdd'
+
+        // p.data(str)
+        let bindData = p.data(arr)
+        console.log(p)
+        console.log(bindData)
+        console.log(bindData.enter())
+        bindData.html((data, index) => {
+            return `第${index}元素的是${data}`
+        })
+
+
+
+        // SVG 简单图标
+        let margin = {
+            top: 60,
+            bottom: 60,
+            left: 60,
+            right: 60
+        }
+        let barDateSet = [250, 210, 170, 130, 90]
+        let rectHeight = 30
+
+        d3.select('body').append('svg').attr('width', 500).attr('height', 400).attr('transform',
+                `translate(${margin.left},${margin.top})`).style('background-color', 'transparent')
+            .append('g').attr('transform', `translate(${margin.left},${margin.top})`)
+            .selectAll('rect').data(barDateSet).enter().append('rect')
+            .attr('x', 20).attr('y', function (data, index) {
+                return index * rectHeight
+            })
+            .attr('width', d => d).attr('height', rectHeight - 10)
+            .attr('fill', (d, i) => i & 1 ? 'lightcoral' : 'skyblue')
+
+
+        //   比例尺的使用
+        // 线性比例尺
+        const Body = d3.select('body')
+        let d3AppendDiv = () => Body.append('div')
+        let scaleLinearDomain = [1.2, 2.3, 0.9, 1.5, 3.3]
+        let scaleLinearRange = [0, 300]
+        // let max = d3.max(scaleLinearDomain)
+        // let max = d3.min(scaleLinearDomain)
+        let slMax = Math.max.apply(null, scaleLinearDomain)
+        let slMin = Math.min(...scaleLinearDomain)
+
+        let scaleLinear = d3.scaleLinear().domain([slMin, slMax]).range(scaleLinearRange)
+
+        d3.select('body').append('div').text(scaleLinear(0))
+        d3.select('body').append('div').text('比例尺最小映射--------' + scaleLinear(0.9)) // min
+        d3.select('body').append('div').text(scaleLinear(1))
+        d3.select('body').append('div').text(scaleLinear(2))
+        d3.select('body').append('div').text('比例尺最大映射--------' + scaleLinear(3.3)) // max
+        d3.select('body').append('div').text(scaleLinear(4))
+
+        // 序数比例尺   domain   range 都为离散的   例如数组每个元素
+
+        let sacleOrdinalDomain = [4, 3, 2, 1, 0]
+        let sacleOrdinalRange = ['yellow', 'blue', 'green', 'black', 'red', 'hacke']
+
+        let scaleOrdinal = d3.scaleOrdinal().domain(sacleOrdinalDomain).range(sacleOrdinalRange)
+
+        d3AppendDiv().text(scaleOrdinal(0))
+        d3AppendDiv().text(scaleOrdinal(1))
+        d3AppendDiv().text(scaleOrdinal(2))
+        d3AppendDiv().text(scaleOrdinal(3))
+        d3AppendDiv().text(scaleOrdinal(4))
+        d3AppendDiv().text(scaleOrdinal(5))
+        d3AppendDiv().text(scaleOrdinal(8))
+        d3AppendDiv().text(scaleOrdinal(9))
+        d3AppendDiv().text(scaleOrdinal(10))
+        d3AppendDiv().text('-------------------' + scaleOrdinal(9))
+
+        // 使用比例尺建立图标
+        let useScaleLinear = d3.scaleLinear().domain([0, Math.max(...barDateSet)]).range([0, 300])
+
+        let xAxis = d3.axisBottom(useScaleLinear)
+            .ticks(7) //设置刻度数目...不太理解
+
+        let GG = d3.select('body').append('svg').attr('width', 500).attr('height', 400)
+            .append('g')
+        GG.selectAll('rect').data(barDateSet).enter().append('rect')
+            .attr('x', 20).attr('y', (data, index) => index * rectHeight)
+            .attr('width', d => useScaleLinear(d)).attr('height', rectHeight - 10)
+            .attr('fill', (d, i) => i & 1 ? 'lightseagreen' : 'lightslategray')
+
+        GG.append('g').attr("transform", "translate(" + 20 + "," + (barDateSet.length * rectHeight) + ")")
+            .call(xAxis)
+
+
+        // -----------------------------------------这里是一条分割线------------------------------------------
+
+        // 完整柱状图
+        // 整个SVG画布的右上角为(0,0)坐标原点
+        let HG_Svg = d3.select('body').append('svg').attr('width', 960).attr('height', 600)
+        let HG_SvgWidth = HG_Svg.attr('width')
+        let HG_SvgHeight = HG_Svg.attr('height')
+        let HG_G = HG_Svg.append('g').attr("transform", "translate(" + margin.top + "," + margin.left + ")")
+
+        let HG_DataSet = [10, 20, 30, 23, 13, 40, 27, 35, 20]
+
+
+        // x轴 scaleBand()根据domain 等分range（rangeRound）域
+        let HG_Xscale = d3.scaleBand().domain(d3.range(HG_DataSet.length)).rangeRound([0, HG_SvgWidth - margin.left -
+            margin.right
+        ])
+        let HG_XAxis = d3.axisBottom(HG_Xscale)
+
+        // y轴 线性比例尺
+        let HG_Yscale = d3.scaleLinear().domain([0, d3.max(HG_DataSet)]).range([HG_SvgHeight - margin.top - margin.bottom,
+            0
+        ])
+        let HG_YAxis = d3.axisLeft(HG_Yscale)
+
+        let HG_GS = HG_G.selectAll('rect').data(HG_DataSet).enter().append('g')
+
+        // 坐标轴
+        HG_G.append('g').attr("transform", "translate(" + 0 + "," + (HG_SvgHeight - margin.top - margin.bottom) + ")").call(
+            HG_XAxis)
+        HG_G.append('g').attr("transform", "translate(0,0)").call(HG_YAxis)
+
+        // 绘制矩形  ， x,y为矩形左上角的点位置
+        // let HG_RectPadding = 20
+        // HG_GS.append('rect')
+        //      .attr('x',(d,i)=>HG_Xscale(i)+HG_RectPadding/2)
+        //      .attr('y',d=>HG_Yscale(d))
+        //      .attr('width',()=>HG_Xscale.step()-HG_RectPadding)
+        //      .attr('height',(d)=>HG_SvgHeight-margin.top-margin.bottom-HG_Yscale(d))
+        //      .attr('fill',(d,i)=>i&1?'tomato':'skyblue')
+
+
+        // 添加过渡动画   transition前为初始状态  后为结束状态
+        let transTime = 30
+        let HG_RectPadding = 20
+        HG_GS.append('rect')
+            .on('mouseover', function () {
+                d3.select(this)
+                    .transition()
+                    .duration(1000)
+                    .attr('fill', 'gray')
+            })
+            .on('mouseout', function (d, i) {
+                d3.select(this)
+                    .transition()
+                    .duration(1500)
+                    .attr('fill', i & 1 ? 'tomato' : 'skyblue')
+            })
+            .attr('x', (d, i) => HG_Xscale(i) + HG_RectPadding / 2)
+            .attr('y', d => HG_Yscale(HG_Yscale.domain()[0]))
+            .attr('width', () => HG_Xscale.step() - HG_RectPadding)
+            .attr('height', 0)
+            .attr('fill', (d, i) => i & 1 ? 'tomato' : 'skyblue')
+            .transition()
+            .duration(1000)
+            .delay((d, i) => i * transTime)
+            //easeElasticInOut chrome浏览器会报错，但是不影响效果 可能是因为数据的顺序问题？？。数据点必须按升序排列  ease用法与d3 v3版本不同  
+            // .ease(d3.easeElasticInOut)
+            .ease(d3.easeBounceOut)
+            .attr('y', d => HG_Yscale(d))
+            .attr('height', (d) => HG_SvgHeight - margin.top - margin.bottom - HG_Yscale(d))
+
+
+        // 绘制文字 其中dx,dy表示相对(x,y)平移的大小，所以文本会从(x+dx,y+dy)位置开始显示
+        // HG_GS.append('text')
+        //      .attr('x',(d,i)=>HG_Xscale(i)+HG_RectPadding/2)
+        //      .attr('y',d=>HG_Yscale(d)-30)
+        //      .attr('dx',()=>(HG_Xscale.step()-HG_RectPadding)/2)
+        //      .attr('dy',20)
+        //      .text(d=>d)
+        //      .attr('fill','darkgray')
+        HG_GS.append('text')
+            .on('click', (data, index, arr) => {
+                // 使用箭头函数得从arr里取当前元素
+                console.log(getComputedStyle(arr[index]).color)
+                console.log(arr[index].getAttribute('fill'))
+                d3.select(arr[index])
+                    .transition()
+                    .duration(1000)
+                    .attr('fill', function () {
+                        return d3.select(this).attr('fill') == 'rgb(240, 128, 128)' ? 'darkgray' : 'lightcoral'
+                    })
+                d3.select('body')
+                    .append('span')
+                    .text(`值为：${data}`)
+                    .attr('class', 'tips')
+                    .attr('style', `left:${d3.event.pageX-22}px;top:${d3.event.pageY-53}px;`)
+
+                // transform坐标系统有问题
+                // .attr('transform','scale(1.5,1.5)')  
+                console.log(d3.event)
+            })
+            .attr('x', (d, i) => HG_Xscale(i) + HG_RectPadding / 2)
+            .attr('y', d => HG_Yscale(HG_Yscale.domain()[0]) - 30)
+            .attr('dx', () => (HG_Xscale.step() - HG_RectPadding) / 2)
+            .attr('dy', 20)
+            .text(d => d)
+            .attr('fill', 'darkgray')
+            .transition()
+            .duration(1000)
+            .delay((d, i) => i * transTime)
+            .attr('y', d => HG_Yscale(d) - 30)
+
+
+
+
+        // -----------------------------------------这里是一条分割线------------------------------------------
+        // 饼状图
+        let pie_Svg = d3.select('body').append('svg').attr('width', 400).attr('height', 400)
+        let pie_SvgWidth = pie_Svg.attr('width')
+        let pie_SvgHeight = pie_Svg.attr('height')
+        let pie_G = pie_Svg.append('g')
+
+
+        let pie_DataSet = [30, 10, 43, 55, 13]
+        // 可直接对数据排序改变布局
+        // pie_DataSet.sort((a,b)=>b-a)
+
+        // 颜色 比例尺  d3.schemeCategory10表示一些离散的色彩
+        let pie_colorScale = d3.scaleOrdinal().domain(d3.range(pie_DataSet.length)).range(d3.schemeCategory10)
+
+        // 新建 饼状图  生成画弧数据
+        // 定义饼图布局***
+        let pie = d3.pie().sort(null)
+        let pie_Data = pie(pie_DataSet)
+
+        // 新建 弧形生成器(内外圆环)
+        // arc({
+        //     innnerRadius:0,
+        //     outerRadius:100,
+        //     startAngle:0,
+        //     endAngle:Math.PI/2
+        // })
+        let arc_innerRadius = 0
+        let arc_outerRadius = 150
+
+        let arc_generator = d3.arc()
+            .innerRadius(arc_innerRadius)
+            .outerRadius(arc_outerRadius)
+
+        let arc_generatorBigger = d3.arc()
+            .innerRadius(arc_innerRadius)
+            .outerRadius(arc_outerRadius + 5)
+
+
+        // 添加制作动画相关属性
+        let sum = 0
+        pie_Data.forEach(d => {
+            console.log(d)
+            // 此处得先计算出重心位置否则字体会以改变后的startAngle和endAngle为基础计算位置会出错
+            d.center = arc_generator.centroid(d)
+
+            d._endAngle = d.endAngle
+            d.endAngle = d.startAngle
+            // 动画时长2秒，计算每一个弧形所用动画时间
+            d.duration = 2000 * (d.data / d3.sum(pie_DataSet))
+            // 每个弧形延时
+            d.delayTime = sum
+            sum = sum + d.duration
+        });
+
+        // 每个扇形内容 建立分组
+        let pie_GS = pie_G.selectAll('g')
+            .data(pie_Data).enter()
+            .append('g').attr("transform", `translate(${pie_SvgWidth/2},${pie_SvgHeight/2})`)
+
+        // 绘制扇形  path
+        pie_GS.append('path')
+            .attr('fill', (d, i) => pie_colorScale(i))
+            .attr('d', d => arc_generator(d))
+            .transition()
+            .delay((d) => d.delayTime)
+            .duration((d, i) => d.duration)
+            .ease(d3.easeLinear)
+            .attrTween('d', function (d, i) {
+                let obj = {
+                    startAngle: d.startAngle,
+                    endAngle: d._endAngle
+                }
+                let inter = d3.interpolate(d, obj)
+                //obj保存转换之后的信息
+                //插值模式，从d.endAnle=d.startAngle到d.endAngle=d._endAngle转换
+                return function (t) {
+                    //   d.endAngle = inter(t)
+                    return arc_generator(inter(t))
+                }
+            })
+
+        // 绘制文字
+        // arc.centroid  计算弧形质心(重心点).修改为提前计算
+        pie_GS.append('text')
+            .transition()
+            .delay((d) => d.delayTime)
+            .duration((d, i) => d.duration)
+            .ease(d3.easeLinear)
+            .attr('transform', (d, i) => `translate(${d.center})`)
+            .attr('text-anchor', 'middle')
+            .text(d => d.data)
+            .attr('fill', 'white')
+
+
+
+
+
+
+
+
+        // -----------------------------------------这里是一条分割线------------------------------------------
+
+        // 力导向图
+        let FD_Svg = d3.select('body').append('svg').attr('width', 600).attr('height', 600)
+        let FD_Width = FD_Svg.attr('width')
+        let FD_height = FD_Svg.attr('height')
+        let FD_G = FD_Svg.append('g')
+            .attr("transform", `translate(${margin.top},${margin.left})`)
+
+
+        //准备数据
+
+        //节点集
+        var nodes = [{
+                name: "湖南邵阳"
+            },
+            {
+                name: "山东莱州"
+            },
+            {
+                name: "广东阳江"
+            },
+            {
+                name: "山东枣庄"
+            },
+            {
+                name: "泽"
+            },
+            {
+                name: "恒"
+            },
+            {
+                name: "鑫"
+            },
+            {
+                name: "明山"
+            },
+            {
+                name: "班长"
+            }
+        ]
+
+        //边集
+        var edges = [{
+                source: 0,
+                target: 4,
+                relation: "籍贯",
+                value: 1.3
+            },
+            {
+                source: 4,
+                target: 5,
+                relation: "舍友",
+                value: 1
+            },
+            {
+                source: 4,
+                target: 6,
+                relation: "舍友",
+                value: 1
+            },
+            {
+                source: 4,
+                target: 7,
+                relation: "舍友",
+                value: 1
+            },
+            {
+                source: 1,
+                target: 6,
+                relation: "籍贯",
+                value: 2
+            },
+            {
+                source: 2,
+                target: 5,
+                relation: "籍贯",
+                value: 0.9
+            },
+            {
+                source: 3,
+                target: 7,
+                relation: "籍贯",
+                value: 1
+            },
+            {
+                source: 5,
+                target: 6,
+                relation: "同学",
+                value: 1.6
+            },
+            {
+                source: 6,
+                target: 7,
+                relation: "朋友",
+                value: 0.7
+            },
+            {
+                source: 6,
+                target: 8,
+                relation: "职责",
+                value: 2
+            }
+        ]
+
+        // 颜色比例尺
+        var FD_colorScale = d3.scaleOrdinal()
+            .domain(d3.range(nodes.length))
+            .range(d3.schemeCategory10)
+        // 新建力导向图
+        let forceSimulation = d3.forceSimulation()
+            .force('link', d3.forceLink())
+            .force('charge', d3.forceManyBody())
+            .force('center', d3.forceCenter())
+
+        // 生成节点数据
+        forceSimulation.nodes(nodes)
+            .on('tick', ticked)
+
+        // 生成边集数据
+        forceSimulation.force('link')
+            .links(edges)
+            // 每条边权值。。。映射为长度展示
+            .distance(d => d.value * 100)
+
+        console.log(nodes)
+        console.log(edges)
+
+        // 设置图形中心位置
+        forceSimulation.force('center')
+            .x(FD_Width / 2)
+            .y(FD_height / 2)
+
+
+
+        // 绘制边
+        // 应该先绘制边，在绘制顶点，因为在d3中，各元素是有层级关系的，先绘制的在下面
+
+        let links = FD_G.append('g')
+            .selectAll('line')
+            .data(edges)
+            .enter()
+            .append('line')
+            .attr('stroke', (d, i) => FD_colorScale(i))
+            .attr('stroke-width', 1)
+
+
+        // 边上的文字
+        let linksText = FD_G.append('g')
+            .selectAll('text')
+            .data(edges)
+            .enter()
+            .append('text')
+            .text(d => d.relation)
+
+        // 绘制节点集    先建立包裹   节点及文字的分组   g
+        // selectAll('.nodesGS') 选中该G节点  作为插入点  
+        let nodesGS = FD_G.selectAll('.nodesGS').data(nodes).enter().append('g')
+            .attr('trnasform', d => `translate(${d.x},${d.y})`)
+            .call(d3.drag().on('start', started).on('drag', dragged).on('end', ended))
+
+        // 节点
+        nodesGS.append('circle')
+            .attr('r', 10)
+            .attr('fill', (d, i) => FD_colorScale(i))
+
+        // 文字
+        nodesGS.append('text')
+            .attr('x', -10)
+            .attr('y', -20)
+            .attr('dy', 10)
+            .text(d => d.name)
+
+
+        // 工具函数
+
+        // 这个函数对于力导向图来说非常重要，因为力导向图是不断运动的，每一时刻都在发生更新，所以需要不断更新节点和连线的位置
+        function ticked(d) {
+            links
+                .attr("x1", function (d) {
+                    return d.source.x;
+                })
+                .attr("y1", function (d) {
+                    return d.source.y;
+                })
+                .attr("x2", function (d) {
+                    return d.target.x;
+                })
+                .attr("y2", function (d) {
+                    return d.target.y;
+                });
+
+            linksText
+                .attr("x", function (d) {
+                    return (d.source.x + d.target.x) / 2;
+                })
+                .attr("y", function (d) {
+                    return (d.source.y + d.target.y) / 2;
+                });
+
+            nodesGS.attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+        }
+
+        function started(d) {
+            if (!d3.event.active) {
+                // 设置衰减系数，对节点位置移动过程的模拟，数值越高移动越快，数值范围[0，1]
+                forceSimulation.alphaTarget(0.8).restart();
+            }
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(d) {
+            d.fx = d3.event.x
+            d.fy = d3.event.y
+        }
+        // 如果不添加 end 事件  节点将会固定到最后鼠标拖动位置  
+        function ended(d) {
+            if (!d3.event.active) {
+                forceSimulation.alphaTarget(0);
+            }
+            d.fx = null;
+            d.fy = null;
+        }
+
+
+
+        // -----------------------------------------这里是一条分割线------------------------------------------
+        // 树状图
+        let Tree_Svg = d3.select('body').append('svg').attr('width', 960).attr('height', 600)
+        let Tree_Width = Tree_Svg.attr('width')
+        let Tree_Height = Tree_Svg.attr('height')
+
+        let Tree_G = Tree_Svg.append('g').attr('transform', `translate(${margin.left},0)`)
+
+        // let Tree_Scale = Tree_Svg.append('g')
+
+        // 数据需要 以 树的形式 存储
+        let Tree_DataSet = {
+            name: "中国",
+            children: [{
+                    name: "浙江",
+                    children: [{
+                            name: "杭州",
+                            value: 100
+                        },
+                        {
+                            name: "宁波",
+                            value: 100
+                        },
+                        {
+                            name: "温州",
+                            value: 100
+                        },
+                        {
+                            name: "绍兴",
+                            value: 100
+                        }
+                    ]
+                },
+                {
+                    name: "广西",
+                    children: [{
+                            name: "桂林",
+                            children: [{
+                                    name: "秀峰区",
+                                    value: 100
+                                },
+                                {
+                                    name: "叠彩区",
+                                    value: 100
+                                },
+                                {
+                                    name: "象山区",
+                                    value: 100
+                                },
+                                {
+                                    name: "七星区",
+                                    value: 100
+                                }
+                            ]
+                        },
+                        {
+                            name: "南宁",
+                            value: 100
+                        },
+                        {
+                            name: "柳州",
+                            value: 100
+                        },
+                        {
+                            name: "防城港",
+                            value: 100
+                        }
+                    ]
+                },
+                {
+                    name: "黑龙江",
+                    children: [{
+                            name: "哈尔滨",
+                            value: 100
+                        },
+                        {
+                            name: "齐齐哈尔",
+                            value: 100
+                        },
+                        {
+                            name: "牡丹江",
+                            value: 100
+                        },
+                        {
+                            name: "大庆",
+                            value: 100
+                        }
+                    ]
+                },
+                {
+                    name: "新疆",
+                    children: [{
+                            name: "乌鲁木齐"
+                        },
+                        {
+                            name: "克拉玛依"
+                        },
+                        {
+                            name: "吐鲁番"
+                        },
+                        {
+                            name: "哈密"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        // 创建层级布局
+        // d3.hierarchy()，层级布局，需要和tree生成器一起使用，来得到绘制树所需要的节点数据和边数据
+        // d3.hierarchy().sum() ,后序遍历。
+        let Tree_hierarchyData = d3.hierarchy(Tree_DataSet)
+            .sum((d) => d.value)
+        console.log(Tree_hierarchyData)
+
+
+        // 创建树状图
+        // d3.tree()，创建一个树状图生成器
+        // d3.tree().separation(),定义邻居节点的距离
+        let tree = d3.tree()
+            .size([Tree_Width - 400, Tree_Height - 200])
+            .separation((a, b) => ((a.parent == b.parent ? 1 : 2) / a.depth))
+        console.log(tree)
+
+        // 初始化树状图数据
+        let Tree_Data = tree(Tree_hierarchyData)
+
+        // 使用转换完成的数据  得到边和节点
+        let Tree_nodes = Tree_Data.descendants()
+        let Tree_lines = Tree_Data.links()
+
+        console.log(Tree_nodes)
+        console.log(Tree_lines)
+
+        // 创建贝塞尔曲线生成器
+        // d3.linkHorizontal()，创建水平贝塞尔生成曲线生成器<====>垂直的（d3.linkVertical()）
+        // 点的x坐标和y坐标交换了位置，所有变成了水平的
+        let Bezier_curve_generator = d3.linkHorizontal()
+            .x((d) => d.y)
+            .y((d) => d.x)
+
+
+        // 绘制边
+        Tree_G.append('g')
+            .selectAll('path')
+            .data(Tree_lines)
+            .enter()
+            .append('path')
+            .attr('d', (d, i) => {
+                let start = {
+                    x: d.source.x,
+                    y: d.source.y
+                }
+                let end = {
+                    x: d.target.x,
+                    y: d.target.y
+                }
+                return Bezier_curve_generator({
+                    source: start,
+                    target: end
+                })
+            })
+            .attr('fill', 'none')
+            .attr('stroke', 'yellow')
+            .attr('stroke-width', 1)
+
+        // 绘制分组 节点和文字的父节点 g
+        let Tree_GS = Tree_G.append('g').selectAll('g')
+            .data(Tree_nodes)
+            .enter()
+            .append('g')
+            // 此处平移位置需要注意
+            .attr('transform', (d, i) => `translate(${d.y},${d.x})`)
+
+        // 绘制节点及文字
+        // 节点
+        Tree_GS.append('circle')
+            .attr('r', 6)
+            .attr('fill', 'white')
+            .attr('stroke', 'blue')
+            .attr('stroke-width', 1)
+        // 文字
+        Tree_GS.append('text')
+            // 如果有子节点文字向前移动  叶子节点文字都在节点后 其他文字都在节点前方
+            .attr('x', (d) => d.children ? -40 : 8)
+            .attr('y', -5)
+            .attr('dy', 10)
+            .text(d => d.data.name)
+
+
+
+
+
+        // -----------------------------------------这里是一条分割线------------------------------------------
+        // 中国地图
+        let Chinamap_Svg = d3.select('body').append('svg').attr('width', 1200).attr('height', 800)
+        let Chinamap_Width = Chinamap_Svg.attr('width')
+        let Chinamap_Height = Chinamap_Svg.attr('height')
+        let Chinamap_G = Chinamap_Svg.append('g')
+
+        // 投影函数
+        // 将 JSON 的格式应用于地理上的文件，叫做 GeoJSON 文件
+        // 由于 GeoJSON 文件中的地图数据，都是经度和纬度的信息。
+        // 它们都是三维的，而要在网页上显示的是二维的，所以要设定一个投影函数来转换经度纬度。
+        // 此处使用的是   墨卡托投影
+        // （优点：精准还原各国家国土形状且所有地方北边朝上）
+        // （缺点：以牺牲对各国领土面积大小的准确反映，纬度越高变形越严重）
+        let Chinamap_projection = d3.geoMercator()
+            .center([107, 31])
+            .scale(950)
+            .translate([Chinamap_Width / 2, Chinamap_Height / 2 + Chinamap_Height / 6])
+
+        // 创建地理路径 生成器
+        let Chinamap_path = d3.geoPath()
+            .projection(Chinamap_projection)
+
+
+        // 获取地图数据
+        // d3.json Fetch Api之上的便捷方法
+        d3.json('./china.json').then((mapdata) => {
+            console.log(mapdata)
+            let colorScale = d3.scaleOrdinal()
+                .domain(d3.range(mapdata.features.length))
+                .range(d3.schemePaired);
+            // 绘制每个省份
+            Chinamap_G.attr('class', 'states')
+                .selectAll('path')
+                .data(mapdata.features)
+                .enter()
+                .append('path')
+                .attr('d', Chinamap_path)
+                .attr('stroke', '#666')
+                .attr("stroke-width", 1)
+                .attr('fill', (d, i) => colorScale(i))
+                .append('title')
+                .text(d => d.properties.name)
+
+            // 描边叠加
+            // Chinamap_Svg.selectAll('.outerpath')
+            //             .data(mapdata.features)
+            //             .enter()
+            //             .append('path')
+            //             .attr("class", "state-borders")
+            //             .attr('d',d=>Chinamap_path(d))
+        })
+    </script>
+</body>
+
+</html>
