@@ -1,3 +1,11 @@
+// Generator 函数是 ES6 提供的一种异步编程解决方案，语法行为与传统函数完全不同 
+// 语法上，首先可以把它理解成，Generator 函数是一个状态机，封装了多个内部状态。 
+// Generator 函数除了状态机，还是一个遍历器对象（Iterator）生成函数。 
+// 可暂停函数(惰性求值), yield可暂停，next方法可启动。每次返回的是yield后的表达式结果
+
+// 调用方法 Generator 函数并不会执行 
+// Generator 函数是分段执行的，调用next方法 函数内部逻辑开始执行，遇到yield表达式停止
+
 // function关键字与函数名之间有一个星号 *
 // yield 表达式 定义不同状态
 function* helloWorldGenerator(){
@@ -76,6 +84,8 @@ for(let n of fibonacci()){
 
 
 // 二叉树
+// 由于 Generator 函数就是遍历器生成函数，
+// 因此可以把 Generator 赋值给对象的Symbol.iterator 属性，从而使得该对象具有 Iterator 接口
 let treeArr = [[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]];
 class TreeNode {
 	constructor(left,label,right){
@@ -96,7 +106,7 @@ class Tree extends TreeNode {
 	 if(arr.length ==1 ){ return new TreeNode(null,arr[0],null); }
 	 return new TreeNode(this.createTree(arr[0]),arr[1],this.createTree(arr[2]))
 	}
-	
+	// [Symbol.iterator]: function* () {}
 	* [Symbol.iterator] () {
 		let helloTree = 'i am a tree'
 		let ht = helloTree.split(' ')
