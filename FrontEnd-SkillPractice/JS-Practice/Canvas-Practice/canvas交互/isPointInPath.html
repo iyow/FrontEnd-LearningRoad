@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用isPointInPath实现canvas交互</title>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+    <script>
+        // canvas  交互
+        // 1.几何计算，包围盒计算位置
+        // 2.把图形序号存在另一张 canvas 的颜色信息里 当在正常的canvas上绘制图形时，同时在那张隐式的canvas中也绘制一遍，并把图形的索引值作为颜色值来绘制图形
+        // 3.利用 isPointInPath() API 重走一遍绘制流程，但不真正的绘制出来（不调用stroke 和 fill ）图形），而只调用 isPointInPath()方法判断点是否在图形中，如果在则终止。
+
+
+
+        let ball = []; //用来存放小球  
+        let myCanvas = null; 
+        let ctx = null;
+
+        myCanvas = document.getElementById("myCanvas");
+        myCanvas.width = document.documentElement.clientWidth - 20;
+        myCanvas.height = document.documentElement.clientHeight - 20;
+
+        ctx = myCanvas.getContext("2d");
+
+        //生成20个小球  
+        let aBall = null;
+        for (let i = 0; i < 20; i++) {
+            aBall = {
+                x: Math.random() * myCanvas.width,
+                y: Math.random() * myCanvas.height,
+                r: Math.random() * 50 + 10
+            }
+            ball[i] = aBall; //添加到数组中  
+        }
+
+        //该方法用来绘制小球  
+        function drawBall(cxt) {
+            for (let i = 0; i < ball.length; i++) {
+                cxt.beginPath();
+                cxt.arc(ball[i].x, ball[i].y, ball[i].r, 0, Math.PI * 2);
+
+                cxt.fillStyle = "#058";
+                cxt.fill();
+                cxt.closePath();
+            }
+        }
+        //在canvas中绘制小球  
+        drawBall(ctx);
+
+        //当鼠标点击小球时触发该事件  
+        function detect(event) {
+            let x = event.clientX - myCanvas.getBoundingClientRect().left;
+            let y = event.clientY - myCanvas.getBoundingClientRect().top;
+
+            //每个小球都进行判断，判断(x,y)是否在其中  
+            // 其实在同一个地方画了好几次遮住了下面的
+            for (let i = 0; i < ball.length; i++) {
+                ctx.beginPath();
+                ctx.arc(ball[i].x, ball[i].y, ball[i].r, 0, Math.PI * 2);
+
+                //判断(x,y)是否在canvas绘制的路径中（绘制的每个图形算一个路径）  
+                if (ctx.isPointInPath(x, y)) {
+                    ctx.fillStyle = "skyblue";
+                    ctx.fill();
+                }
+            }
+
+        }
+        //添加事件：mouseup  
+        myCanvas.addEventListener("mouseup", detect);
+
+
+        //当鼠标经过小球时触发该事件  
+        // function detect2(event) {
+        //     let x = event.clientX - myCanvas.getBoundingClientRect().left;
+        //     let y = event.clientY - myCanvas.getBoundingClientRect().top;
+        //     //每个小球都进行判断，判断(x,y)是否在其中
+        //     // 其实在同一个地方画了好几次遮住了下面的
+        //     for (let i = 0; i < ball.length; i++) {
+        //         console.log(i)
+
+        //         ctx.beginPath();
+        //         ctx.arc(ball[i].x, ball[i].y, ball[i].r, 0, Math.PI * 2);
+        //         console.log(ctx)
+        //         if (ctx.isPointInPath(x, y)) { 
+        //             //在其中  
+        //             ctx.fillStyle = "tomato";
+        //         } else {
+        //             ctx.fillStyle = "#058";
+        //         }
+        //         ctx.fill();
+        //     }
+        // }
+        //添加事件：mouseover  
+        // myCanvas.addEventListener("mousemove", detect2);
+    </script>
+</body>
+
+</html>
