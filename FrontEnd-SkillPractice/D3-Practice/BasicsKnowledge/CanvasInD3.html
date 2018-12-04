@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3中canvas与svg的转换</title>
+    <script src="https://cdn.bootcss.com/d3/5.7.0/d3.js"></script>
+</head>
+<body>
+    
+
+
+    <script>
+    // d3 canvas与SVG之间的转换
+
+
+    // d3的path包(Paths (d3-path))，可用于将canvas绘制的路径转换为SVG的路径
+    // 所以在实际应用中，需要把路径的创建过程单独抽取出来
+    function createLayout(tag,attrObj) {
+        // 注意
+        // 使用dodument对象创建一个SVG元素，需要为元素引入svg的命名空间
+        //（必需引入命名空间，不然浏览器将此元素当做普通html标签插入文档流）
+        let element = tag === 'svg'?document.createElementNS('http://www.w3.org/2000/svg', tag):document.createElement(tag);
+        Object.keys(attrObj).forEach((key)=>{
+            element.setAttribute(key,attrObj[key])
+        })
+        console.log(element)
+        return element;
+    }
+    let polyLinesCanvas = createLayout('canvas',{width:500,height:500});
+    let polyLinesSvg = createLayout('svg',{width:500,height:500});
+
+    // 公共路径生成 。。。 既能适应canvas又可以适应svg
+    function drawPathPolyLines(context) {
+        context.moveTo(10,10)
+        context.lineTo(110,150)
+        context.lineTo(210,10)
+        context.lineTo(310,150)
+    }
+
+    function drawPolyLinesInCanvas(canvasCtx,pathFunc) {
+        // 使用上下文绘制相应路径
+        pathFunc(canvasCtx)
+        console.log(canvasCtx)
+        console.log(polyLinesCanvas)
+        // 设置渲染方式
+        canvasCtx.lineWidth = 1;
+        canvasCtx.strokeStyle = 'blue';
+        canvasCtx.stroke()
+    }
+    function drawPolyLinesInSvg(svgEle,pathFunc) {
+        // 获取svg路径上下文
+        let svgCtx = d3.path();
+        // 使用上下文绘制相应路径
+        pathFunc(svgCtx);
+        console.log(svgCtx)
+        console.log(polyLinesSvg)
+        // 将路径绘制到svg元素上
+        d3.select(svgEle).append('path')
+            // 路径参数
+              .attr('d',svgCtx.toString())
+            //   设置渲染方式
+              .attr('stroke-width','1px')
+              .attr('stroke','blue')
+              .attr('fill','none')
+    }
+
+    drawPolyLinesInCanvas(polyLinesCanvas.getContext('2d'),drawPathPolyLines)
+    drawPolyLinesInSvg(polyLinesSvg,drawPathPolyLines)
+
+
+    // canvas 位图  放大会失真
+
+    // 位图[bitmap]，也叫做点阵图，删格图像，像素图，简单的说，就是最小单位由像素构成的图，缩放会失真。
+    // 构成位图的最小单位是像素，位图就是由像素阵列的排列来实现其显示效果的，每个像素有自己的颜色信息，在对位图图像进行编辑操作的时候，可操作的对像是每个像素，
+    // 我们可以改变图像的色相、饱和度、明度，从而改变图像的显示效果。
+    // 举个例子来说，位图图像就好比在巨大的沙盘上画好的画，当你从远处看的时候，画面细腻多彩，但是当你靠的非常近的时候，你就能看到组成画面的每粒沙子以及每个沙粒单纯的不可变化颜色。
+
+    // 位图的好处是，色彩变化丰富，编辑上，可以改变任何形状的区域的色彩显示效果，相应的，要实现的效果越复杂，需要的象素数越多，图像文件的大小[长宽]和体积[存储空间]越大。
+
+    // 常用的位图绘制软件有adobe photoshop、corel painter等，对应的文件格式为[.psd .tif][.rif]等，另外还有[.jpg][.gif][.png][.bmp]等。
+
+
+    document.querySelector('body').appendChild(polyLinesCanvas)
+
+    // svg矢量图   放大不会失真
+
+    // 矢量图[vector]，也叫做向量图，简单的说，就是缩放不失真的图像格式。
+    // 矢量图是通过多个对象的组合生成的，对其中的每一个对象的纪录方式，都是以数学函数来实现的，
+    // 也就是说，矢量图实际上并不是象位图那样纪录画面上每一点的信息，而是纪录了元素形状及颜色的算法，当你打开一付矢量图的时候，软件对图形象对应的函数进行运算，将运算结果[图形的形状和颜色]显示给你看。
+    // 无论显示画面是大还是小，画面上的对象对应的算法是不变的，所以，即使对画面进行倍数相当大的缩放，其显示效果仍然相同[不失真]。
+    // 举例来说，矢量图就好比画在质量非常好的橡胶膜上的图，不管对橡胶膜怎样的常宽等比成倍拉伸，画面依然清晰，不管你离得多么近去看，也不会看到图形的最小单位。
+
+    // 矢量的好处是，轮廓的形状更容易修改和控制，但是对于单独的对象，色彩上变化的实现不如位图来的方便直接。另外，支持矢量格式的应用程序也远远没有支持位图的多，很多矢量图形都需要专门设计的程序才能打开浏览和编辑。
+    // 常用的矢量绘制软件有adobe illustrator、coreldraw、freehand、flash等，对应的文件格式为[.ai .eps][.cdr][.fh][.fla/.swf]等，另外还有[.dwg][.wmf][.emf]等。
+    document.querySelector('body').appendChild(polyLinesSvg)
+
+    // 矢量图可以很容易的转化成位图，但是位图转化为矢量图却并不简单，往往需要比较复杂的运算和手工调节。
+    // 矢量和位图在应用上也是可以相互结合的，比如在矢量文件中嵌入位图实现特别的效果，再比如在三维影象中用矢量建模和位图贴图实现逼真的视觉效果等等。
+    </script>
+
+    <script>
+        // 在d3的shape包中(Shapes (d3-shape)),的每一个形状都可以直接绘制在Canvas上，可以很方便地将SVG的代码应用到Canvas上。
+        let dataSet = [[10, 10],[50, 10], [100, 60], [150, 15], [200, 55], [250, 60], [300, 80], [350, 50], [400, 70]];
+        let curveCanvas = createLayout('canvas',{width:500,height:500});
+        let curveSvg = createLayout('svg',{width:500,height:500});
+
+        // shape 包中  线性路径生成器 生成曲线路径
+        let curveGenerator = d3.line()
+                                .x(d=>d[0])
+                                .y(d=>d[1])
+                                .curve(d3.curveBasis);
+
+
+
+        function drawCurveInCanvas(canvasCtx,data) {
+            //  设置绘制的上下文
+            curveGenerator.context(canvasCtx);
+            //  设置数据
+            // 若生成器具有上下文，则该line将作为一系列路径方法调用呈现给此上下文
+            // 否则，返回路径数据字符串。
+            curveGenerator(data);
+            //  设置线的宽度  
+            canvasCtx.lineWidth = 2;
+            //  设置线的颜色
+            canvasCtx.strokeStyle = 'blue';
+            //  绘制路径
+            canvasCtx.stroke();
+        }
+        function drawCurveInSvg(svgEle,data) {
+            //  必须要将上下文置空  确保生成器返回路径数据字符串
+            curveGenerator.context(null);
+            //  添加路径元素
+            d3.select(svgEle).append('path')
+                            .attr('d', curveGenerator(data))
+                            .attr('stroke-width', '2px')
+                            .attr('stroke', 'blue')
+                            .attr('fill', 'none');
+        }
+        drawCurveInCanvas(curveCanvas.getContext('2d'),dataSet)
+        drawCurveInSvg(curveSvg,dataSet)
+        document.querySelector('body').appendChild(curveCanvas)
+        document.querySelector('body').appendChild(curveSvg)
+    </script>
+</body>
+</html>
