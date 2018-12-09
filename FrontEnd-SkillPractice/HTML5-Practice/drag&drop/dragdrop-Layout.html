@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>菜单拖拽布局效果</title>
+
+    <style>
+        .drag .column {
+            width: 520px;
+            display: inline-block;
+            vertical-align: text-top;
+        }
+
+        .row {
+            min-height: 120px;
+            margin: auto;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .row .drop-container {
+            width: 240px;
+            min-height: 120px;
+            background: blue;
+            margin: 10px;
+            float: left;
+            margin-bottom: -9999px;
+            padding-bottom: 9999px;
+        }
+
+        .row .draged {
+            width: 100px;
+            height: 100px;
+            background: yellowgreen;
+            margin: 10px;
+            float: left;
+        }
+
+        .row .draged2 {
+            width: 220px;
+            height: 220px;
+            background: rgb(177, 101, 97);
+            margin: 10px;
+            float: left;
+        }
+
+        .row .draged3 {
+            width: 100px;
+            height: 220px;
+            background: rgb(192, 121, 15);
+            margin: 10px;
+            float: left;
+        }
+
+        .row .draged4 {
+            width: 220px;
+            height: 100px;
+            background: rgb(60, 39, 177);
+            margin: 10px;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="drag">
+        <div class="column">
+            <div class="row">
+                <div class="drop-container">
+                    <div draggable="true" class="draged" id="1">拖拽元素1</div>
+                    <div draggable="true" class="draged" id="2">拖拽元素2</div>
+                </div>
+                <div class="drop-container">
+                    <div draggable="true" class="draged" id="3">拖拽元素3</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="drop-container"></div>
+                <div class="drop-container">
+                    <div draggable="true" class="draged" id="4">拖拽元素4</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="drop-container">
+                    <div draggable="true" class="draged2" id="5">拖拽元素5</div>
+                </div>
+                <div class="drop-container">
+                    <div draggable="true" class="draged3" id="6">拖拽元素6</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="drop-container">
+                    <div draggable="true" class="draged4" id="7">拖拽元素7</div>
+                </div>
+                <div class="drop-container">
+                    <div draggable="true" class="draged4" id="8">拖拽元素8</div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="row">
+                <div class="drop-container">
+                    <div draggable="true" class="draged3" id="9">拖拽元素9</div>
+                </div>
+                <div class="drop-container"></div>
+            </div>
+            <div class="row">
+                <div class="drop-container"></div>
+                <div class="drop-container"></div>
+            </div>
+            <div class="row">
+                <div class="drop-container"></div>
+                <div class="drop-container"></div>
+            </div>
+            <div class="row">
+                <div class="drop-container"></div>
+                <div class="drop-container"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        // https://www.w3.org/TR/CSS2/syndata.html#characters
+        // 在CSS中，标识符（包括元素名称、类和ID）
+        // 在选择器中，只能包含字符[a-zA-Z0-9]和ISO 10646。字符 U+00A0 和更高，加上连字符（-）和下划线（_）；
+        // 不能从一个数字、两个连字符或连字符后面跟着一个数字开头。
+        // 标识符还可以包含转义字符和任何ISO 10646字符。
+        // Note that Unicode is code-by-code equivalent to ISO 10646
+
+
+        // 如果标识符的第一个字符是数字，则需要根据其Unicode代码点对其进行转义。
+        // 例如，字符1的代码点是U + 0031，因此您可以将其转义为\000031或\31。
+        // 基本上，要转义任何数字字符，只需在其前面添加\3并附加空格字符（）。
+        // 注意\转义
+        
+        // 拖拽元素
+        function drag(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        }
+        // 容器元素 阻止默认行为
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+        function drop(e) {
+            e.preventDefault();
+            if (e.target.className.includes('drop-container')) {
+                let data = e.dataTransfer.getData('text/plain')
+
+                // 此处选取的是文档树中已存在的dom节点，它将从文档树中删除，然后重新插入它的新位置
+                e.target.appendChild(document.querySelector(`#\\3${data}`))
+            }
+        }
+
+        // 事件委托
+        document.querySelectorAll('.row').forEach((ele) => {
+            document.addEventListener('dragover', allowDrop)
+            document.addEventListener('drop', drop)
+        })
+        document.querySelectorAll('[draggable=true]').forEach((ele) => {
+            ele.addEventListener('dragstart', drag)
+        })
+    </script>
+</body>
+
+</html>
