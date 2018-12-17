@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import PhotoWall from '@/components/PhotoWall'
+import HelloWorld from '@/pages/welcome/HelloWorld'
+import PhotoWall from '@/pages/home/PhotoWall'
 import JellyMenu from '@/components/menu/JellyMenu'
 import PoppingMenu from '@/components/menu/PoppingMenu'
-import NotFound from '@/components/404'
+import NotFound from '@/components/404/404'
 
 Vue.use(Router)
 const routes = [{
