@@ -10,6 +10,17 @@
 
 <body>
     <script>
+        // 概念理解
+        // this是一个特殊的与Execution Contexts相关的对象,
+        // 用于指明当前代码执行时的Execution Contexts，
+        // this在语句执行进入一个Execution Contexts时被赋值，且在代码执行过程中不可再改变。
+        // 注：Execution Contexts也就是我们常听到的"上下文"或"执行环境"。
+
+        // this的一般指向规则
+        // 规则1——作为函数调用时，this指向全局对象
+        // 规则2——作为方法调用时，this指向上下文对象
+        // 规则3——作为构造函数使用时,this指向生成的实例
+        // 规则4——使用call/apply/bind方法显式指定this
         function fun() {    // this 指向的是 函数的调用者 或者是 事件的调用者
             alert(this);
         }
