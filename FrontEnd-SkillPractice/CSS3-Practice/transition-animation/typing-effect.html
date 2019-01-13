@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>打字效果</title>
+    <style id="typing">
+        :root {
+            --fontlength: 20em;
+            font-size: 20px;
+        }
+
+        .typing {
+            margin: 0;
+            padding: 0;
+            width: var(--fontlength);
+            height: 1em;
+            line-height: 1em;
+            border-right: 1px solid red;
+            animation: typing 3.5s steps(37, end), blink-caret .75s step-end infinite;
+            word-break: break-all;
+            overflow: hidden;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: var(--fontlength);
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent;
+            }
+
+            50% {
+                border-color: currentColor;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <p class="typing">这段文字将会用typing动画的效果展现出来</p>
+
+    <script>
+        function log(something, str = 'LOG', style = 'color:yellow') {
+            console.log(`%c ===========${str}`, style)
+            console.log(something)
+        }
+        function getWidth(text = '', styleMap = new Map()) {
+            let contain = document.createElement('span')
+            let width = 0
+            let defaultStyleMap = new Map([
+                ['position', 'absolute'],
+                ['top', 0],
+                ['left', 0],
+                ['visibility', 'hidden']
+            ])
+            new Map([...defaultStyleMap, ...styleMap]).forEach((v, k) => {
+                contain.style[k] = v
+            });
+            contain.innerText = text
+            document.body.appendChild(contain)
+            width = getComputedStyle(contain).width
+            document.body.removeChild(contain)
+            return width
+        }
+
+
+        let typingSheet = document.getElementById('typing').sheet
+        let typing = document.getElementsByClassName('typing')[0]
+        try {
+            typingSheet.insertRule(`:root{--fontlength:${getWidth(typing.innerText)}}`, 1)
+        } catch (err) {
+            throw new Error(err)
+        }
+
+    </script>
+</body>
+
+</html>
