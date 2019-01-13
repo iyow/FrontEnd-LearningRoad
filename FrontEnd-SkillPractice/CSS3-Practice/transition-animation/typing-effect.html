@@ -8,7 +8,7 @@
     <title>打字效果</title>
     <style id="typing">
         :root {
-            --fontlength: 20em;
+            --fontlength: 0;
             font-size: 20px;
         }
 
@@ -78,11 +78,21 @@
 
         let typingSheet = document.getElementById('typing').sheet
         let typing = document.getElementsByClassName('typing')[0]
-        try {
-            typingSheet.insertRule(`:root{--fontlength:${getWidth(typing.innerText)}}`, 1)
-        } catch (err) {
-            throw new Error(err)
-        }
+        log(typingSheet)
+        // 操作stylesheet
+        // try {
+        //     typingSheet.insertRule(`:root{--fontlength:${getWidth(typing.innerText)}}`, 1)
+        // } catch (err) {
+        //     // do something
+        //     throw new Error(err)
+        // }
+
+        // 操作css变量
+        let root = getComputedStyle(document.documentElement);
+        let fontLength = root.getPropertyValue('--fontlength');
+        log(root)
+        log(fontLength)
+        typing.style.setProperty('--fontlength', getWidth(typing.innerText))
 
     </script>
 </body>
