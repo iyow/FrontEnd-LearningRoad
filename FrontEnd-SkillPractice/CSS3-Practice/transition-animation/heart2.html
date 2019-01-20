@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        .heart {
+            position: absolute;
+            top: 80px;
+            left: 80px;
+            width: auto;
+            height: auto;
+            display: block;
+            z-index: 10;
+            animation: none;
+            background: transparent;
+            box-shadow: none;
+            animation: heartbeat 1s linear infinite;
+            box-shadow: 0 0 40px 30px #F44336;
+        }
+
+        .heart:after,
+        .heart:before {
+            content: '';
+            position: absolute;
+            top: calc(50% - 20px);
+            left: calc(50% - 33px);
+            height: 30px;
+            width: 55px;
+            background: linear-gradient(-45deg, #FDD835, #F44336);
+            box-shadow: none;
+            animation: none;
+        }
+
+        .heart:after {
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            transform: rotate(45deg) translate(4px, 3px) scale(.55);
+        }
+
+        .heart:before {
+            background: linear-gradient(45deg, #FDD835, #F44336);
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            transform: rotate(-45deg) translate(4px, 11px) scale(.55);
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale3d(1, 1, 0.45);
+            }
+
+            30% {
+                transform: scale3d(1.25, 0.75, 0.55);
+            }
+
+            40% {
+                transform: scale3d(0.75, 1.25, 0.45);
+            }
+
+            50% {
+                transform: scale3d(1.15, 0.85, 0.45);
+            }
+
+            65% {
+                transform: scale3d(0.95, 1.05, 0.55);
+            }
+
+            75% {
+                transform: scale3d(1.05, 0.95, 0.45);
+            }
+
+            100% {
+                transform: scale3d(1, 1, 0.45);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <span class="heart"></span>
+</body>
+
+</html>
