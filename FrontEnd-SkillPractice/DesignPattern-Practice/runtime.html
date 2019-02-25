@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box-flex {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .reverse {
+            flex-direction: row-reverse;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            font-size: 20px;
+            border: 1px solid #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box-flex">
+        <div class="box box-one">Avatar</div>
+        <div class="box box-two">name---time</div>
+    </div>
+    <div class="box-flex reverse">
+        <div class="box box-one">avatar</div>
+        <div class="box box-two">name---time</div>
+    </div>
+
+    <!-- run in web server -->
+    <script type="module">
+        import Observer from './Observer/observer.js'
+        let func1 = function(params){
+            console.log('handle===this',this)
+            console.log('handle===params',params)
+        }
+        let func2 = function (params) {
+            console.log('我不会显示')
+            console.log('=====',params)
+        }
+        let func3 = function (params) {
+            console.log('lolololololooooololololoo')
+        }
+        let myob = new Observer()
+        myob.on('hello',func1,func2,func3)
+        myob.on('world',function(){
+            console.log('here we go')
+        })
+
+        myob.off('hello',func2)
+        myob.emit('hello',2)
+        myob.clear('world')
+        // myob.clear()
+
+
+        console.log('=======',myob)
+
+        console.log('=======',myob.__proto__)
+        console.log('=======',myob.constructor.name)
+        console.log('=======',myob instanceof Observer)
+        console.log('=======',myob.constructor === Observer)
+        
+    </script>
+</body>
+
+</html>
