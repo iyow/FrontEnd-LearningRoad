@@ -13,7 +13,7 @@
 - 熟悉 RESTFul API
 
 ## 项目内容
-> 参考本项目 [wiki](https://xue.coding.net/p/training-2018/wiki/2) 中的对应说明
+> 参考本项目 logs 中的对应说明
 
 ## 规范要求
 1. 每个用户建立一个独立的分支
