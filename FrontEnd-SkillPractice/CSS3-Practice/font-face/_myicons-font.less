@@ -1,0 +1,43 @@
+// myicons Font Path
+// --------------------------
+@font-face {
+    font-family: @myicons-font-family;
+    src: url('@{myicons-font-path}/myicons.ttf?v=@{ionicons-version}') format('truetype'),
+    url('@{myicons-font-path}/myicons.woff?v=@{ionicons-version}') format('woff'),
+    url('@{myicons-font-path}/myicons.svg?v=@{ionicons-version}#myicons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+// using===>class="my-icons-[iconName]"
+[class^="my-icon-"],
+[class*=" my-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: @myicons-font-family  !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* using===>class="my-icon my-icon-[iconName]"
+.my-icon {
+    display: inline-block;
+    font-family: @ionicons-font-family;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+}
+*/
