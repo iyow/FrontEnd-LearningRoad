@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>first-child/nth-last-child伪类与动态列表布局实例页面</title>
+    <style>
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            width: 240px;
+            height: 240px;
+            background-color: #eee;
+        }
+
+        li {
+            background: url(../mouse-direction/images/8.jpg);
+            background-size: cover;
+            outline: 1px solid #fff;
+        }
+
+        /* 1个 */
+        li:only-child {
+            height: 100%;
+        }
+
+        /* 2个 */
+        li:first-child:nth-last-child(2),
+        li:first-child:nth-last-child(2)+li {
+            width: 50%;
+            height: 50%;
+        }
+
+        li:first-child:nth-last-child(2)+li {
+            margin-left: auto;
+        }
+
+        /* 3个 */
+        li:first-child:nth-last-child(3),
+        li:first-child:nth-last-child(3)~li {
+            width: 50%;
+            height: 50%;
+        }
+
+        li:first-child:nth-last-child(3) {
+            margin: auto;
+        }
+
+        li:first-child:nth-last-child(3)~li {
+            float: left;
+        }
+
+        /* 4个 */
+        li:first-child:nth-last-child(4),
+        li:first-child:nth-last-child(4)~li {
+            width: 50%;
+            height: 50%;
+            float: left;
+        }
+
+        /* 5个和6个 */
+        li:first-child:nth-last-child(5),
+        li:first-child:nth-last-child(6) {
+            width: 160px;
+            height: 160px;
+            float: left;
+        }
+
+        li:first-child:nth-last-child(5)~li,
+        li:first-child:nth-last-child(6)~li {
+            width: 80px;
+            height: 80px;
+            float: left;
+        }
+
+        /* 7个 8个 9个 */
+        li:first-child:nth-last-child(7),
+        li:first-child:nth-last-child(8),
+        li:first-child:nth-last-child(9),
+        li:first-child:nth-last-child(7)~li,
+        li:first-child:nth-last-child(8)~li,
+        li:first-child:nth-last-child(9)~li {
+            width: 80px;
+            height: 80px;
+            float: left;
+        }
+
+        li:first-child:nth-last-child(7) {
+            float: none;
+            margin: auto;
+        }
+
+        li:first-child:nth-last-child(8) {
+            margin-left: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <h4>1张图片</h4>
+    <ul>
+        <li></li>
+    </ul>
+    <h4>2张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>3张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>4张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>5张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>6张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>7张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>8张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>9张图片</h4>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</body>
+
+</html>
