@@ -4,12 +4,15 @@ const http = require('http');
 let server = http.createServer((req,res)=>{
     if (req.url == '/') {
         //显示首页
-        fs.readFile('./we-pain.html',(err,data)=>{
+        fs.readFile('./we-paint.html',(err,data)=>{
             res.end(data);
         });
     }
 });
 
+server.on('upgrade',(req,socket,header)=>{
+    console.log('emit======upgrade')
+})
 
 //创建一个socketio对象
 const io = require('socket.io')(server);
