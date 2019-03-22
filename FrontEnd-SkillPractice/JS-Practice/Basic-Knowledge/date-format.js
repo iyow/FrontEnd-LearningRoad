@@ -7,7 +7,7 @@
 function formatDate(type, time = new Date()) {
     let date = new Date(time)
     return type
-        .replace('YYYY', ('00' + date.getFullYear()).slice(-2))
+        .replace('YYYY', date.getFullYear())
         .replace('MM', ('00' + (date.getMonth() + 1)).slice(-2))
         .replace('DD', ('00' + date.getDate()).slice(-2))
         .replace('hh', ('00' + date.getHours()).slice(-2))
