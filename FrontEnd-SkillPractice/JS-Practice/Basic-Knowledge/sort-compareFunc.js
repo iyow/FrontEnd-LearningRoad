@@ -12,23 +12,30 @@
 // }
 // let compareFunc = compareStrategy[order]
 
-function compareByFunc(options = {}) {
-    let key = options.key || ''
-    let order = options.order || 'Asc'
-    let compareFunc = order === 'Asc' ? (x, y) => ((x < y) ? -1 : (x > y) ? 1 : 0) : (x, y) => ((x > y) ? -1 : (x < y) ? 1 : 0)
-    let get = key ? x => x[key] : x => x
+function compareByFunc(key = '', order = 'Des') {
+    let compareFunc = order === 'Des' ?
+        (x, y) => ((x > y) ? -1 : (x < y) ? 1 : 0) :
+        (x, y) => ((x < y) ? -1 : (x > y) ? 1 : 0)
+    let get = key ? x => getByPath(x, key) : x => x
     return function (a, b) {
         var x = get(a)
         var y = get(b)
         return compareFunc(x, y)
     }
 }
+function getByPath(item, path, defalt = '') {
+    let pathArr = path.split('.')
+    let value = defalt
+    for (let i = 0, len = pathArr.length; i < len; i++) {
+        value = item[pathArr[i]]
+    }
+    return value
+}
 
 let a = [6, 89, 33, 221, 1]
 let b = [{ 'a': 6 }, { 'a': 89 }, { 'a': 33 }, { 'a': 221 }, { 'a': 1 }]
 
 a.sort(compareByFunc())
-b.sort(compareByFunc({ key: 'a' }))
-console.log(compareByFunc().toString())
+b.sort(compareByFunc('a'))
 console.log(a)
 console.log(b)
