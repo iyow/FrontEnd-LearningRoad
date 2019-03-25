@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>contenteditable属性</title>
+    <style>
+        .output {
+            font: 1rem 'Fira Sans', sans-serif;
+        }
+
+        blockquote {
+            background: #eee;
+            border-radius: 5px;
+            margin: 16px 0;
+        }
+
+        blockquote p {
+            padding: 15px;
+        }
+
+        cite {
+            margin: 16px 32px;
+            font-weight: bold;
+        }
+
+        blockquote p::before {
+            content: '\201C';
+        }
+
+        blockquote p::after {
+            content: '\201D';
+        }
+
+        [contenteditable='true'] {
+            caret-color: red;
+        }
+
+        [contenteditable='true']:empty::before {
+            content: attr(placeholder);
+            font-size: 14px;
+            color: #CCC;
+            line-height: 21px;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+        <!-- contenteditable=""
+        contenteditable="events"
+        contenteditable="caret"
+        contenteditable="plaintext-only"
+        contenteditable="true"
+        contenteditable="false" -->
+    <blockquote contenteditable="true" placeholder="input something">
+        <p>Edit this content to add your own quote</p>
+    </blockquote>
+
+    <cite contenteditable="true">-- Write your own name here</cite>
+
+</body>
+
+</html>
