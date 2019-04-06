@@ -42,13 +42,32 @@ function* iterTree(tree){
 	  yield tree	
 	}
 }
-// return 语句的返回值 不包括在for...of循环中
+
 for(let f of flatAll(array)){
 	console.log(f)	
 }
 for(let f of iterTree(array)){
 	console.log(f)
 }
+
+
+function* willNoReturn() {
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+  return 6;
+}
+
+for (let v of willNoReturn()) {
+  console.log(v);
+}
+// 1 2 3 4 5
+
+// return 语句的返回值 不包括在for...of循环中
+// 这里需要注意，一旦next方法的返回对象的done属性为true，for...of循环就会中止，
+// 且不包含该返回对象，所以上面代码的return语句返回的6，不包括在for...of循环之中
 
 // 从外部注入不同值 从而调整函数行为
 // next传入参数为上一次yield执行结果返回值
