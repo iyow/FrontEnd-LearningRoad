@@ -24,12 +24,18 @@ function compareByFunc(key = '', order = 'Des') {
     }
 }
 function getByPath(item, path, defalt = '') {
-    let pathArr = path.split('.')
-    let value = defalt
-    for (let i = 0, len = pathArr.length; i < len; i++) {
-        value = item[pathArr[i]]
+    let tempObj = item
+    let keyArr = path.split('.')
+    for (let i = 0, len = keyArr.length; i < len; i++) {
+        let key = keyArr[i]
+        if (key in tempObj) {
+            tempObj = tempObj[key]
+        } else {
+            tempObj = defalt
+            break
+        }
     }
-    return value
+    return tempObj
 }
 
 let a = [6, 89, 33, 221, 1]
