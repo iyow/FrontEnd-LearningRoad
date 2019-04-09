@@ -18,6 +18,8 @@ export default {
         if (!magicImgInstance) {
           initInstance()
         }
+        // 此处会按照Vue选项合并策略（详情查看混入文档）
+        // Vue.config.optionMergeStrategies 可以自定义选项合并策略
         Object.assign(magicImgInstance, options)
         magicImgInstance.openMagic()
       }
