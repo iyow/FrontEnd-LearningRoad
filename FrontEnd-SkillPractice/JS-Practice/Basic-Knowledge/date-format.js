@@ -50,3 +50,16 @@ let DisplayTimeStrategy = {
     'twentyFourHours': twentyFourHoursFunc
 }
 export const formatDisplayTime = DisplayTimeStrategy['zeroTimeStamp']
+
+
+/**
+ * @description 将秒转换为 时:分:秒 的格式
+ * @param {Int} seconds 秒数
+ */
+export function formatSecond(seconds) {
+    return [
+        parseInt(seconds / 60 / 60),
+        parseInt(seconds / 60 % 60),
+        parseInt(seconds % 60)
+    ].join(":").replace(/\b(\d)\b/g, "0$1");
+}
