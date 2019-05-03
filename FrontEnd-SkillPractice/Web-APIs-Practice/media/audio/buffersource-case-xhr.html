@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BuffersourceCaseXHR</title>
+</head>
+
+<body>
+    <!-- source======AudioBuffer(createBufferSource)xhr加载了线上音频,表现为一个音频源，它包含了一些写在内存中的音频数据，通常储存在一个ArrayBuffer对象中 -->
+    <script>
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = AudioContext ? new AudioContext() : '';
+
+        let soundBuffer = {
+            getBuffer(link) {
+                return new Promise((resolve, reject) => {
+                    if (audioCtx) {
+                        let request = new XMLHttpRequest();
+                        request.open("GET", link, true);
+                        request.responseType = "arraybuffer";
+                        request.onload = function () {
+                            // console.log(typeof data)  //返回类型为object，就是原生Buffer
+                            // let dataTmp = data.buffer  // arrayBuffer
+                            // audioCtx.decodeAudioData(dataTmp).then(...)  //这才是最后的audioBuffer
+                            // 以下为旧的回调语法
+                            audioCtx.decodeAudioData(request.response, function (buffer) {
+                                resolve(buffer)
+                            }, function (e) {
+                                console.log('reject');
+                                reject(e);
+                            });
+                        };
+                        request.send();
+                    } else {
+                        reject('not support AudioContext');
+                    }
+                })
+            },
+            // 注意createSound方法第一行的检测，AudioContext是有状态的
+            // 在使用中我们发现，ios手机，经常会切home键回来后，音频不播放了，查了一下文档发现
+            // 播放时进入running状态
+            // 播放完成切home键会进入interrupt状态
+            // 再回到原网页，很大概率会进入到suspended状态
+            // 这时候，无论怎么调用start 或者干脆new AudioContext()后重新调用，音频都不会再播放
+            // AudioContext也提供了方法监听他的状态API文档(audioCtx.onstatechange = function() { ... };) ，可以监听到挂起后就重置，但是不建议这么做，毕竟系统自动挂起是为了节约性能，我们按需重启即可。
+            createSound(buffer) {
+                if (audioCtx.state != 'running') {
+                    console.log('重启audioCtx');
+                    audioCtx.resume();
+                }
+                let source = audioCtx.createBufferSource();
+                let analyser = audioCtx.createAnalyser();
+                let gainNode = audioCtx.createGain();
+                source.buffer = buffer;
+                source.connect(analyser);
+                analyser.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                return source;
+            }
+        }
+
+        // 使用上，可以在页面load后preload音频
+        // preload
+        soundBuffer
+            .getBuffer(item.soundUrl)  // item.soundUrl是音频线上地址
+            .then(buf => {
+                this.soundBuf[item.name] = buf;  // 存储，方便调用
+            })
+            .catch(e => {
+                console.log(e);
+            });
+
+        // 使用 
+        let sound;
+        if (this.soundBuf[item.name]) {
+            sound = soundBuffer.createSound(this.soundBuf[item.name]);
+            sound.start(0); // 播放
+        } else {
+            console.log("download sound failed？");
+        }
+    </script>
+    <script>
+        // 使用 AudioContext 播放音频 解决 谷歌禁止自动播放音频
+        window.ExAudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+        try {
+            var context = new window.ExAudioContext();;
+            var source = null;
+            var audioBuffer = null;
+            function stopSound() {
+                if (source) {
+                    source.stop(0); //立即停止
+                }
+            }
+            function playSound() {
+                source = context.createBufferSource();
+                source.buffer = audioBuffer;
+                source.loop = true;
+                source.connect(context.destination);
+                source.start(0); //立即播放
+            }
+            function initSound(arrayBuffer) {
+                context.decodeAudioData(arrayBuffer, function (buffer) { //解码成功时的回调函数
+                    audioBuffer = buffer;
+                    playSound();
+                }, function (e) { //解码出错时的回调函数
+                    console.log('Error decoding file', e);
+                });
+            }
+            function loadAudioFile(url) {
+                var xhr = new XMLHttpRequest(); //通过XHR下载音频文件
+                xhr.open('GET', url, true);
+                xhr.responseType = 'arraybuffer';
+                xhr.onload = function (e) { //下载完成
+                    initSound(this.response);
+                };
+                xhr.send();
+            }
+            loadAudioFile('../onepice.mp3');
+            // $("#stop").click(function () {
+            //     stopSound();
+            // });
+        } catch (e) {
+            console.log('!Your browser does not support AudioContext');
+        }
+    </script>
+</body>
+
+</html>
