@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTMLAudioElement</title>
+</head>
+
+<body>
+    <!-- audio标签 三种实现 -->
+    <!-- 第一种是直接在HTML中使用标签 -->
+    <audio src="../onepice.mp3" controls="controls"></audio>
+    <script>
+        // 第二种 new Audio()方法
+        let audio = new Audio()
+        audio.src = "../onepice.mp3"
+        audio.play();
+        // audio.controls = true  //显示出来控件
+        // document.body.appendChild(audio)  //也可把它添加到页面中
+    </script>
+    <script>
+        // 第三种是 document.createElement()方法
+        let audio = document.createElement('audio') //生成一个audio元素 
+        audio.controls = true //这样控件才能显示出来 
+        audio.src = '../onepice.mp3' //音乐的路径 
+        document.body.appendChild(audio) //把它添加到页面中
+    </script>
+</body>
+
+</html>
