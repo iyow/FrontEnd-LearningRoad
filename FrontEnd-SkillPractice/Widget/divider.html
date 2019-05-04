@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Divider分割线</title>
+    <!-- one -->
+    <style>
+        .or-divider {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            margin: 0 1em;
+        }
+
+        .or-divider.italic {
+            font-style: italic;
+        }
+
+        .or-divider::before {
+            content: '';
+            height: .125em;
+            background: black;
+            flex: 1;
+            margin: 0 .25em 0 0;
+        }
+
+        .or-divider::after {
+            content: '';
+            height: .125em;
+            background: black;
+            flex: 1;
+            margin: 0 0 0 .25em;
+        }
+    </style>
+    <!-- two -->
+    <style>
+        .table-divider {
+            /* minor cosmetics */
+            display: table;
+            font-size: 24px;
+            text-align: center;
+            width: 75%;
+            /* divider width */
+            margin: 40px auto;
+            /* spacing above/below */
+        }
+
+        .table-divider span {
+            display: table-cell;
+            position: relative;
+        }
+
+        .table-divider span:first-child,
+        .table-divider span:last-child {
+            width: 50%;
+            top: 13px;
+            /* line width */
+            background-size: 100% 2px;
+            /* line width */
+            background-position: 0 0, 0 100%;
+            background-repeat: no-repeat;
+        }
+
+        .table-divider span:first-child {
+            /* color changes in here */
+            background-image: linear-gradient(90deg, transparent, #000);
+        }
+
+        .table-divider span:nth-child(2) {
+            color: #000;
+            padding: 0px 5px;
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .table-divider span:last-child {
+            /* color changes in here */
+            background-image: linear-gradient(90deg, #000, transparent);
+        }
+    </style>
+    <!-- three -->
+    <style>
+        .fancy-divider {
+            text-align: center;
+        }
+
+        .fancy-divider:after {
+            content: '';
+            position: absolute;
+            margin-top: 9px;
+            right: 0;
+            width: 100%;
+            border: 1px solid black;
+            z-index: -1;
+        }
+
+        .fancy-divider-bg {
+            display: inline-block;
+            min-width: 50px;
+            padding: 0 10px;
+            background: white;
+        }
+    </style>
+    <!-- four -->
+    <style>
+        /* Base Divider class */
+        .divider {
+            display: flex;
+        }
+
+        .divider:before,
+        .divider:after {
+            content: "";
+            flex: 1;
+        }
+
+        /* Base line */
+        .line {
+            align-items: center;
+            margin: 1em -1em;
+        }
+
+        .line:before,
+        .line:after {
+            height: 1px;
+            margin: 0 1em;
+        }
+
+        .one-line:before,
+        .one-line:after {
+            background: black;
+        }
+
+        .razor:before,
+        .razor:after {
+            box-shadow: 0 0.5px 0 black;
+        }
+
+        .double-razor:before,
+        .double-razor:after {
+            height: 3px;
+            box-shadow: 0 -0.5px 0 black, 0 0.5px 0 black;
+            border-width: 0;
+        }
+
+        .glow:before,
+        .glow:after {
+            height: 6px;
+            border-radius: 5px;
+        }
+
+        .glow:before {
+            background: linear-gradient(to right, blue, hotpink);
+        }
+
+        .glow:after {
+            background: linear-gradient(to left, blue, hotpink);
+        }
+
+        .gradient {
+            align-items: stretch;
+            margin: 1em 0;
+            height: 2em;
+            line-height: 2em;
+            color: white;
+            background: black;
+        }
+
+        .gradient:before {
+            background: linear-gradient(to right, white, black);
+        }
+
+        .gradient:after {
+            background: linear-gradient(to left, white, black);
+        }
+
+        .donotcross {
+            overflow: hidden;
+            align-items: center;
+            background: #ffd500;
+            color: black;
+            height: 2em;
+            line-height: 2em;
+        }
+
+        .donotcross:before,
+        .donotcross:after {
+            background: white;
+            padding: 50px 0;
+            height: 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- one -->
+    <p class="or-divider">OR</p>
+    <div class="or-divider">这里是文字</div>
+    <!-- two -->
+    <div class="table-divider"><span></span><span>TableDivider</span><span></span></div>
+    <!-- three -->
+    <div class='fancy-divider'><span class='fancy-divider-bg'>FancyDivider</span></div>
+    <!-- four -->
+    <h2 class="divider line one-line" contenteditable>Simple 1px</h2>
+
+    <h2 class="divider line razor" contenteditable>Razor Line 0.5px</h2>
+
+    <h2 class="divider line double-razor" contenteditable>Double 0.5px</h2>
+
+    <h2 class="divider line glow" contenteditable>Light Saber</h2>
+
+    <h2 class="divider gradient" contenteditable>Gradient Heading</h2>
+
+    <h2 class="divider donotcross" contenteditable>Do Not Cross</h2>
+</body>
+
+</html>
