@@ -1,6 +1,6 @@
 # 网页中使用音频的几种方式
 
-- 使用 \<bgsound>标签  （Obsolete）已过时（Non-standard）非标准
+- 使用 \<bgsound>标签（Obsolete）已过时（Non-standard）非标准
 - 使用\<embed>标签 (\<embed>元素将外部内容嵌入文档中的指定位置。此内容由外部应用程序或其他交互式内容源（如浏览器插件）提供。PS.可以借此引入html和svg等文件)
 - 使用 \<audio>标签（HTMLAudio​Element）
     - 直接使用audio标签
@@ -17,3 +17,10 @@
 - 在控制台下遇到这个警告：The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
 
     大概意思就说AudioContext需要用户手动触发，所以只需要将new AudioContext()移动到事件内部就行了。因为需要玩家主动点击后才能播放，所以，需要监督玩家点击了后，才播放背景音乐。AudioContext.resume(); 还原一下播放也可以。
+    
+- Convert AudioBuffer to ArrayBuffer
+    ```javascript
+    AudioBuffer.getChannelData(channel_number)
+    // You can get the number of channels from
+    AudioBuffer.numberOfChannels
+    ```
