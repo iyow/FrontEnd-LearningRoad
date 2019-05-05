@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AudioElementCase</title>
+    <style>
+        .custom-audio {
+            box-sizing: border-box;
+            text-align: right;
+            width: 150px;
+            height: 30px;
+            margin: 20px auto;
+            padding: 5px 10px;
+            background-color: #666;
+        }
+
+        .custom-audio span {
+            color: rgba(255, 255, 255, .8);
+            display: inline-block;
+            transform-origin: center;
+            pointer-events: none;
+        }
+
+        .custom-audio span:nth-child(1) {
+            font-weight: 400;
+        }
+
+        .custom-audio span:nth-child(2) {
+            transform: scale(0.8);
+            font-weight: 500;
+        }
+
+        .custom-audio span:nth-child(3) {
+            transform: scale(0.5);
+            font-weight: 700
+        }
+
+        .custom-audio.wink span {
+            animation: wink 1s ease infinite;
+        }
+
+        @keyframes wink {
+            from {
+                color: rgba(255, 255, 255, .8);
+            }
+
+            to {
+                color: rgba(255, 255, 255, .1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="custom-audio" data-src="http://www.w3school.com.cn/i/song.mp3">
+        <span>(</span><span>(</span><span>(</span>
+    </div>
+    <div class="custom-audio" data-src="http://developer.mozilla.org/@api/deki/files/2926/=AudioTest_(1).ogg">
+        <span>(</span><span>(</span><span>(</span>
+    </div>
+
+
+    <script>
+        let list = document.querySelectorAll('.custom-audio');
+        [...list].forEach((audioEle) => {
+            audioEle.addEventListener('click', audioCtrl)
+        });
+        let audioIsPlay = false
+        function createMyAudioCtx(id) {
+            let audioElement = document.createElement('audio')
+            audioElement.id = id
+            audioElement.autoplay = true
+            audioElement.style.cssText = `position:fixed;top:0;left:0;display:none;`
+            document.body.appendChild(audioElement)
+            return audioElement
+        }
+        function bindEvent(ele) {
+            let animationCtrl = (status) => (e) => {
+                // 音频播放结束时去除动画
+                !status && [...document.querySelectorAll('.custom-audio')].find(ele => {
+                    return audioCtx.src === ele.dataset.src && ele.classList.remove('wink')
+                })
+                // 去除非当前播放音频的动画
+                status && [...document.querySelectorAll('.custom-audio')].find(ele => {
+                    return ele.classList.contains('wink') && audioCtx.src !== ele.dataset.src && ele.classList.remove('wink')
+                })
+            }
+            ele.addEventListener('playing', animationCtrl(true))
+            ele.addEventListener('pause', animationCtrl(false))
+            ele.addEventListener('ended', animationCtrl(false))
+        }
+        function audioCtrl(e) {
+            let currentEle = e.target
+            let src = currentEle.dataset.src
+            // src需要为绝对路径才会相等
+            // 点击相同音频控制播放暂停  点击不同音频进行切换
+            if (audioCtx.src === src) {
+                currentEle.classList.toggle("wink")
+                console.dir(audioCtx)
+                console.dir(window.MyAudioMsgCtx)
+                audioCtx.paused ? audioCtx.play() : audioCtx.pause()
+            } else {
+                currentEle.classList.add("wink")
+                audioCtx.src = src
+            }
+        }
+        let audioCtx = createMyAudioCtx('MyAudioMsgCtx')
+        bindEvent(audioCtx)
+    </script>
+</body>
+
+</html>
