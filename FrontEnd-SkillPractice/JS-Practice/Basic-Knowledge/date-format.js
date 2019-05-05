@@ -1,6 +1,6 @@
 /**
  * @description 时间格式化函数
- * @param {String} type 日期格式化类型，例如YYYY:MM:DD,MM-DD,hh:mm
+ * @param {String} type 日期格式化类型，例如YYYY:MM:DD,MM-DD,hh:mm    #week#星期
  * @param {[String|Number]} time 可选(默认当前时间)，毫秒时间戳
  * @return {String} 格式化后时间
  */
@@ -14,6 +14,7 @@ function formatDate(type, time = new Date()) {
         .replace('mm', ('00' + date.getMinutes()).slice(-2))
         .replace('ss', ('00' + date.getSeconds()).slice(-2))
         .replace('xxx', ('000' + date.getMilliseconds()).slice(-3))
+        .replace('#week#', ('星期' + ['天', '一', '二', '三', '四', '五', '六'][date.getDay()]))
 }
 
 
