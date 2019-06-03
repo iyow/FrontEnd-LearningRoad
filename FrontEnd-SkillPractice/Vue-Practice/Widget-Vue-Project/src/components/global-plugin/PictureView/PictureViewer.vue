@@ -7,11 +7,11 @@
      class="magic">
       <div class="toolbar" @click.stop="nothing" @mouseup="mouseup">
         <div class="toolbar-container">
-          <div class="img-name">图片名字图片名字图片名字图片名字</div>
+          <div class="img-name">{{name}}</div>
           <div class="toolbar-op" @click.stop="nothing">
-            <div class="operate-btn" @click="rotate"><i class="el-icon-rank"></i><span>旋转</span></div>
+            <div class="operate-btn" @click="rotate"><mxicon name="mx-rotate" width="20px" height="20px" :original="true"></mxicon><span>旋转</span></div>
             <div class="operate-btn" @click="zoom('magnify')"><i class="el-icon-zoom-in"></i><span>放大</span></div>
-            <div class="scale-ratio">100%</div>
+            <div class="scale-ratio">{{Math.round(size)}}%</div>
             <div class="operate-btn" @click="zoom('shrink')"><i class="el-icon-zoom-out"></i><span>缩小</span></div>
             <div class="operate-btn" @click="restore"><i class="el-icon-refresh"></i><span>还原</span></div>
             <div class="operate-btn magicClose"><i @click="openMagic" class="el-icon-close"></i></div>
@@ -33,8 +33,7 @@
 <script>
 export default {
   name: 'PictureViewer',
-  // 后续修改为传入数组，显示为轮播效果
-  props: ['src'],
+  props: ['src', 'name'],
   data () {
     return {
       // 放大图片是否显示
@@ -74,6 +73,7 @@ export default {
       let magicImg = this.$refs.magicImg
       this.originPosition.x = magicImg.offsetLeft
       this.originPosition.y = 150
+      let rate = magicImg.width / magicImg.height
       // 第一次放大动画效果--标签属性没有width
       if (magicImg.width > 600) {
         this.originWidth = 600
@@ -81,6 +81,16 @@ export default {
       } else {
         this.originWidth = magicImg.width
       }
+      // 按比例缩放
+      if (magicImg.height > 700) {
+        this.originWidth = 700 * rate
+        magicImg.width = this.originWidth
+      }
+    },
+    positionFix () {
+      let magicImg = this.$refs.magicImg
+      this.originPosition.x = magicImg.offsetLeft
+      this.originPosition.y = 150
     },
     openMagic (index) {
       if (index === 2 && this.isdown) {
@@ -112,7 +122,7 @@ export default {
       }
       this.changeSize(100)
       this.changeAngle()
-      this.initPosition()
+      this.positionFix()
     },
     zoom (equation) {
       let size
@@ -265,12 +275,13 @@ export default {
     background-color: rgba(51,51,51,0.6);
     z-index: 99998;
     overflow: auto;
+    overflow: overlay;
     .magic {
       position: relative;
       height: 100%;
     }
     .toolbar {
-      position: absolute;
+      position: fixed;
       bottom: 0;
       height: 105px;
       margin-bottom: 30px;
@@ -285,6 +296,7 @@ export default {
       width: 284px;
       height: 100%;
       background: #333;
+      opacity:0.7;
       .img-name{
         font-size: 16px;
         width: 100%;
@@ -295,7 +307,6 @@ export default {
         padding-bottom: 12px;
         margin-bottom: 12px;
         border-bottom: 1px solid #5E5E5E;
-        color: pink;
       }
       .toolbar-op {
         display: flex;
@@ -331,8 +342,8 @@ export default {
       }
     }
     .draggable {
-      max-width: 888px;
-      max-height: 580px;
+      max-width: none;
+      max-height: none;
       position: absolute;
       top: 150px;
       left: 50%;
