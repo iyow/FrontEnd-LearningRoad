@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>bg</title>
+    <style>
+        .clip-path {
+            width: 200px;
+            height: 200px;
+            background-color: tomato;
+            clip-path: url(#myPath);
+        }
+
+        /* polygon的动画变形的一个重要条件：坐标的数目变形前后必须一致。 */
+        /* 只要polygon点坐标的数目在动画的前后数目一样，浏览器就能实现连续动画，哪怕图形前后的模样是凤姐和林志玲的差距。比如说上面视频最后一个，2个三角变成1条鱼的过渡效果。 */
+        .clip-path {
+            transition: all 1s ease-in-out;
+            clip-path: polygon(0 0, 200px 0, 200px 200px, 0 200px);
+        }
+
+        .clip-path:hover {
+            clip-path: polygon(0 0, 100px 50px, 200px 0, 100px 200px);
+        }
+    </style>
+</head>
+
+<!-- M = moveto(M X,Y) ：将画笔移动到指定的坐标位置
+L = lineto(L X,Y) ：画直线到指定的坐标位置
+H = horizontal lineto(H X)：画水平线到指定的X坐标位置
+V = vertical lineto(V Y)：画垂直线到指定的Y坐标位置
+C = curveto(C X1,Y1,X2,Y2,ENDX,ENDY)：三次贝赛曲线
+S = smooth curveto(S X2,Y2,ENDX,ENDY)：平滑曲率
+Q = quadratic Belzier curve(Q X,Y,ENDX,ENDY)：二次贝赛曲线
+T = smooth quadratic Belzier curveto(T ENDX,ENDY)：映射
+A = elliptical Arc(A RX,RY,XROTATION,FLAG1,FLAG2,X,Y)：弧线
+Z = closepath()：关闭路径
+M：画笔起始位置
+L：画直线（x，y）坐标
+Z：自动闭合
+fill： 填充颜色
+stroke：描边颜色
+stroke-width：描边宽度
+transform="translate(x,y)": 加了描边后需要平移（x=stroke-width/2,
+y=stroke-width/2） -->
+
+<body>
+    <svg style="position: absolute;">
+        <clipPath id="myPath" clipPathUnits="objectBoundingBox">
+            <path d="M0.5,1
+                    C 0.5,1,0,0.7,0,0.3
+                    A 0.25,0.25,1,1,1,0.5,0.3
+                    A 0.25,0.25,1,1,1,1,0.3
+                    C 1,0.7,0.5,1,0.5,1 Z" />
+        </clipPath>
+    </svg>
+    <div class="clip-path"></div>
+</body>
+
+</html>
