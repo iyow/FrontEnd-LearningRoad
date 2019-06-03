@@ -1,0 +1,47 @@
+@itemsize: 20px;
+@backgroundsize: 360px;
+
+.qqface-item {
+    width: @itemsize;
+    height: @itemsize;
+    background: url(http://res.wx.qq.com/a/wx_fed/webwx/res/static/img/3shEflO.png) no-repeat;
+    background-size: @backgroundsize;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.emojiface-item {
+    width: @itemsize;
+    height: @itemsize;
+    font-size: 18px;
+    line-height: @itemsize;
+    text-align: center;
+}
+
+// 表情总个数
+@listlength: 112;
+// 列数
+@columnlength: 15;
+// 每个表情的定位偏移量（应该根据background-size计算偏移）
+@qqfaceoffset: -@backgroundsize/@columnlength;
+
+.generate-qqface(@listlength, @columnlength, @qqfaceoffset, @index: 0) when (@index <=@listlength) {
+    .qq-face@{index} {
+        background-position: (@qqfaceoffset*mod(@index, @columnlength)) (@qqfaceoffset*floor(@index / @columnlength));
+    }
+
+    .generate-qqface(@listlength, @columnlength, @qqfaceoffset, (@index+1));
+}
+
+.generate-qqface(@listlength, @columnlength, @qqfaceoffset);
+
+// 输入框表情
+.edit-box,
+.msg-content {
+    .qqface-item {
+        display: inline-block;
+        vertical-align: text-bottom;
+        cursor: default;
+        border: none;
+    }
+}
