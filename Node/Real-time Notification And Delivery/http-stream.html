@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTTP流</title>
+</head>
+
+<body>
+    <script>
+
+        // HTTP流
+        // 数据堆积问题
+        function ajaxhttpStream(url) {
+            let received = 0;
+            let xhr = new XMLHttpRequest();
+            xhr.open('get', url);
+            xhr.onreadystatechange = function () {
+                let result;
+                console.log('state changed', xhr.readyState)
+                if (xhr.readyState == 3) {
+                    result = xhr.response.substring(received);
+                    received += result.length;
+                    console.log('httpstream----接受到数据：' + result);
+                    console.log(xhr.response)
+                    console.log('----recived', received)
+                }
+            }
+            xhr.send(null)
+        }
+        ajaxhttpStream('http://localhost:8088/httpstream')
+
+
+        // iframe流
+        // 页面会显示一直在加载
+        function process(data) {
+            console.log("iframe流------接受到新数据:" + data);
+        }
+        window.onmessage = function (event) {
+            process(event.data);
+        }
+        var dataStream = function (url) {
+            var ifr = document.createElement("iframe"), timer;
+            ifr.src = url;
+            document.body.appendChild(ifr);
+        };
+        // 后端不停向页面写入script 脚本执行
+        // <script type=\"text/javascript\">parent.postMessage()<\/script>
+        dataStream("http://localhost:8088/iframestream");
+    </script>
+</body>
+
+</html>
