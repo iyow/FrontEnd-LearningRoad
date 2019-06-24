@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax轮询</title>
+</head>
+
+<body>
+    <h4>长轮询</h4>
+    <p>通过最小化延迟可以动态适应更新频率，这种行为可能是也可能不是我们所 期望的。---有时候也有人用其他名字称呼这 种技术，比如“保留 AJAX”、“AJAX 推送”或“HTTP 推送”，“挂起的 GET”，</p>
+    <h4>定时轮询</h4>
+    <p>如果应用可以容许一定时间的延迟，那么定时轮询可能更有效。因为在更 新频率很高的情况下，定时轮询就是一个简单的“更新累积”机制，不仅能减少请 求次数，还能减少对手机电量的消耗。
+        即短轮询，即客户端定时向服务器发送异步请求，获取数据，不管服务端数据有没有变化，客户端都会发起请求，来更新view。
+    </p>
+
+
+    <script>
+        // 定时轮询
+        // es6API fetch
+        setInterval(() => {
+            fetch('http://localhost:8088/shortpolling')
+                .then(response => response.text())
+                .then(txt => {
+                    console.log('short----polling------', txt)
+                })
+                .catch(error => console.error('fetch-----------error ', error));
+        }, 3000);
+
+        // 长轮询，
+        function ajaxGet(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', url);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    console.log("long-polling------------:" + xhr.response);
+                    ajaxGet(url);
+                }
+            }
+            xhr.send(null)
+        }
+        ajaxGet('http://localhost:8088/longpolling');
+    </script>
+</body>
+
+</html>
