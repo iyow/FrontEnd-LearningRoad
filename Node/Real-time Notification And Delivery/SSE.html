@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SSE服务器推送</title>
+</head>
+
+<body>
+    <h4>SSE</h4>
+    <p> SSE 提供的是一个高效、跨浏览器的 XHR 流实现，消息交付只使用一个 长 HTTP 连接。
+        然而，与我们自己实现 XHR 流不同，浏览器会帮我们管理连接、 解析消息，从而让我们只关注业务逻辑。
+        SE 是服务器向客户端发送实时文本消息的高性能机制:服务器可以在消息刚刚生
+        成就将其推送到客户端(低延迟)，使用长连接的事件流协议，而且可以 gzip 压缩 (低开销)，浏览器负责解析消息，也没有无限缓冲。
+        SSE 主要有两个局限。
+        一，只能从服务器向客户端发送数据，不能满足需要请求流 的场景(比如向服务器流式上传大文件);
+        二，事件流协议设计为只能传输 UTF-8 数据，即使可以传输二进制流，效率也不高。</p>
+    <script>
+        // SSE
+        let SSEsource = new EventSource("http://localhost:8088/ssepush");
+        SSEsource.onopen = function () { };
+        SSEsource.onerror = function () { };
+        SSEsource.onmessage = function (event) {
+            console.log("SSE------接受到数据:" + event.data);
+            if (event.id === "CLOSE") { source.close(); }
+        }
+        SSEsource.addEventListener('customSSEMessage', () => {
+            console.log("SSE---customSSEMessage---接受到数据:" + event.data);
+        })
+    </script>
+</body>
+
+</html>
