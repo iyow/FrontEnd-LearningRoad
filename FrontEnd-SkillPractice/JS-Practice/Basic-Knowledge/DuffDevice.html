@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DuffDevice</title>
+</head>
+
+<body>
+    <p>在计算机科学领域，达夫设备（英文：Duff's device）是串行复制（serial copy）的一种优化实现，通过汇编语言编程时一常用方法，实现展开循环，进而提高执行效率。</p>
+    <p>循环展开，英文中称（Loop unwinding或loop unrolling），是一种牺牲程序的尺寸来加快程序的执行速度的优化方法。可以由程序员完成，也可由编译器自动优化完成。
+        循环展开最常用来降低循环开销，为具有多个功能单元的处理器提供指令级并行。也有利于指令流水线的调度。</p>
+
+    <p>从速度上说，由于采用了循环展开技巧，使所需处理的分支数减少，从而降低了在处理分支时，中断与刷新流水线的巨大运算开销，因而相较于简单、直接的循环代码，这段代码的执行效率较高。
+        另外，由代码易知，若不带switch语句，则这段代码只能复制8*n个数据项，而若count无法为8整除，则仍有count%8（即count除于8的余数）项未处理；有鉴于此，此间嵌入了switch/case语句，负责处理剩余数据。
+        但是，达夫设备亦有其局限性。在某些环境下，利用switch/case语句处理剩余数据项，有时并非最优选择；相对应的，若采用双循环机制（先实现一个展开后循环，复制8*n个数据项，而后再实现另一循环，复制剩余数据项），可能反倒更快。
+        究其肇因，则常是由于编译器无法针对达夫设备进行优化，但亦可能是因某些架构的流水线与转移预测机制有所差异。
+    </p>
+
+    <script>
+        let items = new Array(10000000)
+        let length = items.length
+        let DFWholeLoop = Math.floor(length / 8)
+        let DFRemainder = length % 8
+        function doProcess(params) {
+        }
+
+        // 标志时间的开始。
+        performance.mark("origin-DF-start");
+        // do something。
+        let ODFWholeLoop = DFWholeLoop
+        let ODFRemainder = DFRemainder
+        let i = 0
+        do {
+            switch (ODFRemainder) {
+                case 0: doProcess(items[i++])
+                case 7: doProcess(items[i++])
+                case 6: doProcess(items[i++])
+                case 5: doProcess(items[i++])
+                case 4: doProcess(items[i++])
+                case 3: doProcess(items[i++])
+                case 2: doProcess(items[i++])
+                case 1: doProcess(items[i++])
+            }
+            ODFRemainder = 0
+        } while (--ODFWholeLoop)
+        // 标志时间的结束。
+        performance.mark("origin-DF-end");
+
+
+
+        performance.mark('opt-DF-start')
+
+        let OptDFWholeLoop = DFWholeLoop
+        let OptDFRemainder = DFRemainder
+        while (OptDFRemainder) {
+            doProcess(items[OptDFRemainder--])
+        }
+        let j = length
+        while (OptDFWholeLoop--) {
+            doProcess(items[j--])
+            doProcess(items[j--])
+            doProcess(items[j--])
+            doProcess(items[j--])
+            doProcess(items[j--])
+            doProcess(items[j--])
+            doProcess(items[j--])
+            doProcess(items[j--])
+        }
+        performance.mark('opt-DF-end')
+
+
+
+
+
+
+
+
+        // 测量两个不同的标志。
+        performance.measure(
+            "DF",
+            "origin-DF-start",
+            "origin-DF-end"
+        );
+        performance.measure(
+            "DF",
+            "opt-DF-start",
+            "opt-DF-end"
+        );
+        // 获取所有的测量输出。
+        // 在这个例子中只有一个。
+        var measures = performance.getEntriesByName("DF");
+        console.log(measures)
+        measures.forEach(m => {
+            console.log("setTimeout milliseconds毫秒:", m.duration)
+        })
+        // 清除存储的标志位
+        performance.clearMarks();
+        performance.clearMeasures();
+    </script>
+</body>
+
+</html>
