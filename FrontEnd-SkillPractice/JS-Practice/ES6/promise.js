@@ -35,7 +35,7 @@ function loadImgAsync(url){
 	let img = new Image();
 	img.src = url;
 	img.onload = function (){
-		return eresolve(url)
+		return resolve(url)
 	}
 	img.onerror = function (){
 		return reject(new Error(`could not load image at ${url}`))
