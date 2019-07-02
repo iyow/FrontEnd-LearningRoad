@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>镜面翻转效果</title>
+    <style>
+        section {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 10px auto;
+        }
+/* 火狐 */
+        .css-element {
+            width: 300px;
+            height: 300px;
+            background: -moz-element(#myBackground1) no-repeat;
+        }
+
+        .css-element-origin {
+            width: 300px;
+            height: 300px;
+            background-image: linear-gradient(to right, red, orange, yellow, white);
+        }
+
+        .css-element-text {
+            transform-origin: 0 0;
+            transform: rotate(45deg);
+            color: white;
+        }
+/* webkit内核 */
+        .css-boxreflect {
+            background-color: skyblue;
+            -webkit-box-reflect: below 10px linear-gradient(transparent, skyblue);
+        }
+/* all */
+        .css-scale {
+            background-image: url(./bg.png);
+            background-size: cover;
+        }
+
+        .css-scale::after {
+            content: '';
+            display: inline-block;
+            border-radius: 50%;
+            position: relative;
+            top: 100%;
+            left: 100%;
+            width: 100px;
+            height: 100px;
+            background-image: url(./bg.png);
+            background-size: cover;
+            transform: scaleX(-1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="css-element">
+        <p>This box uses the element with the #myBackground1 ID as its background!</p>
+    </div>
+    <div contenteditable="true">
+        <div id="myBackground1" class="css-element-origin">
+            <p class="css-element-text">This text is part of the background.Cool, huh?</p>
+        </div>
+    </div>
+    <section class="css-boxreflect"></section>
+    <section class="css-scale"></section>
+</body>
+
+</html>
