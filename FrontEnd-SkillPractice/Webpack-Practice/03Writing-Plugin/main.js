@@ -1,0 +1,1 @@
+let pluginTest = 'hello plugin'
