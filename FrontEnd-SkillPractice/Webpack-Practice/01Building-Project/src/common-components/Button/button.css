@@ -1,0 +1,19 @@
+.my-btn{
+    padding: 5px 10px;
+    border: 1px solid currentColor;
+    color: violet;
+    border-radius: 5px;
+}
+.primary{
+    background-color: skyblue;
+}
+.error{
+    background-color: tomato;
+}
+.success{
+    /*  CSS Modules 和less sass有所不同。
+    它不是将 CSS 改造成编程语言，而是功能很单纯，
+    只加入了局部作用域和模块组合依赖，这恰恰是网页组件最急需的功能。 */
+    composes: my-btn;
+    background-color: yellowgreen;
+}

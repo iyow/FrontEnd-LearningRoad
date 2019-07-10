@@ -1,0 +1,37 @@
+$color: #19a;
+$bgColor: #fc9;
+
+.index-app{
+    color: $color;
+    background-color: $bgColor;
+    &::before {
+        content: '';
+        background: url("~@images/assets/images/copy-solid.svg") no-repeat center;
+        background-size: cover;
+        display: inline-flex;
+        width: 1em;
+        height: 1em;
+    }
+}
+.index-app-logo {
+    font-size: 2rem;
+    color: orange;
+}
+
+.index-app-button {
+    color: #19a;
+    background: #fc9;
+}
+
+.index-app-title {
+    color: orange;
+    background: #f35609;
+}
+body {
+    width: 100vw;
+    min-height: 100vh;
+    background: url('~@images/assets/images/body-background.jpg') no-repeat center, linear-gradient(to bottom, #f560a9, #09aefa,#2390af) no-repeat center;
+    // background: url('~@images/assets/images/security.svg') no-repeat center, linear-gradient(to bottom, #f560a9, #09aefa,#2390af) no-repeat center;
+    background-size: cover;
+    background-blend-mode: overlay, screen;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html style="font-size:20px">
+
+<head>
+    <meta charset="utf-8">
+    <title>html-webpack-plugin使用相关</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+    <% } %>
+</head>
+
+<body>
+    <div id="app"></div>
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script type="text/javascript" src="<%=htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %>
+</body>
+
+</html>
+    <!-- 模板引擎 -->
+    <!-- 插件没有配置loader时默认支持的使用lodash提供的模板引擎(==ejs模板引擎)，
+    利用ejs模板的语法来动态插入各自页面的thunk和css样式 -->
+
+    <!-- 模板上下文数据 -->
+    <!--var templateParams = {
+        // 为所有webpack插件提供的都可以访问的一个编译对象 具体请查看官方文档
+        compilation: compilation,
+        // webpack的stats对象；注意一点：这个可以访问的stats对象是htm文件生成时所对应的stats对象
+        webpack: compilation.getStats().toJson(),
+        // webpack的配置项；通过这个属性可以获取webpack的相关配置项，
+        // 如通过webpackConfig.output.publicPath来获取publicPath配置
+        webpackConfig: compilation.options,
+        // html-webpack-plugin插件对应的数据
+        htmlWebpackPlugin: {
+            // 此次html-webpack-plugin插件配置的chunk和抽取的css样式。
+            // 该files值其实是webpack的stats对象的assetsByChunkName属性代表的值，
+            // 该值是插件配置的chunk块对应的按照webpackConfig.output.filename映射的值。
+          files: assets,
+            // 传递给插件的配置项，
+          options: self.options
+        }
+      };  -->
+
+
+      <!-- 使用Hooks编写插件 -->
+      <!-- 
+// If your plugin is direct dependent to the html webpack plugin:
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+// If your plugin is using html-webpack-plugin as an optional dependency
+// you can use https://github.com/tallesl/node-safe-require instead:
+const HtmlWebpackPlugin = require('safe-require')('html-webpack-plugin');
+
+// plugin.js
+class MyPlugin {
+  apply (compiler) {
+    compiler.hooks.compilation.tap('MyPlugin', (compilation) => {
+      console.log('The compiler is starting a new compilation...')
+
+      // Staic Plugin interface |compilation |HOOK NAME | register listener 
+      HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync(
+        'MyPlugin', // <-- Set a meaningful name here for stacktraces
+        (data, cb) => {
+          // Manipulate the content
+          data.html += 'The Magic Footer'
+          // Tell webpack to move on
+          cb(null, data)
+        }
+      )
+    })
+  }
+}
+module.exports = MyPlugin
+
+// webpack.config.js
+plugins: [
+  new MyPlugin({ options: '' })
+] -->
