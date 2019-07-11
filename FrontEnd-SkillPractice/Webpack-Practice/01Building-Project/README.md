@@ -132,8 +132,13 @@
     - prettier，对代码进行格式化
     - husky，通过git hook在本地进行commit的时候触发代码扫描来确保本地代码的质量。
 
-- css代码抽离及公共代码分割
+- css代码抽离及公共代码分割（MiniCssExtractPlugin，SplitChunksPlugin，DllPlugin）
     > 代码分割的本质，就是在“源码直接上线”(过程可控，减少白屏时间，http请求多，性能开销大)和“打包为唯一的脚本main.bundle.js”(服务器压力小，包太大页面空白时间长)这两种极端方案之间寻找一种更符合实际场景的中间状态，用可接受的服务器性能压力增加来换取更好的用户体验。
+
+    - MiniCssExtractPlugin：4.0版本启用的插件，替代原extract-text-webpack-plugin插件，将处理后的CSS代码提取为独立的CSS文件
+    - SplitChunksPlugin：在webpack V4中 CommonsChunkPlugin已被移除，更优的解决方案是 optimization.splitChunks和optimization.runtimeChunk选项，production模式下，SplitChunksPlugin插件是默认被启用。
+    - DllPlugin：DLLPlugin 和 DLLReferencePlugin 用[某种方法](https://webpack.js.org/plugins/dll-plugin/)实现了拆分 bundles，同时还大大提升了构建的速度。
+    - DLL(Dynamic Link Library):dll文件为动态链接库文件，又称“应用程序拓展”，是软件文件类型。在Windows中，许多应用程序并不是一个完整的可执行文件，它们被分割成一些相对独立的动态链接库，即DLL文件，放置于系统中。当我们执行某一个程序时，相应的DLL文件就会被调用。一个应用程序可使用多个DLL文件，一个DLL文件也可能被不同的应用程序使用，这样的DLL文件被称为共享DLL文件。LINUX的动态链接库,在/lib目录下，就有许多以.so作后缀的文件，这就是LINUX系统应用的动态链接库，只不过与WINDOWS叫法不同，它叫so，即Shared Object，共享对象。(在LINUX下，静态函数库是以.a作后缀的) X-WINDOW作为LINUX下的标准图形窗口界面，它本身就采用了很多的动态链接库(在/usr/X11R6/lib目录下)，以方便程序间的共享，节省占用空间。著名的APACHE网页服务器，也采用了动态链接库，以便扩充程序功能。你只需将PHP动态链接库拷到其共享目录，修改一下配置，APACHE就可以支持PHP网页了。如果你愿意，可以自己编写动态链接库，让APACHE支持你自己定义的网页格式。这就是动态链接的好处。
 
 - 打包结果分析（Bundle Buddy，webpack-bundle-analyser）
 

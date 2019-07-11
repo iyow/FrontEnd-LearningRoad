@@ -175,7 +175,12 @@ module.exports = {
         // 业界将这种有别与浏览器的模式称之为“webpack的逆向注入”。
         new HtmlWebpackPlugin({
             title: 'webpack-react-app',
-            inject: false,
+            // 开启注入
+            // 向template或者templateContent中注入所有静态资源，不同的配置值注入的位置不经相同。
+            // 1、true或者body：所有JavaScript资源插入到body元素的底部
+            // 2、head: 所有JavaScript资源插入到head元素中
+            // 3、false： 所有静态资源css和JavaScript都不会注入到模板文件中
+            inject: true,
             template: HtmlWebpackTemplate,
             // 自定义模板
             // template: ‘index.html',
@@ -183,11 +188,11 @@ module.exports = {
             //     params1: 'shall we',
             //     params2: 'we will'
             // },
-            // minify: {
-            //     removeComments: true, // 移除注释
-            //     collapseWhitespace: true, // 压缩空白文本节点
-            //     collapseInlineTagWhitespace: true // 压缩行级元素空白 ， 保留&nbsp;和实体空格
-            // },
+            minify: {
+                removeComments: true, // 移除注释
+                collapseWhitespace: true, // 压缩空白文本节点
+                collapseInlineTagWhitespace: true // 压缩行级元素空白 ， 保留&nbsp;和实体空格
+            },
             appMountId: 'react-approot',
             filename: 'index.html'
         }),

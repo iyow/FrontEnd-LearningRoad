@@ -18,7 +18,7 @@ module.exports = merge(commonConfig, {
     output: {
         filename: 'js/[name].[contenthash].js', // entry对应的key值
         chunkFilename: 'js/[name].[contenthash].js', // 间接引用的文件会走这个配置
-        publicPath: '/', // 指定存放静态资源的CDN地址
+        publicPath: './', // 指定存放静态资源的CDN地址
     },
     optimization: {
         minimizer: [
@@ -39,10 +39,10 @@ module.exports = merge(commonConfig, {
             filename: '[name]-[part].[ext]',
         }),
         new AddAssetHtmlWebpackPlugin({
-            filepath: path.resolve(__dirname, '../static/dll/vendors.dll.js'), // 对应的 dll 文件路径
+            filepath: path.resolve(__dirname, '../static/dll/react.dll.js'), // 对应的 dll 文件路径
         }),
         new webpack.DllReferencePlugin({
-            manifest: path.resolve(__dirname, '..', 'static/dll/vendors-manifest.json'),
+            manifest: path.resolve(__dirname, '..', 'static/dll/react-manifest.json'),
         }),
     ],
 })

@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    vendors: ['react', 'react-dom'],
+    react: ['react', 'react-dom'],
   },
   output: {
     path: path.resolve(__dirname, '../static/dll'),

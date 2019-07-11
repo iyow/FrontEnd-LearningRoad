@@ -4,8 +4,13 @@
   "description": "learning webpack",
   "private": true,
   "scripts": {
-    "buildEnv": "webpack --config ./build/webpack.config.prod.js",
-    "devEnv": "webpack-dev-server --config ./build/webpack.config.dev.js --mode development --open",
+    "precommit": "lint-staged",
+    "eslint": "eslint --ext .js,.jsx,.tsx,.ts --fix ./src",
+    "stylelint": "stylelint './src/**/*.{css,scss}' --fix",
+    "build:dll": "webpack --mode production --progress --config ./build/webpack.dll.js",
+    "build": "webpack --mode production --progress --config ./build/webpack.config.prod.js",
+    "dev": "webpack-dev-server --mode development --inline --progress --open --config ./build/webpack.config.dev.js",
+    "start": "npm run dev && npm run eslint && npm run stylelint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
