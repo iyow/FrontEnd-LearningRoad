@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>非同源页面</title>
+</head>
+<body>
+    <p>基于之前的页面通信的方法，它们大都受到同源策略的限制。
+        然而有时候，我们有两个不同域名的产品线，也希望它们下面的所有页面之间能无障碍地通信。
+        那该怎么办呢？
+        要实现该功能，可以使用一个用户不可见的 iframe 作为“桥”。
+        由于 iframe 与父页面间可以通过指定origin来忽略同源限制，
+        因此可以在每个页面中嵌入一个 iframe （例如：http://sample.com/bridge.html），
+        而这些 iframe 由于使用的是一个 url，因此属于同源页面，iframe桥之间通信方式可以复用同源页面通信的各种方法。
+        页面与 iframe 通信非常简单，首先需要在页面中监听 iframe 发来的消息，做相应的业务处理：
+            
+            /* 业务页面代码 */
+            window.addEventListener('message', function (e) {
+                // …… do something
+            });
+            然后，当页面要与其他的同源或非同源页面通信时，会先给 iframe 发送消息：
+            
+            /* 业务页面代码 */
+            window.frames[0].window.postMessage(mydata, '*');
+            其中为了简便此处将postMessage的第二个参数设为了'*'，你也可以设为 iframe 的 URL。
+            iframe 收到消息后，会使用某种同源跨页面消息通信技术在所有 iframe 间同步消息</p>
+
+            <p>其他基于服务端：Websocket / Comet / SSE 等</p>
+</body>
+</html>
