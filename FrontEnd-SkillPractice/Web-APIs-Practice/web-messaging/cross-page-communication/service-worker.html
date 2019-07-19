@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Service Worker</title>
+</head>
+
+<body>
+    <p>Service Worker 是一个可以长期运行在后台的 Worker，能够实现与页面的双向通信。
+        多页面之间的 Service Worker 可以共享，将 Service Worker 作为消息的处理中心（中央站）即可实现广播效果。</p>
+
+
+
+
+    <script>
+        let mydata = {
+            from: document.title,
+            msg: '这是一条同源页面service-worker传来的消息'
+        }
+        navigator.serviceWorker.register('./util.sw.js').then(function () {
+            console.log('Service Worker 注册成功');
+        });
+
+
+        setInterval(() => {
+            navigator.serviceWorker.controller.postMessage(mydata);
+        }, 5000);
+    </script>
+</body>
+
+</html>
