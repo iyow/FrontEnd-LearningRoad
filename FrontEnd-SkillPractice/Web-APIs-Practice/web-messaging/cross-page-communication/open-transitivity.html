@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>window.open + window.openner</title>
+</head>
+
+<body>
+    <p>
+        当我们使用window.open打开页面时，
+        方法会返回一个被打开页面window的引用。
+        而在未显示指定noopener时，
+        被打开的页面可以通过window.opener获取到打开它的页面的引用
+        —— 通过这种方式我们就将这些页面建立起了联系（一种树形结构）。
+    </p>
+
+
+    <script>
+        // 某个触发打开页面的DOM节点
+        let openDOM = document.getElementById('btn')
+        let childWins = [];
+        openDOM.addEventListener('click', function () {
+            const win = window.open('./some/sample');
+            childWins.push(win);
+        });
+
+        // 主页面向打开页发送消息
+        // 过滤掉已经关闭的窗口
+        childWins = childWins.filter(w => !w.closed);
+        if (childWins.length > 0) {
+            mydata.fromOpenner = false;
+            childWins.forEach(w => w.postMessage(mydata));
+        }
+
+
+
+        if (window.opener && !window.opener.closed) {
+            // 打开页向主页面发送消息
+            // 同样打开页 在收到主页面消息(onmessage)后也将此消息传递给自己保存的childWins
+            window.opener.postMessage(mydata);
+        }
+    </script>
+</body>
+
+</html>

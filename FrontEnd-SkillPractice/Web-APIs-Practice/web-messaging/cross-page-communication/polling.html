@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Polling轮询</title>
+</head>
+
+<body>
+    <h3>“共享存储+长轮询”模式。</h3>
+    <p>其他一些可以共享数据的方式</p>
+    <p>但是这些方式想实现跨页面通信时的问题在于，它无法主动通知所有页面，
+        因此，我们需要使用轮询的方式，来拉取最新的数据。</p>
+
+    <ul>
+        <li>Shared Worker</li>
+        <code>
+            // 构造函数的第二个参数是 Shared Worker 名称，也可以留空
+            const sharedWorker = new SharedWorker('../util.shared.js', 'ctc');
+        </code>
+        <code>
+            /* ../util.shared.js: Shared Worker 代码 */
+            let data = null;
+            self.addEventListener('connect', function (e) {
+                const port = e.ports[0];
+                port.addEventListener('message', function (event) {
+                    // get 指令则返回存储的消息数据
+                    if (event.data.get) {
+                        data && port.postMessage(data);
+                    }
+                    // 非 get 指令则存储该消息数据
+                    else {
+                        data = event.data;
+                    }
+                });
+                port.start();
+            });
+        </code>
+        <code>
+            // 定时轮询，发送 get 指令的消息
+            setInterval(function () {
+                sharedWorker.port.postMessage({get: true});
+            }, 1000);
+
+            // 监听 get 消息的返回数据
+            sharedWorker.port.addEventListener('message', (e) => {
+                const data = e.data;
+                const text = '[receive] ' + data.msg + ' —— tab ' + data.from;
+                console.log('[Shared Worker] receive message:', text);
+            }, false);
+            sharedWorker.port.start();
+        </code>
+        <code>
+            // 当要跨页面通信时，只需给 Shared Worker postMessage即可
+            sharedWorker.port.postMessage(mydata);
+        </code>
+        <li>IndexedDB</li>
+        <li>cookie</li>
+    </ul>
+
+    <p>在多 Tab 场景下，我们可能会离开 Tab A 到另一个 Tab B 中操作；
+        过了一会我们从 Tab B 切换回 Tab A 时，希望将之前在 Tab B 中的操作的信息同步回来。
+        这时候，其实只用在 Tab A 中监听visibilitychange这样的事件，来做一次信息同步即可。</p>
+</body>
+
+</html>
