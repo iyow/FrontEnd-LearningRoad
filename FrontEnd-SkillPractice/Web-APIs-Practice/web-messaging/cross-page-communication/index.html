@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>测试页面</title>
+</head>
+
+<body>
+
+
+
+    <script>
+
+        function docAppend(type, data) {
+            let parseData = {}
+            try {
+                parseData = JSON.parse(data)
+            } catch{
+                // could no catch(err)
+                parseData = data
+            }
+            let text = '<br> ' + type + ' [receive] ' + parseData.msg + ' —— tab ' + parseData.from;
+            document.body.innerHTML = document.body.innerHTML + text
+            console.log(type + ' receive message:', text);
+        }
+
+        // broadcast channel 
+        let BroadCastCenter = new BroadcastChannel('ykp')
+
+
+        BroadCastCenter.addEventListener('message', (event) => {
+            docAppend('[BroadcastChannel]', event.data)
+        })
+
+        // service worker
+        navigator.serviceWorker.register('./util.sw.js').then(function () {
+            console.log('Service Worker 注册成功');
+        });
+        navigator.serviceWorker.addEventListener('message', function (e) {
+            docAppend('[Service Worker]', event.data)
+        });
+
+        // web storage
+        window.addEventListener('storage', function (e) {
+            console.log('------------------', e)
+            if (e.key === 'localstorage-key') {
+                docAppend('[Local Storage I]', event.newValue)
+            }
+        });
+
+    </script>
+</body>
+
+</html>
