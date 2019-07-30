@@ -1,3 +1,5 @@
+## [mostly-adequate-guide](https://github.com/MostlyAdequate/mostly-adequate-guide) Notes:
+
 ### 副作用
 > 副作用是在计算结果的过程中，系统状态的一种变化，或者与外部世界进行的可观察的交互，副作用中的“副”是滋生bug的温床。概括的来讲，只要是跟函数外部环境发生的交互就都是副作用，但是这并不是说要禁止使用一切的副作用，而是说，要让他们在可控的范围内发生。后续会使用functor和monad来学习如何控制他们。
 
@@ -82,7 +84,7 @@ const dasherize = compose(join('_'),map(toLower),trace('after split'),splt(' '),
 
 - **范畴学**
 > 范畴学(category theory) 是数学中的一个抽象分支，能够形式化 诸如，集合论(set theory),类型论(type theory),群论(group theory)以及逻辑学(logic)等数学分支中的一些概念，范畴学要统一这些概念。范畴学主要处理对象(object),态射(morphism)和变化式(transformation)，而这些概念跟编程的联系非常紧密。
-    - 对象的搜集：对象就是数据类型，通常我们把数据类型视作所有可能的值的一个集合
+    - 对象的搜集：对象就是数据类型，通常我们把数据类型视作所有可能的值的一个集合，数据类型就是对值的一种封装，不仅包括值本身，还包括相关的属性和方法。
     - 态射的搜集：态射是标准的，普通的纯函数
     - 态射的组合：
     - identity独特的态射：
@@ -233,6 +235,140 @@ const map = curry(function (f,xs) {
     4. 最后必须要提及的一点 ， 那就是 Maybe 的”真正“实现 会把它分为两种类型：一种是非控制空值，另一种是空值。这种实现允许我们遵守map的parametricity特性，因此 null 和 undefined 能够依然被 map 调用，functor里的值所需要的那种普遍性条件也能得到满足，所以，你经常看到  Some(x)/None  或者 Just(x)/Nothing 这样的容器类型在做空值检查，而不是Maybe。
 
 - Container --- Either ：
+    1. Either
+    > 此处，Either将当做一个错误消息处理的容器介绍，但是它的作用还远不止如此，比如，它表示了逻辑或，它体现了范畴学里coproduct的概念，它是标准的sum type（或者叫不交并集，disjoint union of sets）等等，但是作为一个functor我们就用它处理错误。
+    ```javascript
+    // Left 和 Right 是我们称为 Either 的抽象类型的两个子类
+
+    // Left 无视要map它的请求，并可以在它内部嵌入一个错误消息
+    let Left = function(x){
+        this.__value = x
+    }
+    Left.of = function (x) {
+        return new Left(x)
+    }
+    Left.prototype.map = function (f) {
+        return this
+    }
+
+    // Right 的作用就像一个 Container (也就是identity)
+    let Right = function(x){
+        this.__value = x
+    }
+    Right.of = function (x) {
+        return new Right(x)
+    }
+    Right.prototype.map = function (f) {
+        return Right.of(f(this.__value))
+    }
+
+    // example1
+    // 日期处理模块
+    let moment = require('moment')
+
+    // getAge :: Date -> User -> Either(string, Number)
+    // 这里的Either 意味着 我们Either的左边的值是String 右边(也就是正确的值)的值是Number
+    let getAge = curry(function (now, user){
+        let birthdate = moment(user.birthdate, 'YYYY-MM-DD')
+        if (!birthdate.isValid()) {
+            return Left.of("Birth date could not be parsed")
+        }
+        return Right.of(now.diff(birthdate,'years'))
+    })
+    getAge(moment(),{birthdate:'2005-12-12'})
+    // Right(9)
+    getAge(moment(),{birthdate:'balloons'})
+    // Left("Birth date could not be parsed")
+
+    // Either
+    // fortune :: Number -> String
+    let fortune = compose(contact("If you survive, you will be"),add(1))
+
+    // zoltar :: User -> Either(String, _)
+    // _ 表示一个应该忽略的值
+    // 
+    let zoltar = compose(map(console.log),map(fortune),getAge(moment()))
+    zoltar({birthdate:'2005-12-12'})
+    // console  , "If you survive, you will be 10"
+    // Right(undefined)
+    zoltar({birthdate:'balloons'})
+    // Left("Birth date could not be parsed")
+    ```
+    2. either
+    > 就像Maybe的maybe 类似，Either也可以有一个either，either接受两个函数和一个静态值作为参数。这两个函数的返回值类型一致。
+    ```javascript
+    // either :: (a -> c) -> (b -> c) -> Either a b -> c
+    let either = curry(function (f, g, e){
+        switch (e.constructor) {
+            case Left: return f(e.__value)
+            case Right: return g(e.__value)
+        }
+    })
+
+    // zoltar :: User -> _
+    // id函数  其实他就是简单地复制了Left 里的错误
+    let zoltar = compose(console.log, either(id, fortune), getAge(moment()))
+     zoltar({birthdate:'2005-12-12'})
+    // console  , "If you survive, you will be 10"
+    // undefined
+    zoltar({birthdate:'balloons'})
+    // "Birth date could not be parsed"
+    // undefined
+    ```
 
 - Container --- IO ：
 > IO和之前的functor不同的地方在于，他的__value 总是一个函数，不过我们不把它当做一个函数  ，函数实现的细节我们不需要管，IO把非纯执行动作（impure action）捕获到包裹的函数里，目的是延迟执行这些非纯动作。就这一点，我们可以认为 IO 包含的是被包裹的 执行动作的 返回值，而不是包裹函数本身。
+```javascript
+// IO跟之前的functor不同的地方在于 它的__value总是一个函数
+let IO = function (f) {
+    // this.__value = f
+    this.unsafePerformIO = f
+}
+
+IO.of = function (x) {
+    return new IO(function () {
+        return x
+    })
+}
+
+// compose:函数从右向左执行
+// 传给map的函数并没有运行 我们只是把它们压到  一个 ”运行栈“ 的最末端
+// 一个函数紧挨着另一个函数
+IO.prototype.map = function (f) {
+    // return new IO(_.compose(f,this.__value))
+    return new IO(_.compose(f,this.unsafePerformIO))
+}
+
+// example1
+// io_window :: IO Window
+let io_window = new IO(function(){
+    return window
+})
+io_window.map(_.prop('location')).map(_.prop('href')).map(split('/'))
+// IO(1430) , IO({__value: [Function]})
+
+// example2
+// $ :: String -> IO [DOM]
+let $ = function (selector) {
+    return new IO(function () {
+        return  document.querySelectorAll(selector)
+    })
+}
+$('#myDiv').map(head).map(function (div) {
+    return div.innerHTML
+})
+// IO('I am some inner html') ,  IO({__value: [Function]})
+```
+> 以上我们认识了几个不同的functor 但它们的数量其实是无限的。
+
+
+- Monad
+
+    - join
+
+    - chain
+
+- Applicative Functor
+    - ap
+    
+    - lift
