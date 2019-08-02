@@ -285,4 +285,83 @@ f2( { z: 3, x: 1 } );
 ```
 
 ### chapter4 组合函数:
+> 组合 —— 声明式数据流 —— 是支撑函数式编程其他特性的最重要的工具之一.这样做的一种有效方法是将complected（交织缠绕的，紧紧编织在一起）代码解开为单独的，更简单的（松散绑定的）代码片段。
 
+```javascript
+// compose 循环实现
+function compose(...fns) {
+	return function composed(result){
+		// 拷贝一份保存函数的数组
+		var list = fns.slice();
+
+		while (list.length > 0) {
+			// 将最后一个函数从列表尾部拿出
+			// 并执行它
+			result = list.pop()( result );
+		}
+
+		return result;
+	};
+}
+// compose 递归实现
+function compose(...fns) {
+	// 拿出最后两个参数
+	var [ fn1, fn2, ...rest ] = fns.reverse();
+
+	var composedFn = function composed(...args){
+		return fn2( fn1( ...args ) );
+	};
+
+	if (rest.length == 0) return composedFn;
+
+	return compose( ...rest.reverse(), composedFn );
+}
+
+// compose 借助reduce实现
+function compose(...fns) {
+	return fns.reverse().reduce( function reducer(fn1,fn2){
+		return function composed(...args){
+			return fn2( fn1( ...args ) );
+		};
+	} );
+}
+var compose =
+	(...fns) =>
+		fns.reverse().reduce( (fn1,fn2) =>
+			(...args) =>
+				fn2( fn1( ...args ) )
+		);
+
+// pipe
+// pipe 与 compose(..) 一模一样，除了它将列表中的函数从左往右处理
+// 这个名字据说来自 Unix/Linux 界，
+// 那儿大量的程序通过“管道传输”（| 运算符）第一个的输出到第二个的输入，等等（即，ls -la | grep "foo" | less）
+function pipe(...fns) {
+	return function piped(result){
+		var list = fns.slice();
+
+		while (list.length > 0) {
+			// 从列表中取第一个函数并执行
+			result = list.shift()( result );
+		}
+
+		return result;
+	};
+}
+// 实际上，我们只需将 compose(..) 的参数反转就能定义出来一个 pipe(..)。
+var pipe = reverseArgs( compose )
+
+function StringToUpperCase(x) {
+	return x.toLocaleUpperCase()
+}
+function StringSplit(x) {
+	return x.split('')
+}
+
+let ca = compose(StringSplit, StringToUpperCase)
+let pa = pipe(StringToUpperCase, StringSplit)
+console.log(ca('from right to left'))
+console.log(pa('from left to rifht'))
+```
+
+### chapter5 减少副作用:
