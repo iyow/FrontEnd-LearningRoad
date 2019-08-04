@@ -365,3 +365,212 @@ console.log(pa('from left to rifht'))
 ```
 
 ### chapter5 减少副作用:
+- 幂等
+	- 数学中的幂等：从数学的角度来看，幂等指的是在第一次调用后，如果你将该输出一次又一次地输入到操作中，其输出永远不会改变的操作。
+	```javascript
+	// 典型的数学例子
+	Math.abs(Math.abs(Math.abs(...)))
+	Math.min(Math.min(Math.min(...)))
+	Math.round(Math.round(Math.round(...)))
+	...
+	// 不仅限于数学运算
+	let x = "hello"
+	String(x) === String(String(x))
+	Boolean(x) === Boolean(Boolean(x))
+	// 之前提到的 函数式编程工具 identity
+	identity(3) === identity(identity(3))
+	// 某些字符串操作 甚至一些更复杂的字符串操作
+	function upper(x){
+		x.toUpperCase()
+	}
+	upper(x) === upper(upper(x))
+	```
+	- 编程中的幂等：幂等的面向程序的定义也是类似的，但不太正式。编程中的幂等仅仅是结果相等而不是要求f(x) === f(f(x))。纯函数是一种幂等函数（注意:JS 的动态值引用特性(以及this)使其很容易产生不明显的副作用而导致不纯）。纯函数更容易被memoization。
+	```javascript
+	function add(x,y){
+		return x+y
+	}
+	// 调用多次和一次add 结果是相等的
+	add(3,4)
+	```
+
+### chapter6 值不可变性:
+> 值的不可变性是指当需要改变程序中的状态时，我们不能改变已存在的数据，而是必须创建和跟踪一个新的数据。
+
+- const,关键字声明的常量通常被误认为是强制规定数据不可被改变。事实上，const 和值的不可变性声明无关，而且使用它所带来的困惑似乎比它解决的问题还要大。
+- Object.freeze(..),方法提供了顶层值的不可变性设定。大多数情况下，使用它就足够了。
+- Immutable.js,每次都创建新的数据或对象（特别是在数组或对象包含很多数据时）处于对计算和存储空间的考量,这是非常不可取的。通过类似 Immutable.js 的库使用不可变数据结构或许是个较好的主意。
+
+### chapter7 闭包 VS. 对象:
+许多语言实际上通过对象实现了闭包。另一些语言用闭包的概念实现了对象。
+> 1. 一个没有闭包的编程语言可以用对象来模拟闭包。
+> 2. 一个没有对象的编程语言可以用闭包来模拟对象。
+- 相似点
+	- 状态
+	```javascript
+	// 闭包
+	function outer() {
+		let x = 10
+		let y = 12
+		let z = 14
+		return middle
+		function middle(){
+			let deepX = 999
+			let deepY = 888
+			let deepZ = 666
+			// 创建并返回了一个新的数组（亦然是一个对象）。这是因为 JS 不提供返回多个数据却不包装在一个对象中的能力。
+			return function inner() {
+				return [x,y,z,deepX,deepY,deepZ]
+			}
+		}
+	}
+	// 对象
+	let point = {
+		x: 10,
+		y: 12,
+		z: 14,
+		deep: {
+			deepX: 999,
+			deepY: 888,
+			deepZ: 666
+		}
+	}
+	// ------------------------
+	function point(x1,y1) {
+		return function distFromPoint(x2,y2){
+			return Math.sqrt(
+				Math.pow( x2 - x1, 2 ) +
+				Math.pow( y2 - y1, 2 )
+			);
+		};
+	}
+	var pointDistance = point( 1, 1 );
+	pointDistance( 4, 5 );		// 5
+
+	function pointDistance(point,x2,y2) {
+		return Math.sqrt(
+			Math.pow( x2 - point.x1, 2 ) +
+			Math.pow( y2 - point.y1, 2 )
+		);
+	};
+
+	pointDistance(
+		{ x1: 1, y1: 1 },
+		4,	// x2
+		5	// y2
+	);
+	// 5
+	```
+	- 行为
+	对象和闭包不仅是表达状态集合的方式，将数据和行为捆绑为有一个充满想象力的名字：封装。
+	```javascript
+	// 对象
+	var person = {
+		firstName: "Kyle",
+		lastName: "Simpson",
+		first() {
+			return this.firstName;
+		},
+		last() {
+			return this.lastName;
+		}
+	}
+
+	person.first() + " " + person.last();
+	// Kyle Simpson
+
+	// 闭包
+	function createPerson(firstName,lastName) {
+		return API;
+
+		// ********************
+		function API(methodName) {
+			switch (methodName) {
+				case "first":
+					return first();
+					break;
+				case "last":
+					return last();
+					break;
+			};
+		}
+
+		function first() {
+			return firstName;
+		}
+
+		function last() {
+			return lastName;
+		}
+	}
+
+	var person = createPerson( "Kyle", "Simpson" );
+
+	person( "first" ) + " " + person( "last" );
+	// Kyle Simpson
+	```
+	- 不可变
+	```javascript
+	function outer() {
+		var x = 1;
+		// 拆解
+		// var y = [2,3];
+		return middle();
+
+		// ********************
+
+		function middle() {
+			var y0 = 2;
+			var y1 = 3;
+
+			return function inner(){
+				// 拆解
+				// return [ x, y[0], y[1] ];
+				return [ x, y0, y1 ];
+			};
+		}
+	}
+
+	var xyPublic = {
+		x: 1,
+		// 拆解
+		// y: [2,3]
+		y: {
+			0: 2,
+			1: 3
+		}
+	};
+
+	```
+	在最底层，所有的状态数据都是基本类型，而所有基本类型都是不可变值。不论是用嵌套对象还是嵌套闭包代表状态，这些被持有的值都是不可变的。
+	- 内部结构
+	```javascript
+	// 闭包
+	function outer() {
+		var x = 1;
+
+		return function inner(){
+			return x;
+		};
+	}
+
+	scopeOfOuter = {
+		x: 1
+	};
+	// 内部作用域
+	scopeOfInner = {};
+	Object.setPrototypeOf( scopeOfInner, scopeOfOuter );
+	// 建立词法 变量引用
+	return scopeOfInner.x;
+	```
+	scopeOfInner 并没有一个 x 的属性，当他的 [[Prototype]] 连接到拥有 x 属性的 scopeOfOuter时。通过原型委托访问 scopeOfOuter.x 返回值是 1。这都只是概念。并不能说 JS 引擎使用对象和原型。但它完全有道理，它可以同样地工作。
+- 同构
+	- 函数的数学定义是一个输入和输出之间的映射。这在学术上称为态射。同构是双映（双向）态射的特殊案例，它需要映射不仅仅必须可以从任意一边完成，而且在任一方式下反应完全一致。
+	- 闭包和对象是状态的同构表示（及其相关功能）
+- 不同
+- 结构可变性
+从概念上讲，闭包的结构不是可变的（当然假设你使用严格模式并且／或者没有使用作弊手段例如 eval(..)）。
+- 私有可见性，变更控制，状态可拷贝
+闭包通过词法作用域提供“私有”状态，信息隐藏。使有了闭包，你就有了一些可以更改代码的权限，而剩余的程序是受限的。
+- 性能
+从实现的角度看，对象有一个比闭包有利的原因，那就是 JavaScript 对象通常在内存和甚至计算角度是更加轻量的。但是需要小心这个普遍的断言：有很多东西可以用来处理对象，这可能会影响你从闭包转向对象时获得的任何性能增益。性能观察结果不是绝对的，在一个给定场景下决定什么是最好的是非常复杂的。不要随意使用你从别人那里听到的或者是你从之前一些项目中看到的。最好小心地决定使用对象还是闭包。
