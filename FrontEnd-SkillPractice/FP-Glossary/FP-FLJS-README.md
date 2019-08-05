@@ -574,3 +574,278 @@ console.log(pa('from left to rifht'))
 闭包通过词法作用域提供“私有”状态，信息隐藏。使有了闭包，你就有了一些可以更改代码的权限，而剩余的程序是受限的。
 - 性能
 从实现的角度看，对象有一个比闭包有利的原因，那就是 JavaScript 对象通常在内存和甚至计算角度是更加轻量的。但是需要小心这个普遍的断言：有很多东西可以用来处理对象，这可能会影响你从闭包转向对象时获得的任何性能增益。性能观察结果不是绝对的，在一个给定场景下决定什么是最好的是非常复杂的。不要随意使用你从别人那里听到的或者是你从之前一些项目中看到的。最好小心地决定使用对象还是闭包。
+
+### chapter8 递归:
+- 普通递归
+```javascript
+function sum(total,...nums) {
+	for (let i = 0; i < nums.length; i++) {
+		total = total + nums[i];
+	}
+
+	return total;
+}
+
+// vs
+
+function sum(num1,...nums) {
+	if (nums.length == 0) return num1;
+	return num1 + sum( ...nums );
+}
+```
+- 二分递归(二分递归查找)
+```javascript
+function depth(node) {
+	if (node) {
+		let depthLeft = depth( node.left );
+		let depthRight = depth( node.right );
+		return 1 + Math.max( depthLeft, depthRight );
+	}
+
+	return 0;
+}
+```
+- 相互递归
+
+- 栈、堆
+每个函数调用都将开辟出一小块称为堆栈帧的内存。堆栈帧中包含了函数语句当前状态的某些重要信息，包括任意变量的值。函数被它前一个函数调用时，这个函数帧会被“推”到最顶部。当这个函数调用结束后，它的帧会从堆栈中退出。
+- 尾调用
+> 如果一个回调从函数 baz() 转到函数 bar() 时候，而回调是在函数 baz() 的最底部执行 -- 也就是尾调用 -- 那么 baz() 的堆栈帧就不再需要了。也就意谓着，内存可以被回收。尾调用并不是递归特有的；它适用于任何函数调用。但是，在大多数情况下，你的手动非递归调用栈不太可能超过 10 级，因此尾调用对你程序内存的影响可能相当低。
+ - 尾调用优化(TCO) : 尾调用它们的运行速度可能比普通回调还慢,TCO 是关于把尾调用更加高效运行的一些优化技术。
+ - 正确的尾调用 (PTC) : 为了避免堆栈增加，PTC 要求所有的递归必须是在尾部调用，因此，二分法递归 —— 两次（或以上）递归调用 —— 是不能实现 PTC 的。但也许我们可以试着化整为零，把多重递归拆分成符合 PTC 规范的单个函数回调。
+ ```javascript
+//  ✅
+return foo( .. );
+return x ? foo( .. ) : bar( .. );
+// ❌
+foo();
+return;
+
+var x = foo( .. );
+// 有些js引擎能够识别这样的书写，但是 这毕竟不符合规范
+return x;
+
+return 1 + foo( .. );
+ ```
+ - 重构递归:
+	- 替换调用堆栈
+	```javascript
+	// 重构 之前编写写的求和函数
+	// 符合了 PTC 规范，又保证了 sum(..) 参数的整洁性
+	function sum(num1,num2,...nums) {
+		num1 = num1 + num2;
+		if (nums.length == 0) return num1;
+		return sum( num1, ...nums );
+	}
+	sum( 3, 1, 17, 94, 8 );
+	```
+	- 后继传递格式 （CPS变换）
+	 continuation 一词通常用于表示在某个函数完成后指定需要执行的下一个步骤的回调函数。组织代码，使得每个函数在其结束时接收另一个执行函数，被称为后继传递格式（CPS）。有些形式的递归，实际上是无法按照纯粹的 PTC 规范重构的，特别是相互递归。
+	```javascript
+	function fib(n) {
+		if (n <= 1) return n;
+		return fib( n - 2 ) + fib( n - 1 );
+	}
+
+	// identity(..)；它只简单的返回传递给它的任何东西。
+	function fib(n,cont = identity) {
+		if (n <= 1) return cont( n );
+		return fib(
+			n - 2,
+			n2 => fib(
+				n - 1,
+				n1 => cont( n2 + n1 )
+			)
+		);
+	}
+	```
+
+	- Trampolines
+	Trampolines的优点之一是在非 PTC 环境下你一样可以应用此技术。另一个优点是每个函数都是正常调用，而不是 PTC 优化，所以它可以运行得更快。但是你需要将递归函数包裹在执行弹簧床功能的函数中; 此外，就像 CPS 一样，需要为每个后续函数创建闭包。然而，与 CPS 不一样的地方是，每个返回的后续数数，运行并立即完成，所以，当调用堆栈的深度用尽时，引擎中不会累积越来越多的闭包。
+	```javascript
+	function trampoline(fn) {
+		return function trampolined(...args) {
+			var result = fn( ...args );
+
+			while (typeof result == "function") {
+				result = result();
+			}
+
+			return result;
+		};
+	}
+	var sum = trampoline(
+		function sum(num1,num2,...nums) {
+			num1 = num1 + num2;
+			if (nums.length == 0) return num1;
+			return () => sum( num1, ...nums );
+		}
+	);
+
+	var xs = [];
+	for (let i=0; i<20000; i++) {
+		xs.push( i );
+	}
+
+	sum( ...xs );
+	// 199990000
+	```
+
+### chapter9 列表操作:
+- 映射
+> map(..): 转换列表项的值到新列表。
+
+- 过滤器
+> filter(..): 选择或过滤掉列表项的值到新数组。
+
+- 缩减器/累计器 (瑞士军刀): reduce(..): 合并列表中的值，并且产生一个其他的值（经常但不总是非列表的值）
+	- Map 也是 Reduce
+	```javascript
+	var double = v => v * 2;
+
+	[1,2,3,4,5].map( double );
+	// [2,4,6,8,10]
+
+	[1,2,3,4,5].reduce(
+		(list,v) => (
+			list.push( double( v ) ),
+			list
+		), []
+	);
+	// [2,4,6,8,10]
+	```
+	我们欺骗了这个缩减器，并允许采用 list.push(..) 去改变传入的列表所带来的副作用。一般来说，这并不是一个好主意，但我们清楚创建和传入 [] 列表，这样就不那么危险了。
+	- Filter 也是 Reduce
+	```javascript
+	var isOdd = v => v % 2 == 1;
+
+	[1,2,3,4,5].filter( isOdd );
+	// [1,3,5]
+
+	[1,2,3,4,5].reduce(
+		(list,v) => (
+			isOdd( v ) ? list.push( v ) : undefined,
+			list
+		), []
+	);
+	// [1,3,5]
+	```
+	这里有更加不纯的缩减器欺骗。不采用 list.push(..)，我们也可以采用 list.concat(..) 并返回合并后的新列表。
+- 去重
+- 扁平化(flatten)
+- Zip:交替选择两个输入的列表中的值，并将得到的值组成子列表。
+```javascript
+function zip(arr1,arr2) {
+	var zipped = [];
+	arr1 = arr1.slice();
+	arr2 = arr2.slice();
+
+	while (arr1.length > 0 && arr2.length > 0) {
+		zipped.push( [ arr1.shift(), arr2.shift() ] );
+	}
+
+	return zipped;
+}
+zip( [1,3,5,7,9], [2,4,6,8,10] );
+// [ [1,2], [3,4], [5,6], [7,8], [9,10] ]
+```
+- 合并(merge)
+- 方法 VS. 独立
+	- 对比
+	```javascript
+	[1,2,3,4,5]
+	.filter( isOdd )
+	.map( double )
+	.reduce( sum, 0 );					// 18
+
+	//  采用独立的方法.
+
+	reduce(
+		map(
+			filter( [1,2,3,4,5], isOdd ),
+			double
+		),
+		sum,
+		0
+	);
+	```
+	两种方式的 API 实现了同样的功能。但它们的风格完全不同。很多函数式编程者更倾向采用后面的方式，但是前者在 Javascript 中毫无疑问的更常见。
+	- 独立组合实用函数
+	```javascript
+	var double = v => v * 2;
+	var isOdd = v => v % 2 == 1
+	// 独立函数定义 
+	var filter = (arr,predicateFn) => arr.filter( predicateFn );
+
+	var map = (arr,mapperFn) => arr.map( mapperFn );
+
+	var reduce = (arr,reducerFn,initialValue) =>
+		arr.reduce( reducerFn, initialValue );
+	
+	// 数组上下文应该是第一个形参，而不是最后一个,采用右偏应用
+	compose(
+		partialRight( reduce, sum, 0 ),
+		partialRight( map, double ),
+		partialRight( filter, isOdd )
+	)
+	( [1,2,3,4,5] );
+
+	// 柯里化 方式
+	var filter = curry(
+		(predicateFn,arr) =>
+			arr.filter( predicateFn )
+	);
+
+	var map = curry(
+		(mapperFn,arr) =>
+			arr.map( mapperFn )
+	);
+
+	var reduce = curry(
+		(reducerFn,initialValue,arr) =>
+			arr.reduce( reducerFn, initialValue );	
+	compose(
+		reduce( sum )( 0 ),
+		map( double ),
+		filter( isOdd )
+	)
+	( [1,2,3,4,5] );
+	```
+	- 方法适配独立函数(方法 ---> 独立函数)
+	```javascript
+	// 使用工具实用函数  适配
+	var unboundMethod =
+		(methodName,argCount = 2) =>
+			curry(
+				(...args) => {
+					var obj = args.pop();
+					return obj[methodName]( ...args );
+				},
+				argCount
+			);
+	var filter = unboundMethod( "filter", 2 );
+	var map = unboundMethod( "map", 2 );
+	var reduce = unboundMethod( "reduce", 3 );
+
+	compose(
+		reduce( sum )( 0 ),
+		map( double ),
+		filter( isOdd )
+	)
+	( [1,2,3,4,5] );
+	```
+	- 独立函数适配为方法(独立函数 ---> 方法)
+		- 采用额外的方法扩展内建的 Array.prototype (不推荐)
+		- 把独立实用函数适配成一个缩减函数，并且将其传递给 reduce(..) 实例方法。
+		```javascript
+		// 刻意使用具名函数用于递归中的调用
+		function flattenReducer(list,v) {
+			return list.concat(
+				Array.isArray( v ) ? v.reduce( flattenReducer, [] ) : v
+			);
+		}
+		[ [1, 2, 3], 4, 5, [6, [7, 8]] ]
+		.reduce( flattenReducer, [] )
+		// [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+		```
+你会在简单列表中使用本章大多数的列表操作。但你会发现这个概念适用于你可能需要的任何数据结构和操作(因为它更普遍的意义是，以上这些操作可以在任一集合执行。)。
