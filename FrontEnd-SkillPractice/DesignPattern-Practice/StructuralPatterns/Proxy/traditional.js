@@ -27,10 +27,11 @@ class RealSubject extends Subject {
     }
 }
 
-class Proxy extends Subject {
+// 通过继承重写方法 并 调用父级方法
+class ProxySubject extends Subject {
     constructor() {
         super()
-        console.log('Proxy Class created');
+        console.log('ProxySubject Class created');
         this.realSubject = new RealSubject();
         this.multCache = {}
     }
@@ -48,7 +49,7 @@ class Proxy extends Subject {
     }
 }
 
-var proxy = new Proxy()
+var proxy = new ProxySubject()
 proxy.request()
 proxy.mult(1,2,3)
 proxy.mult(1,2,3)
