@@ -51,7 +51,3 @@ console.log(ob3);
 console.log(ob1 === ob2);
 console.log(ob1 === ob3);
 console.log('---------------')
-
-
-
-// 代理实现单例模式
