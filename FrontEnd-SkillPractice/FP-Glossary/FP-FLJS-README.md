@@ -849,3 +849,135 @@ zip( [1,3,5,7,9], [2,4,6,8,10] );
 		// [ 1, 2, 3, 4, 5, 6, 7, 8 ]
 		```
 你会在简单列表中使用本章大多数的列表操作。但你会发现这个概念适用于你可能需要的任何数据结构和操作(因为它更普遍的意义是，以上这些操作可以在任一集合执行。)。
+
+### chapter10 异步的函数式:
+- 时间状态: 在你所有的应用里，最复杂的状态就是时间。当你操作的数据状态改变过程比较直观的时候，是很容易管理的。但是，如果状态随着时间因为响应事件而隐晦的变化，管理这些状态的难度将会成几何级增长。
+	- promise,获取 promise 的返回值是异步的，但却是通过同步的方法来赋值。通过可靠的（时间无关）方式 给 = 操作符扩展随时间动态赋值的功能，
+
+- 积极的 vs 惰性的
+	- 积极的: 同步（即时）地操作着离散的即时值或值的列表/结构上的值。
+	- 惰性的: 
+	```javascript
+	var a = [];
+
+	var b = mapLazy( a, v => v * 2 );
+
+	a.push( 1 );
+
+	a[0];		// 1
+	b[0];		// 2
+
+	a.push( 2 );
+
+	a[1];		// 2
+	b[1];		// 4
+	```
+	想象下 mapLazy(..) (未被实现的虚构方法) 本质上 “监听” 了数组 a，只要一个新的值添加到数组的末端（使用 push(..)），它都会运行映射函数 v => v * 2 并把改变后的值添加到数组 b 里。
+- 响应式函数式编程(事件机制函数式编程)
+	- 声明式
+	```javascript
+	// 生产者:
+	// 虚构的 LazyArray
+	var a = new LazyArray();
+
+	setInterval( function everySecond(){
+		a.push( Math.random() );
+	}, 1000 );
+
+
+	// **************************
+	// 消费者:
+
+	var b = a.map( function double(v){
+		return v * 2;
+	} );
+
+	b.listen( function onValue(v){
+		console.log( v );
+	} );
+	```
+	a 是一个行为本质上很像数据流的生产者。我们可以把每个值赋给 a 当作一个事件。map(..) 操作会触发 b 上面的 listen(..) 事件来消费新的值。
+	- 命令式
+	```javascript
+	// 生产者:
+
+	var a = {
+		onValue(v){
+			b.onValue( v );
+		}
+	};
+
+	setInterval( function everySecond(){
+		a.onValue( Math.random() );
+	}, 1000 );
+
+
+	// **************************
+	// 消费者:
+
+	var b = {
+		map(v){
+			return v * 2;
+		},
+		onValue(v){
+			v = this.map( v );
+			console.log( v );
+		}
+	};
+	```
+	命令式强硬的把代码 b.onValue(..) 夹杂在生产者 a 的逻辑里，这有点违反了关注点分离原则。这将会让分离生产者和消费者变得困难。
+	- Observables
+	> 你应该已经察觉到响应式，事件式，类数组结构的数据的重要性，就像我们虚构出来的 LazyArray 一样。值得高兴的是，这类的数据结构已经存在的了，它就叫 observable。现在已经有各种各样的 Observables 的库类， 最出名的是 RxJS 和 Most。正好也有一个直接向 JS 里添加 observables 的建议（2017），就像 promise。
+	```javascript
+	// RxJS
+	// 生产者:
+
+	var a = new Rx.Subject();
+
+	setInterval( function everySecond(){
+		a.next( Math.random() );
+	}, 1000 );
+
+
+	// **************************
+	// 消费者:
+
+	var b = a.map( function double(v){
+		return v * 2;
+	} );
+
+	b.subscribe( function onValue(v){
+		console.log( v );
+	} );
+
+	// ---------------------
+	// 生产者:
+
+	var a = Rx.Observable.create( function onObserve(observer){
+		setInterval( function everySecond(){
+			observer.next( Math.random() );
+		}, 1000 );
+	} );
+	var b =
+		a
+		.filter( v => v % 2 == 1 )		// 过滤掉偶数
+		.distinctUntilChanged()			// 过滤连续相同的流
+		.throttle( 100 )				// 函数节流（合并100毫秒内的流）
+		.map( v = v * 2 );				// 变2倍
+
+	b.subscribe( function onValue(v){
+		console.log( "Next:", v );
+	} );
+	```
+	- 异步操作支持串行和并发迭代，并发或串行异步 （fasy 库--author本书作者）
+> 最常用到这些函数式编程的是响应式函数式编程(FRP)。我故意避开这个术语是因为一个有关于 FP + Reactive 是否真的构成 FRP 的辩论。我们不会全面深入了解 FRP 的所有含义，所以我会继续称之为响应式函数式编程。或者，你也可以称之为事件机制函数式编程。
+
+### chapter11 融会贯通:
+
+
+### 附录
+- Transducing:transduer 是可组合的 reducer,使用transduer来组合相邻的map(..)、filter(..) 和 reduce(..) 操作。transducing 是针对那些不能被直接组合的函数，使用的一种更具声明式风格进行组合，否则这些函数将不能直接组合。
+- Monad
+	- 类型：Monad 是一种数据结构。是一种类型。它是一组使处理某个值变得可预测的特定行为。
+	- 函子(functor)：包括一个值和一个用来对构成函子的数据执行操作的类 map 实用函数。Monad 是一个包含一些额外行为的函子（functor）。
+	- 松散接口：Monad 并不是单一的数据类型，它更像是相关联的数据类型集合。它是一种根据不同值的需要而用不同方式实现的接口。每种实现都是一种不同类型的 Monad。你可能听过 "Identity Monad"、"IO Monad"、"Maybe Monad"、"Either Monad" 或其他形形色色的字眼。
