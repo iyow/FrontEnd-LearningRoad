@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script type="module">
+        console.log('1------------------------')
+
+        import * as All from "./module.js";
+        console.log(All)
+    </script>
+    <script type="module">
+        console.log('2------------------------')
+
+        import myDefault from "./module.js"
+        console.log(myDefault)
+    </script>
+    <script type="module">
+        console.log('3------------------------')
+        // import { MathPI,otherModuleOne } from "./module.js";
+        // 错误
+        // import { MathPI,otherModuleOne,default } from "./module.js";
+        // 正确
+        // import myDefault from "./module.js";
+        import { MathPI,otherModuleOne,default as myDefault } from "./module.js";
+        console.log(MathPI)
+        console.log(otherModuleOne)
+        console.log(myDefault)
+    </script>
+</body>
+
+</html>
