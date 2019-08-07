@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MutationObserver</title>
+</head>
+
+<body>
+    <p>Mutation Observers API为web页面提供一种机制或扩展，以便在DOM被改变时获得通知。
+        之前是通过Mutation events监测
+        (或者通过在需要监听的DOM添加上css animation，js监听animationstart事件),
+        但是在 DOM中 每一次更改都会触发改变事件，这样会导致性能问题。该events现已废弃。</p>
+    <p>Mutation Observers API</p>
+    <ul>
+        <li>它等待所有脚本任务完成后，才会运行（即异步触发方式）。</li>
+        <li>它把 DOM 变动记录封装成一个数组进行处理，而不是一条条个别处理 DOM 变动。</li>
+        <li>它既可以观察 DOM 的所有类型变动，也可以指定只观察某一类变动。</li>
+    </ul>
+
+    <p>MutationRecord对象包含了DOM的相关信息，有如下属性：</p>
+    <ul>
+        <li>type：观察的变动类型（attribute、characterData或者childList）。</li>
+        <li>target：发生变动的DOM节点。</li>
+        <li>addedNodes：新增的DOM节点。</li>
+        <li>removedNodes：删除的DOM节点。</li>
+        <li>previousSibling：前一个同级节点，如果没有则返回 null。</li>
+        <li>nextSibling：下一个同级节点，如果没有则返回 null。</li>
+        <li>attributeName：发生变动的属性。如果设置了 attributeFilter，则只返回预先指定的属性。</li>
+        <li>oldValue：变动前的值。这个属性只对 attribute和 characterData变动有效，如果发生
+            childList变动，则返回null。</li>
+    </ul>
+    <script>
+        // 这段 code 还能另你重新认识和理理解你的应⽤用是如 何被渲染的，
+        // 尤其是当 MVVM 的 Web 编程思想⼤行其道
+        function recordNodes(nodes) {
+            console.log(nodes)
+        }
+        let observer = new MutationObserver((mutations, observer) => {
+            console.log('------------------------')
+            console.log(mutations)
+            console.log(observer)
+            mutations.forEach(record => {
+                if (record.type === 'childList') {
+                    recordNodes(record.addedNodes)
+                }
+            })
+            console.log('------------------------')
+        })
+        observer.observe(document, {
+            // 要监视的特定属性名称的数组。如果未包含此属性，则对所有属性的更改都会触发变动通知。无默认值。
+            // attributeFilter:[],
+            // 当监视节点的属性改动时，将此属性设为true 将记录任何有改动的属性的上一个值。
+            attributeOldValue: true,
+            // 设为true以观察受监视元素的属性值变更。
+            attributes: true,
+            // 设为true以监视指定目标节点或子节点树中节点所包含的字符数据的变化。
+            characterData: true,
+            // 设为true以在文本在受监视节点上发生更改时记录节点文本的先前值。
+            characterDataOldValue: true,
+            // 设为true以监视目标节点（如果subtree为true，则包含子孙节点）添加或删除新的子节点。默认值为false。
+            childList: true,
+            // 设为true以扩展监视范围到目标节点下的整个子树的所有节点。
+            // MutationObserverInit的其他值都会作用于此子树下的所有节点，而不仅仅只作用于目标节点。默认值为false。
+            subtree: true
+        })
+    </script>
+</body>
+
+</html>
