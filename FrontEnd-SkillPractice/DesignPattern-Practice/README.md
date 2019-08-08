@@ -13,3 +13,16 @@
         }
     }
     ```
+    
+## 设计模式类型划分
+### 行为型模式（BehavioralPatterns）：
+- 策略模式（Strategy）
+- 观察者模式（Observer）/订阅发布模式（Publish&Subscribe）
+- 迭代器模式（Iterator）
+- 命令模式（Command）
+- 模板方法模式（Template Method）
+### 创建型模式（CreativePatterns）：
+- 单例模式（Signleton）
+### 结构型模式（StructuralPatterns）：
+- 组合模式（Composite）
+- 代理模式（Proxy）
