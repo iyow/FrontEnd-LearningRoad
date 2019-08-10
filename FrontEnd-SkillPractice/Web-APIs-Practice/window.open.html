@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <meta name="referrer" content="never">
+    <style>
+        a,button{
+            margin:10px;
+        }
+    </style>
+    <script>
+        // let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeatures]);
+
+        // WindowObjectReference,打开的新窗口对象的引用。如果调用失败，返回值会是 null 。
+        // 如果父子窗口满足“同源策略”，你可以通过这个引用访问新窗口的属性或方法。或者在窗口中注入自定义内容。
+
+        // strUrl === 要在新打开的窗口中加载的URL。
+        // 如果strUrl 是一个空值，那么打开的窗口将会是带有默认工具栏的空白窗口（加载about:blank）
+
+        // strWindowName === 新窗口的名称。
+        // 该字符串可以用来作为超链接 <a> 或表单 <form> 元素的目标属性值。
+        // 字符串中不能含有空白字符。注意：strWindowName 并不是新窗口的标题。
+
+        // strWindowFeatures === 一个可选参数，列出新窗口的特征(大小，位置，滚动条等)作为一个DOMString。
+        // 字符串中不能包含任何空白字符，特性之间用逗号分隔开。
+    </script>
+</head>
+
+<body>
+    <script>
+        function elementGenerator(el, array) {
+            let parentRootDom = document.createElement('div')
+            array.forEach(text => {
+                let e = document.createElement(el)
+                e.innerHTML = text
+                e.addEventListener('click', () => {
+                    // let targetWindow = window.open('http://www.baidu.com', `_${text}`, 'width=100,height=100')
+                    let targetWindow = window.open('', ``, 'width=300,height=300')
+                    // let targetWindow = window.open('http://www.baidu.com',`_${text}`)
+                    if (targetWindow.document) {
+                        let doc = targetWindow.document
+                        doc.title = '猜猜我是谁'
+                        doc.body.innerHTML = '可以自定义展示一些内容在脱离原文档的情况下比如视频播放器'
+                    }
+                })
+                parentRootDom.appendChild(e)
+            });
+            document.body.appendChild(parentRootDom)
+        }
+        let test = ['blank', 'self', 'parent', 'top']
+        elementGenerator('button', test)
+        elementGenerator('a', test)
+    </script>
+
+</body>
+
+</html>
