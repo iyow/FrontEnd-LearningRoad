@@ -33,12 +33,23 @@ Number.prototype.toString = function () {
     return '666'
 }
 
+// let num = new Number(456)
+// let str = new String('nihao')
 let num = 456
 let str = 'nihao'
-
+// num[Symbol.toPrimitive] = (hint) => {
+//     // console.log(hint)
+//     return '-hint-------';
+// }
+// str[Symbol.toPrimitive] = (hint) => {
+//     // console.log(hint)
+//     return '-lalahint-------';
+// }
+console.log('------------------------------------------')
 console.log(num)
 console.log(str)
 console.log(num.valueOf())
 console.log(Number(num))
 console.log(str.toString())
 console.log(String(str))
+console.log(num + str)
