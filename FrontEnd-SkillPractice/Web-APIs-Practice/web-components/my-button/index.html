@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义按钮</title>
+</head>
+
+<body>
+
+    <my-button label="Atom" as-atom></my-button>
+    <my-button label="Click Me"></my-button>
+    <script src="./index.js" type="module"></script>
+    <script>
+        const myButtonDom = document.querySelector('my-button[label="Click Me"]');
+        console.log(myButtonDom);
+
+
+
+        myButtonDom
+            .addEventListener('onCustomClick', event => {
+                console.log(event)
+                console.log(event.detail)
+            });
+
+
+        myButtonDom
+            .addEventListener('onCustomClick', event => {
+                // 触发js property setter
+                myButtonDom.label = myButtonDom.label === 'Click Me' ? 'after click change content' : 'Click Me';
+            });
+    </script>
+</body>
+
+</html>
