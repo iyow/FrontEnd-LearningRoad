@@ -24,13 +24,13 @@ class Button extends HTMLElement {
 
     // 拦截gettter 直接获取属性值
     get label() {
-        console.log('label------getter触发');
+        console.log('my-button label------getter触发');
 
         return this.getAttribute('label');
     }
 
     set label(value) {
-        console.log('label------setter触发');
+        console.log('my-button label------setter触发');
 
         // 通过js修改 property 无法触发 dom 的 attribute 改变
         // 所以拦截setter 手动设置dom的attribute
@@ -41,13 +41,13 @@ class Button extends HTMLElement {
     // 生命周期
     // 使用attributeChangedCallback 以及 js属性(property)和dom属性(attribute)的getter setter实现响应
     static get observedAttributes() {
-        console.log('生命周期属性监听------get触发');
+        console.log('my-button 生命周期属性监听------get触发');
 
         return ['label'];
     }
 
     attributeChangedCallback(name, oldVal, newVal) {
-        console.log('生命周期属性监听------回调函数触发', name, oldVal, newVal);
+        console.log('my-button 生命周期属性监听------回调函数触发', name, oldVal, newVal);
 
         this.render();
     }
