@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义用户卡片组件</title>
+    <style>
+        /* 也可以填加全局样式 */
+        user-card {
+            display: flex;
+            align-items: center;
+            width: 450px;
+            height: 180px;
+            background-color: #d4d4d4;
+            border: 1px solid #d5d5d5;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <template id="userCardTemplate">
+        <!-- 组件的样式应该与代码封装在一起，只对自定义元素生效，不影响外部的全局样式。 -->
+        <style>
+            /* 选择包含使用这段 CSS 的 Shadow DOM 的影子宿主
+            （这样就可以从 Shadow DOM 中选择包括它的自定义元素）
+            ——但前提是该函数的参数与选择的阴影宿主相匹配。 */
+            /* :host伪类，指代自定义元素本身。在shadow DOM之外使用时，这没有任何效果。 */
+            :host {
+                display: flex;
+                align-items: center;
+                width: 450px;
+                height: 180px;
+                background-color: #d4d4d4;
+                border: 1px solid #d5d5d5;
+                box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 3px;
+                overflow: hidden;
+                padding: 10px;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .image {
+                flex: 0 0 auto;
+                width: 160px;
+                height: 160px;
+                vertical-align: middle;
+                border-radius: 5px;
+            }
+
+            .container {
+                box-sizing: border-box;
+                padding: 20px;
+                height: 160px;
+            }
+
+            .container>.name {
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 1;
+                margin: 0;
+                margin-bottom: 5px;
+            }
+
+            .container>.email {
+                font-size: 12px;
+                opacity: 0.75;
+                line-height: 1;
+                margin: 0;
+                margin-bottom: 15px;
+            }
+
+            .container>.button {
+                padding: 10px 25px;
+                font-size: 12px;
+                border-radius: 5px;
+                text-transform: uppercase;
+            }
+        </style>
+
+        <img class="image">
+        <div class="container">
+            <p class="name"></p>
+            <p class="email"></p>
+            <button class="button">Follow</button>
+            <slot name="default-slot">默认内容</slot>
+        </div>
+    </template>
+    <user-card image="https://semantic-ui.com/images/avatar2/large/kristy.png" name="User Name"
+        email="yourmail@some-email.com">
+        <button class="button" slot="default-slot">插入</button>
+    </user-card>
+
+
+    <script src="./index.js"></script>
+</body>
+
+</html>
