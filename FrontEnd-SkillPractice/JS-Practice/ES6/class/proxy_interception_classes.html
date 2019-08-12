@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>通过proxy拦截类的实例</title>
+</head>
+
+<body>
+
+
+    <script>
+        class Baby {
+            static haha = '123'
+            constructor(age, name) {
+                this.age = age
+                this.name = name
+                // return Object.create(new Proxy(this, {
+                //     get(target, property, receiver) {
+                //         console.log('get----------------', target, property)
+                //         console.log('get----------------', target.hasOwnProperty(property))
+                //         // try {
+                //         //     return new Proxy(target[property], handler);
+                //         // } catch (err) {
+                //         //     return Reflect.get(target, property, receiver);
+                //         // }
+                //         return Reflect.get(target, property, receiver);
+
+                //     },
+                //     set(target, propKey, value, receiver) {
+                //         console.log('set----------------')
+
+                //         return Reflect.set(target, propKey, value, receiver);
+                //     },
+                //     defineProperty(target, property, descriptor) {
+                //         return Reflect.defineProperty(target, property, descriptor);
+                //     },
+                //     deleteProperty(target, property) {
+                //         return Reflect.deleteProperty(target, property);
+                //     }
+                // }));
+                return new Proxy(this, {
+                    get(target, property, receiver) {
+                        console.log('get----------------', target, property)
+                        console.log('get---own-------------', target.hasOwnProperty(property))
+                        // try {
+                        //     return new Proxy(target[property], handler);
+                        // } catch (err) {
+                        //     return Reflect.get(target, property, receiver);
+                        // }
+                        return Reflect.get(target, property, receiver);
+
+                    },
+                    set(target, propKey, value, receiver) {
+                        console.log('set----------------')
+
+                        return Reflect.set(target, propKey, value, receiver);
+                    },
+                    defineProperty(target, property, descriptor) {
+                        return Reflect.defineProperty(target, property, descriptor);
+                    },
+                    deleteProperty(target, property) {
+                        return Reflect.deleteProperty(target, property);
+                    }
+                });
+            }
+            getAge() {
+                console.log(this)
+                return this.age
+            }
+        }
+
+        let baby = new Baby(213, 'kujiji')
+        baby.age
+        baby.name
+        // baby.a = 123
+        console.log(baby instanceof Baby)
+        // console.log(baby instanceof Proxy)
+        // console.log(baby.constructor)
+        console.log(baby)
+        // console.log(baby.getAge())
+        // console.log(Baby.prototype)
+    </script>
+</body>
+
+</html>
