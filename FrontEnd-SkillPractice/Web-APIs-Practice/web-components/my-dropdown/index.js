@@ -103,6 +103,18 @@ class Dropdown extends HTMLElement {
         });
     }
 }
-// 统一设置property的getter和setter
+// 统一设置property的getter和setter  通过defineProperty 
+// 详细参看/JS-Practice/ES6/class/mixin_multiple_extends理解
 generatorObservedAttrs(Dropdown.observedAttrs, Dropdown.prototype)
+// 或者通过Proxy实现
+// class Dropdown extends HTMLElement {
+//     constructor() {
+//         super();
+//         // ... ... 
+//         return new Proxy(this, {
+//             // ... ... 
+//         })
+//     }
+// }
+
 window.customElements.define('my-dropdown', Dropdown);
