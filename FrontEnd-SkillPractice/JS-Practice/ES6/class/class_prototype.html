@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>理解Class</title>
+</head>
+
+<body>
+
+
+    <script>
+
+        let variable = 'NB'
+        class MyBody {
+            constructor({ a, b }) {
+                this.a = a
+                this.b = b
+            }
+            get [variable]() {
+                console.log('---------variable  get', variable)
+                return 'nihao'
+            }
+            set [variable](value) {
+                console.log('---------variable  set', variable)
+
+                this[variable] = value
+                return value
+            }
+            hello() {
+                console.log('solo')
+            }
+        }
+
+        console.log(MyBody.prototype)
+        console.log(typeof MyBody)
+        console.log(typeof MyBody.prototype)
+
+
+        console.log('----------------------------------------------------')
+
+        let instance = new MyBody({ a: 1, b: 3 })
+        console.log(instance)
+        console.log(instance.hasOwnProperty('NB'))
+        console.log(Object.getOwnPropertyNames(instance))
+        console.log(Object.getPrototypeOf(instance))
+
+        console.log('----------------------------------------------------')
+
+
+        console.log(Object.getPrototypeOf(instance) === MyBody.prototype)
+        console.log(Object.is(Object.getPrototypeOf(instance), MyBody.prototype))
+        console.log(Object.getPrototypeOf(instance) === instance.__proto__)
+
+        console.log('----------------------------------------------------')
+
+        // class 创建的类的原型  MyBody.prototype 无法直接复写和修改
+        // 可以通过defineProperty / assign
+        // Object.assign(MyBody.prototype, CustomProxy.prototype)
+        // let c = MyBody.prototype = generator(MyBody.prototype)
+        let instanceProxy = new MyBody({ a: 1, b: 3 })
+        console.log(instanceProxy)
+        console.log(Object.getOwnPropertyDescriptor(MyBody, 'prototype'))
+        Object.defineProperty(MyBody.prototype, 'yesorno', { value: 'kexi' })
+        console.log(MyBody.prototype)
+
+
+    </script>
+</body>
+
+</html>
