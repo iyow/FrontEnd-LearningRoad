@@ -26,3 +26,4 @@
 ### 结构型模式（StructuralPatterns）：
 - 组合模式（Composite）
 - 代理模式（Proxy）
+- 享元模式（FLYWEIGHT）
