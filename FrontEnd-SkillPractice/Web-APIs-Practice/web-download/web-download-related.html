@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文件下载</title>
+</head>
+
+<body>
+    <p>
+        <!-- 更新编译原理文档 -->
+        <!-- 服务端返回的头部需要设置
+
+Content-Disposition: "attachment; filename=xxxx.docx;"
+ -->
+        前端实现文件下载的各种方法总结
+        前言：最近项目中有不少关于文件上传和下载相关的功能，开发过程中遇到不少的问题，在此对浏览器下载文件的功能进行总结，以备后续查看。
+
+        首先，明确一个基本的概念。出于安全方面的考虑，浏览器中运行的Js代码是不可以“直接”对本地磁盘进行读写的，这个是浏览器的js引擎所限制的。但是由于浏览器本身作为一个应用程序，它是可以操作文件系统的。NodeJs是运行在服务器端的js，它是可以直接操作本地文件系统的。
+
+        基于上边的理解，前端实现下载功能一定是依赖于浏览器的特性的，而不是js的特性。
+
+        接下来我们来想想前端常见的下载操作有哪些。1、在某个页面元素上直接右键-另存为，弹出下载提示框。2、直接输入网址，确定，弹出下载提示框。3、点击页面的链接（通常为a标签），弹出下载提示框。4、点击某个确定按钮，触发业务逻辑后，弹出下载提示框。这些过程的本质都是浏览器向服务器发送请求，服务器返回文件流。但是浏览器和服务器的实现有好几种方法。
+
+        服务器端的实现分两种情况。
+
+        一种是文件已存在于服务器，那么利用web容器的功能，直接访问文件对应的路径就可以返回文件流，针对于这种场景，在web.xml可以对返回文件的mime-type进行配置，MIME类型就是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问的时候，浏览器会自动使用指定应用程序来打开。多用于指定一些客户端自定义的文件名，以及一些媒体文件打开方式，但是浏览器具体是打开这种类型的文件，还是弹出下载提示框，这个是由浏览器具体的设置和浏览器特性决定的。比如你可能就会遇到服务器端提供的txt文件，在IE浏览器中，总是直接打开而不是直接下载的烦恼。
+
+        另一种是文件不存在，需要服务器端根据浏览器请求内容生成对应的文件（不用生产真正的文件），返回以流的方式返回给服务器。这种方式有几个好处，一是节省服务器空间，二是省去了往磁盘上写文件的时间，三是可以控制浏览器是否直接打开，还是弹出下载提示框。但是也有个不好的地方就是，文件流需要每次都生成。所以如果要下载文件是基本不变，且并发量较大的情况，可以生成后直接保存在文件服务器上，利用web容器的特性，在浏览器侧直接请求文件地址进行下载。如果文件每次都不一样，则可以采用第二种方案。
+
+        接下来谈浏览器的实现方案。
+
+        针对直接请求文件地址的后台实现。前端可以直接在浏览器中输入相应的后台文件地址来触发下载，同等的可以利用<a>标签的href属性来触发下载，也可以用window.location.href
+            =URL进行下载，也可以利用iframe的src属性进行下载。这些方法有个共同的特性就是都是采用的get请求。
+
+            针对于服务器需要现生产文件流的方式。前端可以使用<a>标签的href属性来向后台发送下载请求。也可以用form表单提交的方式向后台发送下载请求。使用form表单的方式较灵活，可以选在get或者post请求。可以携带负载参数。
+
+                另外还有一种使用js实现的思路，就是使用XMLHttpRequest来发送请求，形式上可以使用jquery、原生js等等封装工具，但他们本质都是js的http请求，这种请求方式可以获取到服务器端生成的字节流，此时数据是存在于js的内存中的，是不可以直接保存在本地的，我们可以利用Blob对象和window.URL.createobjectURL对象生成一个虚拟的URL地址，然后在利用浏览器的特性进行下载。IE10以上版本也提供有window.navigator.msSaveBlob类似的API可以供js调用。针对这种思路有个封装的比较好的download.js可以直接使用。
+    </p>
+
+    <p>
+            1:Controller返回请求，需要设置：
+            response.setContentType("application/octet-stream"); 
+            然后将文件以Stream写入到response中。
+            2:Blob方式处理的时候，需要使用XMLHttpRequest方式进行请求，
+            new Blob([request.resopnse],{type="application/octet-stream"});
+    </p>
+    <script>
+        // 在有些情况下可以先使用HTTP  HEAD请求获取  头信息  查看资源是否可用之类的
+        let fileSrc = 'https://testmv.xesimg.com/martrix/android/message/1545033608141_ea7191f330f108a0f52085aed9c132da.jpg'
+
+        fetch(fileSrc)
+            .then(function (response) {
+                console.log(response)
+                return response.blob()
+                // return response.text()
+                // return response.formData()
+                // return response.arrayBuffer()
+                // return response.json()
+            })
+            .then(function (myBlob) {
+                console.log(myBlob)
+            })
+    </script>
+
+    <script>
+
+// responseType
+// arraybuffer
+// blob
+// document
+// json
+// text
+        function getBlob(url) {
+            return new Promise(resolve => {
+                const xhr = new XMLHttpRequest()
+
+                xhr.open('GET', url, true)
+                xhr.responseType = 'blob'
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        resolve(xhr.response)
+                    }
+                }
+
+                xhr.send()
+            })
+        }
+
+        function saveAs(blob, filename) {
+            if (window.navigator.msSaveOrOpenBlob) {
+                navigator.msSaveBlob(blob, filename)
+            } else {
+                const link = document.createElement('a')
+
+                link.href = window.URL.createObjectURL(blob)
+                link.download = filename
+                link.click()
+
+                window.URL.revokeObjectURL(link.href)
+            }
+        }
+
+        function download(url, filename) {
+            getBlob(url).then(blob => {
+                saveAs(blob, filename)
+            })
+        }
+    </script>
+
+    <script>
+        function save() {
+            console.log(innerIframe)
+            let link = innerIframe.document.createElement('a')
+            link.download = '未命名'
+            link.href = fileSrc
+
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            window.URL.revokeObjectURL(link.href)
+
+            // let form = document.createElement('form')
+            // form.method = 'get'
+            // form.action = this.item.content
+            // document.body.appendChild(form)
+            // form.submit()
+            // document.body.removeChild(form)
+
+
+        }
+    </script>
+</body>
+
+</html>
