@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>装饰器模式 JS practical practice</title>
+</head>
+
+<body>
+
+
+    <script>
+        let Plane = function () {
+
+        }
+
+        Plane.prototype.fire = function () {
+            console.log('发射普通子弹')
+        }
+
+        // 第一层装饰器
+        let MissileDecorator = function (plane) {
+            this.plane = plane
+        }
+
+        MissileDecorator.prototype.fire = function () {
+            this.plane.fire()
+            console.log('两侧机翼，发射导弹')
+        }
+
+        // 第二层装饰器
+        let AtomDecorator = function (plane) {
+            this.plane = plane
+        }
+
+        AtomDecorator.prototype.fire = function () {
+            this.plane.fire()
+            console.log('尾翼，发射原子弹')
+        }
+        let planeLevel0 = new Plane()
+        planeLevel0.fire()
+
+        console.log('... ...upgrade... ...')
+        let planeLevel1 = new MissileDecorator(planeLevel0)
+        planeLevel1.fire()
+
+        console.log('... ...upgrade... ...')
+        let planeLevel2 = new AtomDecorator(planeLevel1)
+        planeLevel2.fire()
+
+
+        // more JS
+        console.log('\n more js------------------------------')
+        let js_plane = {
+            fire: function () {
+                console.log('发射普通子弹');
+            }
+        }
+        let js_missileDecorator = function () {
+            console.log('发射导弹');
+        }
+        let js_atomDecorator = function () {
+            console.log('发射原子弹');
+        }
+        let fireLevel1 = js_plane.fire;
+        js_plane.fire = function () {
+            fireLevel1();
+            js_missileDecorator();
+        }
+        let fireLevel2 = js_plane.fire;
+        js_plane.fire = function () {
+            fireLevel2();
+            js_atomDecorator();
+        }
+        js_plane.fire();
+
+        // 注意 this 被劫持的问题
+        // document.getElementById 方法的内部实现需要
+        // 使用 this 引用，this 在这个方法内预期是指向 document，而不是 window
+        var _getElementById = document.getElementById;
+        document.getElementById = function (id) {
+            let re = console.trace()
+            console.log(re)
+
+            console.log('直接复写 this会被劫持');
+            //  报错
+            return _getElementById(id);
+        }
+        try {
+            var button = document.getElementById('button');
+        } catch (err) {
+            console.error('由于直接复写造成this被劫持报错')
+            console.log(err)
+        }
+
+
+        console.log('AOP封装装饰器-----------------------------------')
+        // AOP封装函数
+        Function.prototype.before = function (beforefn) {
+            var __self = this; // 保存原函数的引用
+            return function () { // 返回包含了原函数和新函数的"代理"函数
+                beforefn.apply(this, arguments); // 执行新函数，且保证 this 不被劫持，新函数接受的参数
+                // 也会被原封不动地传入原函数，新函数在原函数之前执行
+                return __self.apply(this, arguments); // 执行原函数并返回原函数的执行结果，
+                // 并且保证 this 不被劫持
+            }
+        }
+        Function.prototype.after = function (afterfn) {
+            var __self = this;
+            return function () {
+                var ret = __self.apply(this, arguments);
+                afterfn.apply(this, arguments);
+                return ret;
+            }
+        };
+
+        document.getElementById = _getElementById.before(function () {
+            console.log('AOP封装-----before函数运行前before装饰');
+        });
+        var button = document.getElementById('button');
+
+        console.log('不污染原型的方法函数wrapper-----------------------------------')
+
+        // 不污染Function原型   使用函数包装+复写
+        var before = function (fn, beforefn) {
+            return function () {
+                beforefn.apply(this, arguments);
+                return fn.apply(this, arguments);
+            }
+        }
+        var a = before(
+            function () { console.log('原函数输出') },
+            function () { console.log('第一次wrapper') }
+        );
+        a = before(a, function () { console.log('第二次wrapper'); });
+        a();
+
+
+
+        // 装饰器应用
+        // axios统一拦截 就是类似的概念
+        // 日志统一上报
+        var log = function () {
+            console.log('上报标签为: ' + this.getAttribute('tag'));
+        }
+        var doSomethingFun = function () { }
+        doSomethingFun = doSomethingFun.after(log)
+
+        // 数据统一验证
+        var validata = function () {
+            if (username.value === '') {
+                alert('用户名不能为空');
+                return false;
+            }
+            if (password.value === '') {
+                alert('密码不能为空');
+                return false;
+            }
+        }
+        var formSubmit = function () { }
+        formSubmit = formSubmit.before(validata)
+
+
+        // 装饰者模式和代理模式
+        // 代理模式和装饰者模式最重要的区别在于它们的意图和设计目的。代理模式的目的是，当直
+        // 接访问本体不方便或者不符合需要时，为这个本体提供一个替代者。本体定义了关键功能，而代
+        // 理提供或拒绝对它的访问，或者在访问本体之前做一些额外的事情。装饰者模式的作用就是为对
+        // 象动态加入行为。换句话说，代理模式强调一种关系（Proxy 与它的实体之间的关系），这种关系
+        // 可以静态的表达，也就是说，这种关系在一开始就可以被确定。而装饰者模式用于一开始不能确
+        // 定对象的全部功能时。代理模式通常只有一层代理本体的引用，而装饰者模式经常会形成一条
+        // 长长的装饰链。
+    </script>
+</body>
+
+</html>
