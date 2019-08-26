@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>lottie</title>
+    <!-- <script src="https://cdn.bootcss.com/bodymovin/5.5.7/lottie_svg.js"></script> -->
+    <!-- <script src="https://cdn.bootcss.com/bodymovin/5.5.7/lottie_html.js"></script> -->
+    <!-- <script src="https://cdn.bootcss.com/bodymovin/5.5.7/lottie_canvas.js"></script> -->
+    <script src="https://cdn.bootcss.com/bodymovin/5.5.7/lottie.js"></script>
+</head>
+
+<body>
+    <div id="lottie-haier"></div>
+    <div id="lottie-face" style="background-color: #000;border-radius: 70px;"></div>
+
+    <script>
+        // var animation = bodymovin.loadAnimation({
+        //     container: document.getElementById('lottie'), // Required
+        //     path: 'data.json', // Required
+        //     renderer: 'svg/canvas/html', // Required
+        //     loop: true, // Optional
+        //     autoplay: true, // Optional
+        //     name: "Hello World", // Name for future reference. Optional.
+        // })
+
+
+        var haier = lottie.loadAnimation({
+            container: document.getElementById('lottie-haier'),
+            path: './haier.json',
+            renderer: 'canvas',
+            loop: true,
+            autoplay: true,
+        })
+        var face = lottie.loadAnimation({
+            container: document.getElementById('lottie-face'),
+            path: './face.json',
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+        })
+        console.log(bodymovin)
+        console.log(lottie)
+        console.log(haier)
+        console.log(face)
+    </script>
+</body>
+
+</html>
