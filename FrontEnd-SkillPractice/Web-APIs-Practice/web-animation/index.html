@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WAAPI</title>
+    <style>
+        #animatebox {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 单一属性动画 -->
+    <svg width="300" height="100">
+        <title>Attribute Animation with SMIL</title>
+        <rect x="0" y="0" width="300" height="100" stroke="black" stroke-width="1" />
+        <circle cx="0" cy="50" r="15" fill="blue" stroke="black" stroke-width="1">
+            <animate attributeName="cx" from="0" to="100" dur="5s" repeatCount="indefinite" />
+        </circle>
+    </svg>
+    <!-- transform 属性动画 -->
+    <svg width="300" height="100">
+        <title>SVG SMIL Animate with transform</title>
+        <rect x="0" y="0" width="300" height="100" stroke="black" stroke-width="1" />
+        <rect x="0" y="50" width="15" height="34" fill="blue" stroke="black" stroke-width="1">
+            <animateTransform attributeName="transform" begin="0s" dur="20s" type="rotate" from="0 60 60"
+                to="360 100 60" repeatCount="indefinite" />
+        </rect>
+    </svg>
+    <!-- path属性动画 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="100">
+        <title>SVG SMIL Animate with Path</title>
+        <rect x="0" y="0" width="300" height="100" stroke="black" stroke-width="1" />
+        <circle cx="0" cy="50" r="15" fill="blue" stroke="black" stroke-width="1">
+            <animateMotion path="M 0 0 H 300 Z" dur="3s" repeatCount="indefinite" />
+        </circle>
+    </svg>
+    <svg width="300" height="100">
+        <title>SVG SMIL Animate with Path</title>
+        <rect x="0" y="0" width="300" height="100" stroke="black" stroke-width="1" />
+        <rect x="0" y="0" width="20" height="20" fill="blue" stroke="black" stroke-width="1">
+            <animateMotion path="M 250,80 H 50 Q 30,80 30,50 Q 30,20 50,20 H 250 Q 280,20,280,50 Q 280,80,250,80Z"
+                dur="3s" repeatCount="indefinite" rotate="auto" />
+        </rect>
+    </svg>
+
+    <div id="animatebox"></div>
+    <script>
+        // 目前只有一种动画效果类型：KeyframeEffect
+        // 其他类型的效果，如SequenceEffects或GroupEffects是可能被实现的，
+        // 目前唯一可用的时间轴类型是DocumentTimeline，
+        // 将来会有与手势或滚动相关的时间线。默认值为Document.timeline，但也可以设置null为。
+        // var keyframesEffect = new KeyframeEffect(element, keyframeSet, keyframeOptions);
+        // var animation = new Animation(effect, timeline);
+
+
+        // 一个元素上可以应用多个动画效果。
+        // keyframes 一个由多个关键帧的属性和值组成的对象所构成的数组。
+        // 对每个关键帧的偏移可以通过提供一个offset来指定。
+        // offset 的值必须是在[0.0, 1.0]这个区间内，且须升序排列。（相对于时间线的偏移）
+        // 没有指定offset的关键帧将与相邻的关键帧均匀间隔。
+        // let eleAnimation = element.animate(keyframes, timingOptions);
+        // var timingOptions = {
+        //     iterations: Infinity, // 动画的重复次数，默认是 1
+        //     iterationStart: 0, // 用于指定动画开始的节点，默认是 0
+        //     delay: 0, // 动画延迟开始的毫秒数，默认 0
+        //     endDelay: 0, // 动画结束后延迟的毫秒数，默认 0
+        //     direction: 'alternate', // 动画的方向 默认是按照一个方向的动画，alternate 则表示交替
+        //     duration: 700, // 动画持续时间，默认 0
+        //     fill: 'forwards', // 是否在动画结束时回到元素开始动画前的状态
+        //     easing: 'ease-out', // 缓动方式，默认 "linear"，应用在一个动画的整个持续时间，关键帧属性中的easing仅适用于指定它的关键帧到下一帧之间
+        // ...未来的可选项
+        // 动画彼此之间的值如何结合composite,iterationComposite 
+        // 如何分配没有时间偏移的关键帧spacing
+        // };
+
+        // element.getAnimation(); ==> eleAnimation的列表集合
+
+        // event
+        // eleAnimation.onfinish = function () {
+        //     element.remove();
+        // }
+        // promise
+        // eleAnimation.finished.then(() => element.remove())
+
+
+
+        // different way use
+        // element.animate([{ opacity: 1, easing: 'ease-out' },
+        // { opacity: 0.1, easing: 'ease-in' },
+        // { opacity: 0 }],
+        //     2000);
+        // 从属性值列表生成一组合适的关键帧后，每个提供的偏移量将应用于相应的关键帧。
+        // 如果值不足或者列表包含空值null，
+        // 则以没有指定处理（即和上面数组格式的一样均匀间隔）.
+        // 如果easing 或composite 值太少，将根据需要，重复相应的列表。
+        // element.animate({
+        //     opacity: [0, 1],          // [ from, to ] , offset: 0, 1
+        //     backgroundColor: ["red", "yellow", "green"], // [ from, to ] offset: 0, 0.5, 1
+        //     offset: [0, 0.8], // [ 0, 0.8, 1 ] 的简写
+        // }, 2000);
+    </script>
+
+    <script>
+        // 不支持 引入polyfill体验
+        let aliceTumbling = [
+            { opacity: 1, transform: 'rotate(0)', color: '#666' },
+            { opacity: 0.3, color: '#431236', offset: 0.3 },
+            { opacity: 1, transform: 'rotate(180deg)', color: '#666' }
+        ]
+        let aliceTiming = {
+            duration: 3000,
+            iterations: Infinity,
+            composite: 'add'
+        }
+        let animateboxControl = animatebox.animate(aliceTumbling, aliceTiming)
+        console.log(animateboxControl)
+        setTimeout(() => {
+            animateboxControl.pause();
+
+        }, 2000);
+        setTimeout(() => {
+            animateboxControl.play();
+
+        }, 5000);
+
+        // no support
+        // Element.getAnimations()
+        // document.getAnimations().forEach(
+        //     function (animation) {
+        //         animation.playbackRate *= .5;
+        //     }
+        // );
+    </script>
+</body>
+
+</html>

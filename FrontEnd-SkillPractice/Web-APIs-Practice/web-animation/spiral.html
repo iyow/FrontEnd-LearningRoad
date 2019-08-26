@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>spiral</title>
+    <style>
+        #yay {
+            border: 1vmin solid hsl(143, 55%, 55%);
+            width: 5vmin;
+            height: 5vmin;
+        }
+
+        html {
+            font-size: 62.5%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: hsl(231, 35%, 8%);
+            font-family: system-ui, 'Segoe UI', -apple-system, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        aside {
+            --guide: hsla(303, 85%, 55%, .4);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vmin;
+            height: 2vh;
+            max-height: 1.6rem;
+        }
+
+        aside::before,
+        aside::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 40vmin;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        aside::before {
+            --guide: hsl(43, 85%, 55%);
+            --guide-a: hsla(43, 85%, 55%, .4);
+            left: 0;
+            background:
+                linear-gradient(to right, transparent 2.5vmin, var(--guide) 2.5vmin, var(--guide) calc(2.5vmin + .1rem), transparent calc(2.5vmin + .1rem)),
+                linear-gradient(to right, transparent 7.5vmin, var(--guide) 7.5vmin, var(--guide) calc(7.5vmin + .1rem), transparent calc(7.5vmin + .1rem)),
+                linear-gradient(to right, transparent 12.5vmin, var(--guide) 12.5vmin, var(--guide) calc(12.5vmin + .1rem), transparent calc(12.5vmin + .1rem)),
+                linear-gradient(to right, transparent 17.5vmin, var(--guide) 17.5vmin, var(--guide) calc(17.5vmin + .1rem), transparent calc(17.5vmin + .1rem)),
+                linear-gradient(to right, transparent 22.5vmin, var(--guide) 22.5vmin, var(--guide) calc(22.5vmin + .1rem), transparent calc(22.5vmin + .1rem)),
+                linear-gradient(to right, transparent 27.5vmin, var(--guide) 27.5vmin, var(--guide) calc(27.5vmin + .1rem), transparent calc(27.5vmin + .1rem)),
+                linear-gradient(to right, transparent 32.5vmin, var(--guide) 32.5vmin, var(--guide) calc(32.5vmin + .1rem), transparent calc(32.5vmin + .1rem)),
+                linear-gradient(to right, transparent 37.5vmin, var(--guide) 37.5vmin, var(--guide) calc(37.5vmin + .1rem), transparent calc(37.5vmin + .1rem)),
+                linear-gradient(to bottom, transparent 45%, var(--guide-a) 45%, var(--guide-a) 55%, transparent 55%);
+        }
+
+        aside::after {
+            --guide: hsl(303, 85%, 55%);
+            --guide-a: hsla(303, 85%, 55%, .4);
+            right: 0;
+            background:
+                linear-gradient(to right, hsl(183, 85%, 55%) 0rem, hsl(183, 85%, 55%) .2rem, transparent .2rem),
+                linear-gradient(to right, transparent 5vmin, var(--guide) 5vmin, var(--guide) calc(5vmin + .2rem), transparent calc(5vmin + .2rem)),
+                linear-gradient(to right, transparent 10vmin, var(--guide) 10vmin, var(--guide) calc(10vmin + .2rem), transparent calc(10vmin + .2rem)),
+                linear-gradient(to right, transparent 15vmin, var(--guide) 15vmin, var(--guide) calc(15vmin + .2rem), transparent calc(15vmin + .2rem)),
+                linear-gradient(to right, transparent 20vmin, var(--guide) 20vmin, var(--guide) calc(20vmin + .2rem), transparent calc(20vmin + .2rem)),
+                linear-gradient(to right, transparent 25vmin, var(--guide) 25vmin, var(--guide) calc(25vmin + .2rem), transparent calc(25vmin + .2rem)),
+                linear-gradient(to right, transparent 30vmin, var(--guide) 30vmin, var(--guide) calc(30vmin + .2rem), transparent calc(30vmin + .2rem)),
+                linear-gradient(to right, transparent 35vmin, var(--guide) 35vmin, var(--guide) calc(35vmin + .2rem), transparent calc(35vmin + .2rem)),
+                linear-gradient(to right, transparent 0vmin, transparent calc(40vmin - .2rem), var(--guide) calc(40vmin - .2rem), var(--guide) 40vmin, transparent 40vmin),
+                linear-gradient(to bottom, transparent 45%, var(--guide-a) 45%, var(--guide-a) 55%, transparent 55%);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 1rem;
+            font-size: 1.2rem;
+            color: white;
+            text-align: center;
+            left: 0;
+            right: 0;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            margin: .8rem 0;
+            line-height: 1.35;
+        }
+
+        footer div {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        code {
+            font-size: 1.4rem;
+            font-family: monospace;
+        }
+
+        button {
+            display: none;
+        }
+
+        .supports-composite-add button {
+            display: inline-block;
+            margin: .5rem;
+            padding: .6rem 1rem;
+        }
+
+        .supports-composite-add #message {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    Result
+    EDIT ON
+    <aside id="guide"></aside>
+
+    <div id="yay"></div>
+
+    <footer>
+        <button id="minus">-2vmin</button><button id="plus">+2vmin</button>
+
+        <p id="message">Full demo requires support for Web Animations API and `composite: 'add'`. Available in Firefox
+            Nightly 59+ and Chrome Canary 65+ (with Experimental Web Platform Features flag enabled).</p>
+        <div>
+            <p><code>transform: rotate(0deg) translateX(<span id="from">0</span>vmin)</code></p>
+            <p><code>transform: rotate(2880deg) translateX(<span id="to">40</span>vmin)</code></p>
+        </div>
+    </footer>
+
+
+    <script>
+        const yay = document.getElementById('yay');
+
+        const minusButton = document.getElementById('minus');
+        const plusButton = document.getElementById('plus');
+
+        if (yay.animate) {
+            var animation = yay.animate([
+                { transform: 'rotate(0deg) translateX(0vmin)' },
+                { transform: 'rotate(2880deg) translateX(40vmin)' }
+            ], {
+                    iterations: Infinity,
+                    duration: 10000,
+                    easing: 'ease-in-out',
+                    direction: 'alternate',
+                    composite: 'add'
+                });
+
+            if (animation.effect && animation.effect.composite === 'add') {
+                document.documentElement.classList.add('supports-composite-add');
+
+                plusButton.addEventListener('click', e => addTranslateX(delta));
+                minusButton.addEventListener('click', e => addTranslateX(-delta));
+            }
+        }
+
+        const originalRadius = 40;
+        let radius = originalRadius;
+        var delta = 2;
+
+        function addTranslateX(amount) {
+            radius = radius + amount;
+            yay.animate([
+                { transform: 'translateX(0vmin)' },
+                { transform: `translateX(${amount}vmin)` }
+            ], {
+                    iterations: 1,
+                    duration: 1000,
+                    easing: 'ease-in-out',
+                    fill: 'forwards',
+                    composite: 'add'
+                });
+
+            updateReference();
+        }
+
+
+
+
+        const guide = document.getElementById('guide');
+        const from = document.getElementById('from');
+        const to = document.getElementById('to');
+
+        function updateReference() {
+            guide.animate([
+                { width: `${radius * 2}vmin` }
+            ], {
+                    iterations: 1,
+                    duration: 1000,
+                    easing: 'ease-in-out',
+                    fill: 'forwards'
+                });
+
+            from.textContent = radius - originalRadius;
+            to.textContent = radius;
+
+            if (radius <= 0) {
+                minus.setAttribute('disabled', 'disabled');
+            } else {
+                minus.removeAttribute('disabled');
+            }
+        }
+    </script>
+</body>
+
+</html>
