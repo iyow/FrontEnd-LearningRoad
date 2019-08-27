@@ -1,0 +1,14 @@
+{
+    "name": "babel-plugin-transform-mybabelplugin",
+    "version": "1.0.0",
+    "description": "how to create babel plugin",
+    "main": "index.js",
+    "scripts": {
+        "babelMypluginCompile": "node ./index.js"
+    },
+    "author": "i_yow",
+    "license": "MIT",
+    "dependencies": {
+        "@babel/core": "^7.5.5"
+    }
+}
