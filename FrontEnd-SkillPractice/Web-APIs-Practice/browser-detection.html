@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>浏览器类型判断</title>
+</head>
+
+<body>
+    <p>IE</p>
+    <pre>
+            Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)
+            Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2)
+            Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+            Mozilla/4.0 (compatible; MSIE 5.0; Windows NT)
+            其中，版本号是MSIE之后的数字。
+    </pre>
+    <hr>
+    <p>Firefox</p>
+    <pre>
+            Mozilla/5.0 (Windows; U; Windows NT 5.2) Gecko/2008070208 Firefox/3.0.1
+            Mozilla/5.0 (Windows; U; Windows NT 5.1) Gecko/20070309 Firefox/2.0.0.3
+            Mozilla/5.0 (Windows; U; Windows NT 5.1) Gecko/20070803 Firefox/1.5.0.12
+            其中，版本号是Firefox之后的数字。
+    </pre>
+    <hr>
+    <p>Safari</p>
+    <pre>
+            Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, ** Gecko) Version/3.1 Safari/525.13
+            Mozilla/5.0 (iPhone; U; CPU ** Mac OS X) AppleWebKit/420.1 (KHTML, ** Gecko) Version/3.0 Mobile/4A93 Safari/419.3 
+            其版本号是Version之后的数字。
+    </pre>
+    <hr>
+    <p>Chrome</p>
+    <pre>
+            Mozilla/5.0 (Windows; U; Windows NT 5.2) AppleWebKit/525.13 (KHTML, ** Gecko) Chrome/0.2.149.27 Safari/525.13
+            其中，版本号在Chrome只后的数字。
+    </pre>
+    <hr>
+    <p>Tips:注意</p>
+    <p>
+            document.write，会将内容写入文档流，所以会自动调用document.open方法打开文档流，
+            如果文档流已经关闭，则会清除所有内容。
+            否则会将内容添加到文档末尾。
+            那什么时候代表文档流已经关闭呢？
+            即所有的内容都已经读入到浏览器中(含所有的内联CSS、HTML标签)，
+            即页面的主线程已经执行完成，也就是我们所看到的源代码里面的所有内容。
+
+            只要浏览器解析到文档末尾，则浏览器主线程结束，文档流关闭。
+            需要特别指出的，文档是严格按照从下直下的顺序执行的，即使某一个js由于网络原因延迟了较长时间，
+            那么文档也会一直等待它的执行，直到超时或等待的JS执行完成，从而将浏览器主线程的执行周期拉长。
+
+            利用setTimeout暂时放弃主线程执行document.write，切换到任务队列中，
+            那么随着文档流的写入结束，此时需要重新打开文档流，那么文档的内容则会全部覆盖
+    </p>
+
+    <script>
+        // 判断IE浏览器最短方法：
+        var isIE = !-[1,]
+        // 原理：[1,]在标准浏览器中返回"1"，相当于调用[1,].toString() ，在IE中返回"1,"
+        // 在这个时候对返回值使用负号强制转换为数字时，标准浏览器返回1，IE则返回NaN，
+        // 再对1和NaN取反时，标准浏览器返回false，IE返回true。
+    </script>
+
+    <script>
+        // 一.基于User-Agent信息的实现
+        // 1.简单正则粗略判断
+        let matchArr = navigator.userAgent.match(/msie|firefox|chrome|safari|opera/ig)
+        let browserType = matchArr && matchArr[0]
+        // 2.版本号加类型
+        var Sys = {};
+        var ua = navigator.userAgent.toLowerCase();
+        var s;
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+
+        //以下进行测试  
+        if (Sys.ie) document.write('IE: ' + Sys.ie);
+        if (Sys.firefox) document.write('Firefox: ' + Sys.firefox);
+        if (Sys.chrome) document.write('Chrome: ' + Sys.chrome);
+        if (Sys.opera) document.write('Opera: ' + Sys.opera);
+        if (Sys.safari) document.write('Safari: ' + Sys.safari);  
+    </script>
+
+    <script>
+        // 二.根据浏览器特有属性判断-----容易过时 浏览器增加删除某些扩展容易检测失败
+        var Browser = {
+
+            Engine: { name: 'unknown', version: 0 },
+
+            Features: {
+                xpath: !!(document.evaluate),     // 是否支持 XPath
+                air: !!(window.runtime),        // 是否支持 Air 扩展
+                query: !!(document.querySelector) // 是否支持 CSS 选择器
+            },
+
+            Engines: {
+                // 判断 Opera
+                presto: function () {
+                    return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
+                },
+                // 判断 IE，根据 ActiveX 和 特有的 XMLHttpRequest 对象
+                trident: function () {
+                    return (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? 5 : 4);
+                },
+                // Webkit 核心的浏览器，如 Safari 和 Chrome
+                webkit: function () {
+                    return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
+                },
+                // Mozilla Gecko 核心浏览器，如 Firefox
+                gecko: function () {
+                    return (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? 19 : 18);
+                }
+            }
+        };
+        // 或者
+        // var Sys = {};
+        // var ua = navigator.userAgent.toLowerCase();
+        // window.ActiveXObject ? Sys.ie = ua.match(/msie ([\d.]+)/)[1] :
+        //     document.getBoxObjectFor ? Sys.firefox = ua.match(/firefox\/([\d.]+)/)[1] :
+        //         window.MessageEvent && !document.getBoxObjectFor ? Sys.chrome = ua.match(/chrome\/([\d.]+)/)[1] :
+        //             window.opera ? Sys.opera = ua.match(/opera.([\d.]+)/)[1] :
+        //                 window.openDatabase ? Sys.safari = ua.match(/version\/([\d.]+)/)[1] : 0;
+
+        // //以下进行测试
+        // if (Sys.ie) document.write('IE: ' + Sys.ie);
+        // if (Sys.firefox) document.write('Firefox: ' + Sys.firefox);
+        // if (Sys.chrome) document.write('Chrome: ' + Sys.chrome);
+        // if (Sys.opera) document.write('Opera: ' + Sys.opera);
+        // if (Sys.safari) document.write('Safari: ' + Sys.safari);
+    </script>
+
+
+    <script>
+        // ppk谈JavaScript 一书中的实现
+        var BrowserDetect = {
+            init: function () {
+                this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+                this.version = this.searchVersion(navigator.userAgent)
+                    || this.searchVersion(navigator.appVersion)
+                    || "an unknown version";
+                this.OS = this.searchString(this.dataOS) || "an unknown OS";
+            },
+            searchString: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var dataString = data[i].string;
+                    var dataProp = data[i].prop;
+                    this.versionSearchString = data[i].versionSearch || data[i].identity;
+                    if (dataString) {
+                        if (dataString.indexOf(data[i].subString) != -1)
+                            return data[i].identity;
+                    }
+                    else if (dataProp)
+                        return data[i].identity;
+                }
+            },
+            searchVersion: function (dataString) {
+                var index = dataString.indexOf(this.versionSearchString);
+                if (index == -1) return;
+                return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
+            },
+            dataBrowser: [
+                {
+                    string: navigator.userAgent,
+                    subString: "Chrome",
+                    identity: "Chrome"
+                },
+                {
+                    string: navigator.userAgent,
+                    subString: "OmniWeb",
+                    versionSearch: "OmniWeb/",
+                    identity: "OmniWeb"
+                },
+                {
+                    string: navigator.vendor,
+                    subString: "Apple",
+                    identity: "Safari",
+                    versionSearch: "Version"
+                },
+                {
+                    prop: window.opera,
+                    identity: "Opera"
+                },
+                {
+                    string: navigator.vendor,
+                    subString: "iCab",
+                    identity: "iCab"
+                },
+                {
+                    string: navigator.vendor,
+                    subString: "KDE",
+                    identity: "Konqueror"
+                },
+                {
+                    string: navigator.userAgent,
+                    subString: "Firefox",
+                    identity: "Firefox"
+                },
+                {
+                    string: navigator.vendor,
+                    subString: "Camino",
+                    identity: "Camino"
+                },
+                {        // for newer Netscapes (6+)
+                    string: navigator.userAgent,
+                    subString: "Netscape",
+                    identity: "Netscape"
+                },
+                {
+                    string: navigator.userAgent,
+                    subString: "MSIE",
+                    identity: "Explorer",
+                    versionSearch: "MSIE"
+                },
+                {
+                    string: navigator.userAgent,
+                    subString: "Gecko",
+                    identity: "Mozilla",
+                    versionSearch: "rv"
+                },
+                {         // for older Netscapes (4-)
+                    string: navigator.userAgent,
+                    subString: "Mozilla",
+                    identity: "Netscape",
+                    versionSearch: "Mozilla"
+                }
+            ],
+            dataOS: [
+                {
+                    string: navigator.platform,
+                    subString: "Win",
+                    identity: "Windows"
+                },
+                {
+                    string: navigator.platform,
+                    subString: "Mac",
+                    identity: "Mac"
+                },
+                {
+                    string: navigator.userAgent,
+                    subString: "iPhone",
+                    identity: "iPhone/iPod"
+                },
+                {
+                    string: navigator.platform,
+                    subString: "Linux",
+                    identity: "Linux"
+                }
+            ]
+
+        };
+        BrowserDetect.init();
+        document.write('你正在使用的是：' + BrowserDetect.browser + ' ' + BrowserDetect.version + ' on ' + BrowserDetect.OS + '!');
+    </script>
+</body>
+
+</html>
