@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EventTarget</title>
+</head>
+
+<body>
+
+    <p>EventTarget 对象</p>
+    <p>借助该内置的对象 实现通信 / 发布订阅模式 / 监听者模式</p>
+    <p>
+        removeEventListener 的时候 bind(this)的函数 无法成功remove
+    </p>
+    <p>
+        https://github.com/whatwg/dom/issues/412 安全问题？
+        提案Add EventTarget.getEventListeners() 现在只在控制台支持
+        库通过提供自己的抽象来添加用于手动跟踪侦听器的事件来处理此问题。
+        但是，这很脆弱，因为这意味着无法检索或删除未通过库注册的侦听器。
+        一些 库 通过劫持addEventListener来跟踪 监听器 来解决这个问题，
+        但这对于一个 库 来说非常具有侵入性
+        但对于库之前注册的任何 监听器 都没有帮助
+    </p>
+
+    <script>
+        // 内置EventTarget基本使用
+        class MyEventTarget extends EventTarget {
+            constructor(mySecret) {
+                super();
+                this._secret = mySecret;
+            }
+
+            get secret() { return this._secret; }
+        };
+
+        let myEventTarget = new MyEventTarget(5);
+        let value = myEventTarget.secret;  // == 5
+        myEventTarget.addEventListener("foo", function (e) {
+            this._secret = e.detail;
+        });
+
+        let event = new CustomEvent("foo", { detail: 7 });
+        myEventTarget.dispatchEvent(event);
+        let newValue = myEventTarget.secret; // == 7
+    </script>
+
+    <script>
+        // EventTarget简单实现
+        class EventTarget {
+            constructor() {
+                this.listeners = {}
+            }
+            addEventListener(type, callback) {
+                if (!(type in this.listeners)) {
+                    this.listeners[type] = [];
+                }
+                this.listeners[type].push(callback);
+            }
+            removeEventListener(type, callback) {
+                if (!(type in this.listeners)) {
+                    return;
+                }
+                let stack = this.listeners[type];
+                for (let i = 0, l = stack.length; i < l; i++) {
+                    if (stack[i] === callback) {
+                        stack.splice(i, 1);
+                        return this.removeEventListener(type, callback);
+                    }
+                }
+            }
+            dispatchEvent(event) {
+                if (!(event.type in this.listeners)) {
+                    return;
+                }
+                let stack = this.listeners[event.type];
+                event.target = this;
+                for (let i = 0, l = stack.length; i < l; i++) {
+                    stack[i].call(this, event);
+                }
+            }
+            // ---------------------custom--------------------------------
+            clearEventListeners(type) {
+                if (!(type in this.listeners)) {
+                    return;
+                }
+                // this.listeners[type] = []
+                return delete this.listeners[type]
+            }
+            getEventListeners(type) {
+                return this.listeners[type]
+            }
+        }
+    </script>
+</body>
+
+</html>
