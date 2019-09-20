@@ -60,3 +60,28 @@ function selfish(target) {
 }
 
 const logger = selfish(new Logger());
+
+
+// 通过属性的新写法
+class A {
+    // 通过属性的新写法绑定this
+    someEventListenners = function (e) {
+        console.log(this)
+        console.log(e)
+    }.bind(this)
+    constructor(a) {
+        this.a = a
+        this._init()
+        setTimeout(() => {
+            this._destroy()
+        }, 5000);
+    }
+    _init() {
+        document.addEventListener('click', this.someEventListenners)
+    }
+    _destroy() {
+        document.removeEventListener('click', this.someEventListenners)
+    }
+}
+
+let ax = new A('xixiox')
