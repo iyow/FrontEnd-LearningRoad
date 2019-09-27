@@ -7,10 +7,17 @@
 > type(a),isinstance(a, int) ,判断变量类型
 
 ## 不可变数据（3 个）
+
+> (值修改--->内存地址变更)当该数据类型的对应的变量的值发生了改变，那么它对应的内存地址也会发生改变。可作为key值(canhashable)
+
 - Number（数字）：int,float,bool,complex
 - String（字符串）
 - Tuple（元组）
+
 ## 可变数据（3 个）
+
+> (值修改--->内存地址不变)当该数据类型的对应的变量的值发生了改变，那么它对应的内存地址不发生改变。不可作为key值(unhashable)
+
 - List（列表）
 - Dictionary（字典）
 - Set（集合）
