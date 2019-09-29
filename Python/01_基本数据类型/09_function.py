@@ -1,3 +1,5 @@
+import functools
+
 G_a = 100
 print(id(G_a))
 
@@ -44,3 +46,50 @@ print('-'*10, G_a)
 help(double)
 help(globals)
 help(print)
+
+
+# 匿名函数 lambda , lambda是一个表达式 不是一个语句块 仅能封装有限的逻辑
+# 与其他语言的 lambda 表达式不同 Python的lambda表达式只能有单独的一条语句
+
+# 使用方法
+
+# 基本使用
+# 无参数定义
+no_args_anonymous_func = lambda : 'Hello anonymous func'
+print(no_args_anonymous_func())
+type(no_args_anonymous_func)
+
+# 带参数定义 有默认值 不定长参数
+parameterized_anonymous_func = lambda x,*args,**kwargs: list(x)+list(args)+list(kwargs)
+print(parameterized_anonymous_func('paf',1,2,3,a="G",b="K",c="L"))
+
+# 表达式嵌套  闭包
+nest_anonymous_func = lambda x: (lambda y: x+y)
+print(nest_anonymous_func('1'))
+print(nest_anonymous_func('1')('2'))
+
+# 高阶函数
+to_reduce_list = [1,2,3]
+reduce_result = functools.reduce(lambda x,y: x+y,to_reduce_list)
+
+# 跳转表，即行为列表或字典
+behavior_dict = {
+    "todo_add":lambda x, y: x+y,
+    "todo_mult":lambda x, y: x*y
+}
+print(behavior_dict['todo_add'](1,2))
+
+behavior_list = [lambda x, y: x+y, lambda x, y:x*y]
+print(behavior_list[0](1,2))
+
+# 据说当年 lambda表达式 是 一位 Lisp程序员给Python添加的 而Guido是强烈反对的
+# Guido 中意的是 列表推导式/列表解析式(comprehensions)
+cp_list = [x*y for x in range(1,5) if x > 2 for y in range(1,4) if y < 3]
+print(cp_list)
+# 执行顺序
+print('-----执行顺序')
+for x in range(1,5):
+    if x > 2:
+        for y in range(1,4):
+            if y < 3:
+                print(x*y)
