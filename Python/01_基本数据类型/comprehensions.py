@@ -10,6 +10,7 @@
 #   for out_exp in input_list：　　# 迭代input_list将out_exp传入out_exp_res表达式中。
 #   if out_exp == 2：　　# 根据条件过滤哪些值可以。
 
+# 将列表 推导式 拆解为 for循环 可方便理解推导式的作用
 # 列表推导式
 def squar(x):
     return x*x
