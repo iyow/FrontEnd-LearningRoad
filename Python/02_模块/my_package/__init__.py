@@ -1,0 +1,1 @@
+from . import pkg_first_module
