@@ -87,7 +87,7 @@ console.log(sum2.next(12))
 console.log(sum2.next(13))
 
 
-// 解构赋值 generator for 0f 实现斐波那契数列
+// 解构赋值 generator for of 实现斐波那契数列
 function* fibonacci(){
 	let [prev,curr] = [0,1]
 	for(;;){
@@ -100,6 +100,16 @@ for(let n of fibonacci()){
 	console.log(n)
 }
 
+// 迭代器和生成器 可以处理 创建大数组一次性分配内存占用太大 的问题及递归太深造成内存溢出问题
+function* fib() {
+	let a = 0, b = 1
+	while (true) {
+		yield b
+		[a, b] = [b, a + b]
+	}
+}
+
+let fib_iter = fib()
 
 
 // 二叉树
