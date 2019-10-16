@@ -15,6 +15,9 @@ function sleep(numberMillis) {
             return;
     }
 }
+// function sleep(ms) {
+//     return new Promise(resolve => setTimeout(resolve, ms))
+// }
 
 function sendData(title, res) {
     let randomNum = Math.floor(10 * Math.random());
@@ -31,6 +34,14 @@ let PathStage = {
         sleep(3000)
         sendData('long-----polling------', res)
     },
+    // '/longpolling': async (res) => {
+    //     res.writeHeader(200, {
+    //         'Access-Control-Allow-Origin': '*',
+    //         'Access-Control-Allow-Method': 'GET,POST'
+    //     });
+    //     await sleep(1000)
+    //     sendData('long-----polling------', res)
+    // },
     '/shortpolling': (res) => {
         res.writeHeader(200, {
             'Access-Control-Allow-Origin': '*',
@@ -55,11 +66,11 @@ let PathStage = {
             'Content-Type': 'text/html'
         });
         let timer = setInterval(function () {
-                // 我们不能直接在返回的script中去调用irame parent的process方法，而是应该使用HTML5 XDM(跨文档消息传递)来传递信息，不然会被浏览器阻止的:
-                let randomNum = Math.floor(10000 * Math.random());
-                let insertScript = `<script type="text/javascript">parent.postMessage("data:${randomNum.toString()}","*")</script>`
-                res.write(insertScript);
-            },
+            // 我们不能直接在返回的script中去调用irame parent的process方法，而是应该使用HTML5 XDM(跨文档消息传递)来传递信息，不然会被浏览器阻止的:
+            let randomNum = Math.floor(10000 * Math.random());
+            let insertScript = `<script type="text/javascript">parent.postMessage("data:${randomNum.toString()}","*")</script>`
+            res.write(insertScript);
+        },
             2000);
     },
     '/ssepush': (res) => {
