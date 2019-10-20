@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>a标签</title>
+</head>
+
+<body>
+    <!-- 实现a元素href URL链接自动刷新或新窗口打开 -->
+    <!--  mdn ：
+         Where to display the linked URL, 
+         as the name for a browsing context (a tab, window, or ). 
+         The following keywords have special meanings for where to load the URL:
+         _blank,_self,_top,_parent不过是特殊值而已。  browsing context 的 name 就是 window.name-->
+    <!-- target value will be window.name -->
+    <!-- 请查看打开后的链接的 window.name的值 -->
+    <a href="http://baidu.com/s?wd=123" target="fuck">百度无参数</a>
+    <a href="http://baidu.com/s?wd=123" target="fuck">百度--参数123</a>
+    <a href="http://baidu.com/s?wd=456" target="fuck">百度--参数456</a>
+</body>
+
+</html>
