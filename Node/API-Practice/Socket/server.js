@@ -1,6 +1,6 @@
 const net = require('net');
 
-
+// 创建 socket 套接字(TCP?) 作为服务器
 let server = net.createServer((socket)=>{
     
     console.log(`

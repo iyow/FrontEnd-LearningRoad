@@ -1,6 +1,6 @@
 const http = require('http');
 
-
+// 创建一个http serve 并监听8090端口 放入异步队列中等待触发
 let server = http.createServer((request, response) => {
 
 
