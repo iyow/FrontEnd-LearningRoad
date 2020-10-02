@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Parser</title>
+</head>
+
+<body>
+
+
+    <script>
+        // 字符串解析为DOM树结构  DOMParser API
+        // 依赖 浏览器的innerHTML实现
+        let stringContaining = ''
+        let parser = new DOMParser()
+        let xmldoc = parser.parseFromString(stringContaining, "application/xml")
+        let svgdoc = parser.parseFromString(stringContaining, "image/svg+xml")
+        let xmldoc = parser.parseFromString(stringContaining, "text/html")
+
+        // 序列化  XMLSerializer API
+        let serializer = new XMLSerializer()
+        let doc = document
+        let stringDoc = serializer.serializeToString(doc)
+        console.log(stringDoc)
+    </script>
+</body>
+
+</html>
