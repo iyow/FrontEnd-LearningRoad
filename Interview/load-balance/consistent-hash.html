@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>基本概念</h2>
+    <p>负载均衡建立在现有网络结构之上，提供了一种廉价有效透明的方法扩展网络设备和服务器带宽，增加吞吐量，加强网络数据处理能力，提高网络的灵活性和可用性</p>
+    <h2>目的</h2>
+    <p>分摊任务到多个操作单元上执行从而共同完成工作任务</p>
+    <h2>主要分类</h2>
+    <ul>
+        <li>软/硬件负载均衡</li>
+        <li>本地/全局负载均衡</li>
+    </ul>
+    <h2>主要应用</h2>
+    <ul>
+        <li>DNS负载均衡</li>
+        <li>代理服务器负载均衡</li>
+        <li>地址转换网关负载均衡</li>
+        <li>协议内部支持负载均衡</li>
+        <li>NAT负载均衡</li>
+        <li>反向代理负载均衡</li>
+        <li>混合型负载均衡</li>
+    </ul>
+    <h2>经典算法</h2>
+    <ul>
+        比较经典的5种负载均衡算法：随机法、轮询法、最少连接数法、最快响应法、Hash化散列法（包括IP-Hash和参数值Hash一致性算法），另外还可以整合权重（配置权重值和JVM预热启动加权）
+        <li>随机法：实现比较简单，也不需要记住状态位，每次随机选举，实现负载均衡的同时又避免了在选取节点时候的复杂运算</li>
+        <li>轮询法：实现更公平的负载均摊，但是是基于所有访问的服务器处理响应时间差不多的业务场景</li>
+        <li>最少连接数法：实现了更贴合实际场景的负载均摊，真正实现了根据服务器的实际处理能力来分摊请求，避免了慢堆积</li>
+        <li>通过统计每个Server的平均响应时间，然后选取最快的server，可以实现动态的调整负载的均摊。</li>
+        <li>Hash化散列法：IP哈希可以解决集群的Session共享问题，Hash一致性解决的是在非常复杂的集群模式下，频繁发生节点的新增和删除的时候，如何实现影响最小的请求均摊。</li>
+        <li>权重值的引入，非常有意义的一个干预参数，因为实际的业务场景，每台服务器的物理环境所导致的服务性能各不相同。可以和随机法、轮训法、最少连接数法结合起来用，在和轮询法结合起来用时，又有平滑的负载均摊和不是很平滑的负载均摊。
+        </li>
+    </ul>
+    <!-- <script id="worker" type="app/worker">
+        // type="app/worker" type=“text/js-worker” 只要是不会被js引擎解析的类型即可
+        // self.importScripts("http://127.0.0.1:5500/hash.js")
+        import ConsistentHashing from './hash.js'
+        console.log('xxxxx', self, ConsistentHashing)
+    </script> -->
+    <!-- worker -->
+    <script>
+        // 使用blob模式 内部 引入模块会有问题,Failed to load module script: The server responded with a non-JavaScript MIME type of “”
+        // 但是可同步引入脚本（importScripts）非 type module模式 classic模式
+        // var blob = new Blob([document.querySelector('#worker').textContent]);
+        // var myWorker = new Worker(window.URL.createObjectURL(blob), { type: "module" });
+        var myWorker = new Worker('./hash-worker.js', { type: "module" });
+        
+        myWorker.onmessage = function (e) {
+            console.log('worker发来贺电-----------', e)
+        };
+        myWorker.postMessage('run')
+    </script>
+    <!-- single main -->
+    <script type="module">
+        import main from './hash-worker.js'
+        // main()
+    </script>
+
+</body>
+
+</html>
