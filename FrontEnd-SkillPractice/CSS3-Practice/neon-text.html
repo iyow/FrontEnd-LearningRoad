@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>霓虹灯效果文本</title>
+    <style>
+        /* default */
+        :root {
+            --text-color: #fff;
+            --text-shadow-color: #0fa;
+        }
+
+        .theme-purple {
+            --text-color: #fff;
+            --text-shadow-color: #f09;
+        }
+    </style>
+    <style>
+        /* text-shadow: [x-offset] [y-offset] [blur-radius] [color]; */
+
+        .neon-text {
+            color: var(--text-color);
+            text-shadow:
+                0 0 7px var(--text-color),
+                0 0 10px var(--text-color),
+                0 0 21px var(--text-color),
+                0 0 42px var(--text-shadow-color),
+                0 0 82px var(--text-shadow-color),
+                0 0 92px var(--text-shadow-color),
+                0 0 102px var(--text-shadow-color),
+                0 0 151px var(--text-shadow-color);
+        }
+
+        h1 {
+            font-size: 4.2rem;
+        }
+
+        /* Additional styling */
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        .container {
+            margin-top: 20vh;
+        }
+
+        body {
+            font-size: 18px;
+            font-family: "Sacramento", sans-serif;
+            background-color: #010a01;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+    </style>
+
+    <!-- animation  -->
+
+    <style>
+        .filter {
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        /* Flickering animation */
+        @keyframes flicker {
+
+            0%,
+            18%,
+            22%,
+            25%,
+            53%,
+            57%,
+            100% {
+
+                text-shadow:
+                    0 0 4px var(--text-color),
+                    0 0 11px var(--text-color),
+                    0 0 19px var(--text-color),
+                    0 0 40px var(--text-shadow-color),
+                    0 0 80px var(--text-shadow-color),
+                    0 0 90px var(--text-shadow-color),
+                    0 0 100px var(--text-shadow-color),
+                    0 0 150px var(--text-shadow-color);
+
+            }
+
+            20%,
+            24%,
+            55% {
+                text-shadow: none;
+            }
+        }
+    </style>
+    <!-- animation 脉动 -->
+    <style>
+        .pulsate {
+            animation: pulsate 1.5s infinite alternate;
+            /* animation: pulsate 0.11s ease-in-out infinite alternate; */
+        }
+
+        @keyframes pulsate {
+
+            100% {
+
+                text-shadow:
+                    0 0 4px var(--text-color),
+                    0 0 11px var(--text-color),
+                    0 0 19px var(--text-color),
+                    0 0 40px var(--text-shadow-color),
+                    0 0 80px var(--text-shadow-color),
+                    0 0 90px var(--text-shadow-color),
+                    0 0 100px var(--text-shadow-color),
+                    0 0 150px var(--text-shadow-color);
+
+            }
+
+            0% {
+
+                text-shadow:
+                    0 0 2px var(--text-color),
+                    0 0 4px var(--text-color),
+                    0 0 6px var(--text-color),
+                    0 0 10px var(--text-shadow-color),
+                    0 0 45px var(--text-shadow-color),
+                    0 0 55px var(--text-shadow-color),
+                    0 0 70px var(--text-shadow-color),
+                    0 0 80px var(--text-shadow-color);
+
+            }
+        }
+    </style>
+    <!-- 可访问性 -->
+    <!-- 使用prefers-reduced-motion媒体查询来适应这一点。
+        这允许我们移除动画效果，以便让那些喜欢减少运动的人更容易访问我们的文本。 -->
+    <style>
+        @media screen and (prefers-reduced-motion) {
+            * {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="neon-text filter">
+            404
+        </h1>
+        <h2 class="theme-purple neon-text pulsate">Page Not Found</h2>
+
+    </div>
+</body>
+
+</html>
