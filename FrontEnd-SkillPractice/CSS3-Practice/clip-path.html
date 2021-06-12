@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>bg</title>
+    <title>clippath 基本使用</title>
     <style>
-        .clip-path {
+        .clip-path-heart {
             width: 200px;
             height: 200px;
             background-color: tomato;
@@ -17,6 +17,9 @@
         /* polygon的动画变形的一个重要条件：坐标的数目变形前后必须一致。 */
         /* 只要polygon点坐标的数目在动画的前后数目一样，浏览器就能实现连续动画，哪怕图形前后的模样是凤姐和林志玲的差距。比如说上面视频最后一个，2个三角变成1条鱼的过渡效果。 */
         .clip-path {
+            width: 200px;
+            height: 200px;
+            background-color: tomato;
             transition: all 1s ease-in-out;
             clip-path: polygon(0 0, 200px 0, 200px 200px, 0 200px);
         }
@@ -56,6 +59,7 @@ y=stroke-width/2） -->
                     C 1,0.7,0.5,1,0.5,1 Z" />
         </clipPath>
     </svg>
+    <div class="clip-path-heart"></div>
     <div class="clip-path"></div>
 </body>
 
