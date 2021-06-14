@@ -1,0 +1,6 @@
+- Fetch API
+- XMLHttpRequest
+- Network Information API
+- TCP and UDP Socket API
+- The WebSocket API
+- WebRTC
