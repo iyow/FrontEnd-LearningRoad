@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMLHttpRequest API abort request</title>
+</head>
+
+<body>
+
+</body>
+
+
+<script>
+    const xmlhttp = new XMLHttpRequest(),
+        method = 'GET',
+        url = 'http://localhost:8090';
+
+    xmlhttp.onreadystatechange = function (res) {
+
+        console.log('111111', this.readyState);
+        console.log('222222', this.status);
+        console.log('333333', res);
+        console.log('444444', xmlhttp.responseXML);
+        console.log('555555', xmlhttp.responseText);
+    }
+
+    xmlhttp.open(method, url, true);
+    xmlhttp.onabort = function () {
+        console.log('** 请求被中止');
+    };
+    xmlhttp.send();
+
+    // abort 可能在请求发出前停止 也可能 请求已经发出只是取消了response
+    setTimeout(() => {
+        xmlhttp.abort(); // 这将会调用我们上面定义的 onabort 回调函数
+    }, 100);
+</script>
+
+</html>

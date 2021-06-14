@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API abort request</title>
+</head>
+
+<body>
+    取消 fetch 调用的工作流程：
+    <ul>
+        <li> 创建一个 AbortController 实例</li>
+        <li>该实例具有 signal 属性</li>
+        <li>将 signal 传递给 fetch option 的 signal</li>
+        <li>调用 AbortController 的 abort 属性来取消所有使用该信号的 fetch。(即当将相同的信号传递给多个 fetch 调用时将会取消该信号的所有请求)</li>
+    </ul>
+
+    <script>
+
+        function abortableFetch(request, opts = {}) {
+            const controller = new AbortController();
+            const signal = controller.signal;
+
+            return {
+                "abort": () => controller.abort(),
+                "ready": fetch(request, { ...opts, signal })
+            };
+        }
+
+
+
+        let MyHeaders = new Headers();
+        MyHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        const MyInitOptions = {
+            method: 'GET',
+            headers: MyHeaders,
+            mode: 'cors',
+            cache: 'default'
+        };
+
+        let MyRequest = new Request('http://localhost:8090', MyInitOptions);
+
+        const abFetch = abortableFetch(MyRequest);
+        abFetch.ready.then(response => {
+            console.log(`请求成功Promise Request 1 is complete!`, response);
+        }).catch(e => {
+            console.warn(`请求失败Promise被catch  被 catch 啦 Fetch 1 error: ${e.message}`);
+            console.dir(e)
+            if (e.name === "AbortError") {
+                console.log("中止 AbortError We know it's been canceled!")
+            }
+        });
+
+
+        setTimeout(() => {
+            // Abort request
+            abFetch.abort();
+        }, 500);
+
+    </script>
+</body>
+
+</html>
