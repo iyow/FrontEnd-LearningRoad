@@ -30,3 +30,4 @@ ocp-status() {
 
 alias ocp-ohmy='ocp-only oh-my-opencode@latest'
 alias ocp-super='ocp-only superpowers'
+alias ocp-omo-super='ocp-add oh-my-opencode@latest superpowers'
