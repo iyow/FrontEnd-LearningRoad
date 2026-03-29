@@ -29,5 +29,5 @@ ocp-status() {
 }
 
 alias ocp-ohmy='ocp-only oh-my-opencode@latest'
-alias ocp-super='ocp-only superpowers'
-alias ocp-omo-super='ocp-add oh-my-opencode@latest superpowers'
+alias ocp-super='ocp-only superpowers@git+https://github.com/obra/superpowers.git'
+alias ocp-omo-super='ocp-add oh-my-opencode@latest superpowers@git+https://github.com/obra/superpowers.git'
